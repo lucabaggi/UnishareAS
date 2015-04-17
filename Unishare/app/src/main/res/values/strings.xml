@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Unishare</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="welcome">Benvenuti su Unishare!</string>
+    <string name="action_settings">Settings</string>
+    <string name="facebook_app_id">544445032329163</string>
+    <string name="search_book_text">Inserisci il nome del libro o del corso che ti interessano:</string>
+    <string name="search_book_hint">Nome del libro, ISBN o autore</string>
+    <string name="search_button">Cerca</string>
+     <string name="send_button">Invia</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="interesting_book">Premi per ricevere maggiori informazioni sul venditore</string>
+    <string name="interesting_book_button">Mi interessa</string>
+    <string name="title_activity_courses">Courses</string>
+    <string name="search_course_text">Inserisci il nome del corso o del professore:</string>
+    <string name="search_course_hint">Nome del corso o del professore</string>
+    <string name="insert_opinion">Aggiungi un commento</string>
+    <string name="insert_opinion_hint">Inserisci il tuo commento al corso</string>
+    <string name="insert_rating_text">Assegna una valutazione al corso (da 1 a 5):</string>
+
+</resources>

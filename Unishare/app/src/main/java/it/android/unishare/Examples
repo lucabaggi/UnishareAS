@@ -1,0 +1,12 @@
+Esempi d'utilizzo
+
+//Dialoghi 
+
+public void test() {
+	Application.alertDecision(this, "Domanda", "Ti importa qualcosa della tua privacy?", 
+    		new DialogInterface.OnClickListener() {
+		    	public void onClick(DialogInterface dialog, int id) {
+		    		Application.alertMessage(MainActivity.this,"Titolo","Muahah povero illuso");
+		        }
+	    	}, null);
+}
