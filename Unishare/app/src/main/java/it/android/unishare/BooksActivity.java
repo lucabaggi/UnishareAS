@@ -10,6 +10,7 @@ import it.android.unishare.R;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +30,8 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 	private SearchFragment searchFragment;
 	private BooksAdapter adapter;
 	private Entity book;
+
+    private Toolbar toolbar;
 	
 	ArrayList<Entity> adapterValues = new ArrayList<Entity>();
 
@@ -36,6 +39,11 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.books_activity);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(toolbar != null){
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setTitle("Unishare");
+        }
         application = MyApplication.getInstance(this);
         adapter = new BooksAdapter(this, new ArrayList<Entity>());
         /**

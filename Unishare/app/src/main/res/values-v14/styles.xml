@@ -7,6 +7,15 @@
     -->
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
         <!-- API 14 theme customizations can go here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
+    <style name="CustomToolbar" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColorPrimary">@color/White</item>
+        <item name="actionMenuTextColor">@color/White</item>
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 
 </resources>

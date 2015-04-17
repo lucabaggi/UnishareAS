@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +45,8 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 	
 	private String courseName;
 	private int courseId;
+
+    private Toolbar toolbar;
 	
 	ArrayList<Entity> adapterValues = new ArrayList<Entity>();
 	ArrayList<Entity> opinionAdapterValues = new ArrayList<Entity>();
@@ -52,6 +55,11 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_courses);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(toolbar != null){
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setTitle("Unishare");
+        }
 		application = MyApplication.getInstance(this);
 		coursesAdapter = new CoursesAdapter(this, new ArrayList<Entity>());
         /**
