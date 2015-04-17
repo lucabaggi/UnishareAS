@@ -18,6 +18,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.gc.materialdesign.views.ButtonFlat;
+import com.gc.materialdesign.views.ButtonRectangle;
+
 public class SearchFragment extends Fragment implements ViewInitiator {
 	
 	public static final String TAG = "SearchFragment";
@@ -130,7 +133,7 @@ public class SearchFragment extends Fragment implements ViewInitiator {
     		}
     	}    		
     	searchForm = (EditText) view.findViewById(R.id.opinionText);
-    	Button btn = (Button) view.findViewById(R.id.insertOpinionButton);
+    	ButtonRectangle btn = (ButtonRectangle) view.findViewById(R.id.searchButton);
         btn.setOnClickListener(new OnClickListener() {
 	        @Override
 	        public void onClick(View view) {

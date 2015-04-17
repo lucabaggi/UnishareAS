@@ -11,9 +11,6 @@ public class SmartActivity extends ActionBarActivity {
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(toolbar != null)
-        	setSupportActionBar(toolbar);
         
         //if(!Utilities.checkNetworkState(this)) Application.toastMessage(this, "Nessuna connessione internet");
 	}

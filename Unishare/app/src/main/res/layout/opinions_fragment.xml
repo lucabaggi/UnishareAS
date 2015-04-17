@@ -37,7 +37,9 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="24dp"
         android:background="#1E88E5"
-        materialdesign:animate="false"/>
+        materialdesign:animate="false"
+        materialdesign:iconDrawable="@drawable/ic_action_new"
+        android:layout_marginBottom="20dp"/>
 
 
 </RelativeLayout>

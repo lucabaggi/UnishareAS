@@ -21,6 +21,9 @@ public class MainActivity extends SmartActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(toolbar != null)
+            setSupportActionBar(toolbar);
         application = MyApplication.getInstance(this);
         getFragmentManager().beginTransaction().add(R.id.container, new MainFragment(), MainFragment.TAG).commit();
         //Starts background service
