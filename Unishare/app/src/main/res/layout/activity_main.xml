@@ -7,15 +7,29 @@
 
     <include
         layout="@layout/toolbar"/>
-
-    <FrameLayout
-        android:id="@+id/container"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        tools:context="it.android.unishare.MainActivity"
-        tools:ignore="MergeRootFrame"
-        android:layout_weight="1">
-    </FrameLayout>
+        android:layout_height="match_parent">
+
+
+            <FrameLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                tools:context="it.android.unishare.MainActivity"
+                tools:ignore="MergeRootFrame">
+            </FrameLayout>
+        
+            <fragment
+                android:id="@+id/fragment_drawer"
+                android:name="it.android.unishare.DrawerFragment"
+                android:layout_width="@dimen/drawer_width"
+                android:layout_height="match_parent"
+                android:layout_gravity="left|start"
+                tools:layout="@layout/drawer_fragment" />
+
+    </android.support.v4.widget.DrawerLayout>
 </LinearLayout>
 
 
