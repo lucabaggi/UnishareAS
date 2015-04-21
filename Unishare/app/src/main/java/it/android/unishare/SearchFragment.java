@@ -5,6 +5,7 @@ import it.android.unishare.R;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -142,6 +143,7 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 	        	dialog.setTitle("Searching");
 	            dialog.setMessage("Please wait...");
 	            dialog.setIndeterminate(false);
+                activity.getMyApplication().hideKeyboard((Context)activity);
 	        	activity.initializeFragmentUI(searchForm.getText().toString(), dialog);
 	        }
         });

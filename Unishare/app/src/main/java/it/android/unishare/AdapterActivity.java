@@ -9,4 +9,6 @@ public abstract class AdapterActivity extends SmartActivity {
 
 	abstract void initializeFragmentUI(String string, ProgressDialog dialog);
 
+    abstract MyApplication getMyApplication();
+
 }

@@ -21,6 +21,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 public class MyApplication extends android.app.Application {
@@ -224,6 +226,18 @@ public class MyApplication extends android.app.Application {
 		actualToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
 		actualToast.show();
 	}
+
+    public static void hideKeyboard(Context ctx) {
+        InputMethodManager inputManager = (InputMethodManager) ctx
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View v = ((Activity) ctx).getCurrentFocus();
+        if (v == null)
+            return;
+
+        inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
 	
 	public static void log(String message) {
 		System.out.println(message);

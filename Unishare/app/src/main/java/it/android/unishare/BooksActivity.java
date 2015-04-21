@@ -163,6 +163,11 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 	public BooksAdapter getAdapter(){
 		return this.adapter;
 	}
+
+    @Override
+    public MyApplication getMyApplication(){
+        return this.application;
+    }
 	
 	/////////////////////////////////////////////////
 	//Calls to database

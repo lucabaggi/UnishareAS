@@ -242,6 +242,11 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 		Log.i(TAG, "Commento: " + opinion + "\nvoto: " + rating +" per il corso " + courseId);
 		insertOpinion(courseId, rating, opinion, 2418, dialog);
 	}
+
+    @Override
+    public MyApplication getMyApplication(){
+        return this.application;
+    }
 	
 	/////////////////////////////////
 	// 	   Calls to database       //

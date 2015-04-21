@@ -4,6 +4,7 @@ package it.android.unishare;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,8 +60,11 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 				String opinion = commentTextView.getText().toString();
 				float rating = ratingBar.getRating();
 				Log.i(TAG, "Opinione: " + opinion + ", voto: " + rating);
-				if(opinion != null && rating > 0)
-					activity.insertOpinion(opinion, rating, dialog);			
+				if(opinion != null && rating > 0) {
+                    activity.getMyApplication().hideKeyboard((Context) activity);
+                    activity.insertOpinion(opinion, rating, dialog);
+                }
+
 			}
 		});
 	}
