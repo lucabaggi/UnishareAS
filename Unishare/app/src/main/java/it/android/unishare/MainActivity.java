@@ -121,6 +121,12 @@ public class MainActivity extends SmartActivity {
     	}
     		
     }
+
+    @Override
+    public void launchNewActivity(int position){
+        application.launchNewActivityFromDrawer(this, position);
+        drawerLayout.closeDrawers();
+    }
     
     
 

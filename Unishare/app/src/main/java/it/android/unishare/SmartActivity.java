@@ -19,4 +19,8 @@ public class SmartActivity extends ActionBarActivity {
 		
 	}
 
+    public void launchNewActivity(int position){
+
+    }
+
 }

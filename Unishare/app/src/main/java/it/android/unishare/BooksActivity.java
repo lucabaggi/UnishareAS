@@ -9,9 +9,13 @@ import it.android.unishare.R;
 
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,10 +23,10 @@ import android.view.MenuItem;
 public class BooksActivity extends AdapterActivity implements OnBookSelectedListener {
 	
 	public static final String TAG = "BooksActivity";
-	
+
 	private static final String BOOKS_SEARCH_FRAGMENT_INSTANCE = "books_search_fragment_key";
 	private static final String ADAPTER_VALUES = "key_adapter";
-	
+
 	private static final String BOOKS_SEARCH_TAG = "bookSearch";
 	private static final String BOOK_DETAILS_TAG = "bookDetail";
 
@@ -32,7 +36,9 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 	private Entity book;
 
     private Toolbar toolbar;
-	
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
+
 	ArrayList<Entity> adapterValues = new ArrayList<Entity>();
 
     @Override
@@ -40,9 +46,12 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.books_activity);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if(toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Unishare");
+            drawerToggle= new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+            drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);
         adapter = new BooksAdapter(this, new ArrayList<Entity>());
@@ -63,7 +72,7 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
         	Log.i(TAG, "Fragment not found. Creating new fragment");
         	getFragmentManager().beginTransaction()
         	.add(R.id.books_fragment_container, searchFragment, SearchFragment.TAG).commit();
-        }       	
+        }
     }
 
     @Override
@@ -71,7 +80,7 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
     	super.onResume();
     	application.setActivity(this);
     }
-    
+
     @Override
     public void onSaveInstanceState(Bundle outState){
     	super.onSaveInstanceState(outState);
@@ -108,21 +117,35 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
         if (id == R.id.action_settings) {
             return true;
         }
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
-    
+
     public void initializeFragmentUI(String text, ProgressDialog dialog){
     	if(text != null && text != "") {
     		searchBooks(0, text, dialog);
     	}
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
 
 	@Override
 	public void handleResult(ArrayList<Entity> result, String tag) {
 		if(tag == BOOKS_SEARCH_TAG) {
 			adapter.addAll(result);
-			searchFragment = (SearchFragment) getFragmentManager().findFragmentByTag(SearchFragment.TAG);			
+			searchFragment = (SearchFragment) getFragmentManager().findFragmentByTag(SearchFragment.TAG);
 			searchFragment.displayResults(tag);
 		}
 		if(tag == BOOK_DETAILS_TAG){
@@ -132,7 +155,7 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 			FragmentTransaction transaction = getFragmentManager().beginTransaction();
 			transaction.replace(R.id.books_fragment_container, booksDetailsFragment, BooksDetailsFragment.TAG);
 			transaction.addToBackStack(null);
-			transaction.commit();	
+			transaction.commit();
 		}
 	}
 
@@ -146,19 +169,29 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		transaction.replace(R.id.books_fragment_container, booksDetailsFragment, BooksDetailsFragment.TAG);
 		transaction.addToBackStack(null);
-		transaction.commit();	
+		transaction.commit();
 		*/
 	}
 
     @Override
     public void onBackPressed(){
+        if(drawerLayout.isDrawerOpen(Gravity.START|Gravity.LEFT)){
+            drawerLayout.closeDrawers();
+            return;
+        }
         if(getFragmentManager().getBackStackEntryCount() > 0){
             getFragmentManager().popBackStack();
             return;
         }
         super.onBackPressed();
     }
-	
+
+    @Override
+    public void launchNewActivity(int position){
+        application.launchNewActivityFromDrawer(this, position);
+        drawerLayout.closeDrawers();
+    }
+
 	@Override
 	public BooksAdapter getAdapter(){
 		return this.adapter;
@@ -168,11 +201,11 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
     public MyApplication getMyApplication(){
         return this.application;
     }
-	
+
 	/////////////////////////////////////////////////
 	//Calls to database
 	/////////////////////////////////////////////////
-	
+
 	private void searchBooks(int campusId, String text, ProgressDialog dialog) {
 		try {
 			application.databaseCall("books_search.php?q=" + URLEncoder.encode(text, "UTF-8") + "&s=" + campusId, BOOKS_SEARCH_TAG, dialog);
@@ -180,11 +213,11 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void getBook(int bookId, ProgressDialog dialog) {
 		application.databaseCall("books_detail.php?id=" + bookId, BOOK_DETAILS_TAG, dialog);
 	}
-	
+
 	//USELESS FOR MOBILE?
 	private void getBookList(int campusId, ProgressDialog dialog) {
 		application.databaseCall("books.php?s=" + campusId, "bookList", dialog);

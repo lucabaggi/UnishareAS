@@ -8,9 +8,13 @@ import java.util.ArrayList;
 
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -47,6 +51,8 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 	private int courseId;
 
     private Toolbar toolbar;
+    private ActionBarDrawerToggle drawerToggle;
+    private DrawerLayout drawerLayout;
 	
 	ArrayList<Entity> adapterValues = new ArrayList<Entity>();
 	ArrayList<Entity> opinionAdapterValues = new ArrayList<Entity>();
@@ -56,9 +62,12 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_courses);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if(toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Unishare");
+            drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+            drawerLayout.setDrawerListener(drawerToggle);
         }
 		application = MyApplication.getInstance(this);
 		coursesAdapter = new CoursesAdapter(this, new ArrayList<Entity>());
@@ -95,6 +104,12 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
     protected void onResume() {
     	super.onResume();
     	application.setActivity(this);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
     
     @Override
@@ -146,8 +161,17 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 		if (id == R.id.action_settings) {
 			return true;
 		}
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
 		return super.onOptionsItemSelected(item);
 	}
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
 	
 	public void initializeFragmentUI(String text, ProgressDialog dialog){
     	if(text != null && text != "") {
@@ -157,6 +181,10 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 
     @Override
     public void onBackPressed(){
+        if(drawerLayout.isDrawerOpen(Gravity.START|Gravity.LEFT)){
+            drawerLayout.closeDrawers();
+            return;
+        }
         if(getFragmentManager().getBackStackEntryCount() > 0){
             getFragmentManager().popBackStack();
             return;
@@ -199,6 +227,12 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 			opinionsAdapter.notifyDataSetChanged();
 		}
 	}
+
+    @Override
+    public void launchNewActivity(int position){
+        application.launchNewActivityFromDrawer(this, position);
+        drawerLayout.closeDrawers();
+    }
 	
 	private void createOpinionFragment(){
 		opinionsFragment = new OpinionsFragment(courseName);

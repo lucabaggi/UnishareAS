@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -28,6 +29,9 @@ import android.widget.Toast;
 public class MyApplication extends android.app.Application {
 	
 	private static MyApplication instance = null;
+
+    private static final int BOOKS = 0;
+    private static final int COURSES = 1;
 	
 	private int userID;
 	private int campusID;
@@ -273,6 +277,23 @@ public class MyApplication extends android.app.Application {
     	//Notifica con testo visibile - da implementare
     	//nm.notifyWithText(myApp.NOTIFICATION_GUID,"Prova",NotificationManager);
 	}
+
+    public void launchNewActivityFromDrawer(Activity activity, int position){
+        switch (position){
+            case(BOOKS):
+                MyApplication.getInstance(activity).newActivity(BooksActivity.class);
+                break;
+            case(COURSES):
+                MyApplication.getInstance(activity).newActivity(CoursesActivity.class);
+                break;
+            default:
+                Log.i("MyApplication", "Errore");
+                break;
+        }
+
+
+    }
+
 
 	///////////////////////////////////////////////////////////////////////
 	//Getters & Setters

@@ -1,16 +1,13 @@
 package it.android.unishare;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -18,7 +15,9 @@ import java.util.Arrays;
 
 public class DrawerFragment extends Fragment implements ViewInitiator{
 
-    Activity activity;
+    public static final String TAG = "DrawerFragment";
+
+    SmartActivity activity;
     View view;
     ListView listView;
     String drawerItem[] = new String[]{"Vai ai Libri", "Vai ai Corsi"};
@@ -46,7 +45,7 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.activity = activity;
+        this.activity = (SmartActivity)activity;
     }
 
     @Override
@@ -62,17 +61,17 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
         drawerAdapter = new DrawerAdapter(activity, drawerItemList);
         listView.setAdapter(drawerAdapter);
 
-        /*
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
                 String item = (String)parent.getItemAtPosition(position);
                 Log.i(TAG, "Clicked on " + item);
-                activity.launchNewActivity(item);
+                activity.launchNewActivity(position);
             }
 
         });
-        */
+
     }
 }
