@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Luca\Desktop\Unishare\Unishare\app\build\intermediates\exploded-aar\com.github.navasmdc\MaterialDesign\1.4\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="87405405e403de68f4057757b8a2e8de02bd65d0">
+        <dex dex="C:\Users\Luca\Desktop\Unishare\Unishare\app\build\intermediates\pre-dexed\debug\classes-8d4ee7066993954c2f6365cbe9d40923d87c6a6b.jar" />
+    </item>
+    <item
+        jar="C:\Users\Luca\Desktop\Unishare\Unishare\app\libs\commons-io-2.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b1b6ea3b7e4aa4f492509a4952029cd8e48019ad">
+        <dex dex="C:\Users\Luca\Desktop\Unishare\Unishare\app\build\intermediates\pre-dexed\debug\commons-io-2.4-37f1e0de1bb19ba8a8c2cdf08706f31143633f54.jar" />
+    </item>
+    <item
+        jar="C:\Users\Luca\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="C:\Users\Luca\Desktop\Unishare\Unishare\app\build\intermediates\pre-dexed\debug\library-2.4.0-1df6fd78105cfeb0a0e4dfead91eda78d91b01ba.jar" />
+    </item>
+    <item
+        jar="C:\Users\Luca\Desktop\Unishare\Unishare\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="C:\Users\Luca\Desktop\Unishare\Unishare\app\build\intermediates\pre-dexed\debug\classes-3174b4a68adad9a9fa76bd47fb52c065d59fbc44.jar" />
+    </item>
+    <item
+        jar="C:\Users\Luca\Desktop\Unishare\Unishare\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="C:\Users\Luca\Desktop\Unishare\Unishare\app\build\intermediates\pre-dexed\debug\classes-f4fabce01e331e9c23388fb69e820fe98b147f8a.jar" />
+    </item>
+    <item
+        jar="C:\Users\Luca\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="C:\Users\Luca\Desktop\Unishare\Unishare\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-0f0715f20ff3d3c4f98f79be69fcf9a71b30b6b9.jar" />
+    </item>
+    <item
+        jar="C:\Users\Luca\Desktop\Unishare\Unishare\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="C:\Users\Luca\Desktop\Unishare\Unishare\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-912db0c8c1869c2a6dab2874e9bb082dfc1e0f00.jar" />
+    </item>
+
+</items>
