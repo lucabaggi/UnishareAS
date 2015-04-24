@@ -25,7 +25,7 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 	private TextView commentTextView;
 	private RatingBar ratingBar;
 	
-	private ProgressDialog dialog;
+	private com.gc.materialdesign.widgets.ProgressDialog dialog;
 	
 	private CoursesActivity activity;
 	
@@ -47,10 +47,9 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 	@Override
 	public void initializeUI(View view) {
 		commentTextView = (TextView) view.findViewById(R.id.opinionText);		
-		ratingBar = (RatingBar) view.findViewById(R.id.ratingInsertedBar);	
-		dialog = new ProgressDialog(activity);
-		dialog.setTitle("Inserting opinion");
-		dialog.setMessage("Please wait...");
+		ratingBar = (RatingBar) view.findViewById(R.id.ratingInsertedBar);
+        String title = "Searching";
+        dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
 		Button btn = (Button) view.findViewById(R.id.insertOpinionConfirmButton);
 		btn.setOnClickListener(new OnClickListener() {
 			
@@ -61,7 +60,7 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 				float rating = ratingBar.getRating();
 				Log.i(TAG, "Opinione: " + opinion + ", voto: " + rating);
 				if(opinion != null && rating > 0) {
-                    activity.getMyApplication().hideKeyboard((Context) activity);
+                    activity.getMyApplication().hideKeyboard(activity);
                     activity.insertOpinion(opinion, rating, dialog);
                 }
 

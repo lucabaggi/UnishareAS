@@ -31,12 +31,12 @@ public class BooksSearchFragment extends Fragment implements ViewInitiator {
 	//UI elements
 	ListView listview;
 	EditText searchForm;
-	ProgressDialog dialog;
+	com.gc.materialdesign.widgets.ProgressDialog dialog;
 	BooksAdapter adapter;
 	
 	
 	public interface OnBookSelectedListener {
-        public void onBookSelected(String bookId, ProgressDialog dialog);
+        public void onBookSelected(String bookId, com.gc.materialdesign.widgets.ProgressDialog dialog);
     }
 
     public BooksSearchFragment() {
@@ -79,10 +79,8 @@ public class BooksSearchFragment extends Fragment implements ViewInitiator {
     				Entity book = (Entity)parent.getItemAtPosition(position);
     				String bookId = book.get("id");
     				Log.i(TAG, "Clicked on " + bookId);
-    				dialog = new ProgressDialog(getActivity());
-    	        	dialog.setTitle("Searching");
-    	            dialog.setMessage("Please wait...");
-    	            dialog.setIndeterminate(false);
+                    String title = "Searching";
+                    dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
     				BooksSearchFragment.this.bookListener.onBookSelected(bookId, dialog);			
     			}
     				
@@ -93,10 +91,8 @@ public class BooksSearchFragment extends Fragment implements ViewInitiator {
         btn.setOnClickListener(new OnClickListener() {
 	        @Override
 	        public void onClick(View view) {
-	        	dialog = new ProgressDialog(getActivity());
-	        	dialog.setTitle("Searching");
-	            dialog.setMessage("Please wait...");
-	            dialog.setIndeterminate(false);
+                String title = "Searching";
+                dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
 	        	activity.initializeFragmentUI(searchForm.getText().toString(), dialog);
 	        }
         });
@@ -107,7 +103,7 @@ public class BooksSearchFragment extends Fragment implements ViewInitiator {
 		clearList(adapter);
 		adapter = activity.getAdapter();
 		fillList(result);
-		MyApplication.alertMessage(activity, "Ricerca di '" + searchForm.getText().toString() + "'", (result.size()) + " risultati trovati");
+		activity.getMyApplication().alertMessage("Ricerca di '" + searchForm.getText().toString() + "'", (result.size()) + " risultati trovati");
 	}
 	
 	private void fillList(ArrayList<Entity> result) {
@@ -121,10 +117,8 @@ public class BooksSearchFragment extends Fragment implements ViewInitiator {
 				Entity book = (Entity)parent.getItemAtPosition(position);
 				String bookId = book.get("id");
 				Log.i(TAG, "Clicked on " + bookId);
-				dialog = new ProgressDialog(getActivity());
-	        	dialog.setTitle("Searching");
-	            dialog.setMessage("Please wait...");
-	            dialog.setIndeterminate(false);
+                String title = "Searching";
+                dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
 				BooksSearchFragment.this.bookListener.onBookSelected(bookId, dialog);			
 			}
 				

@@ -11,10 +11,10 @@ public class AsynchRequest extends AsyncTask<Void,ArrayList<Entity>,ArrayList<En
 	private String url;
 	private String tag;
 	private SmartActivity activity;
-	private ProgressDialog dialog;
+	private com.gc.materialdesign.widgets.ProgressDialog dialog;
 	private float startedAt;
 	
-	public AsynchRequest setParameters(Activity activity, String url, String tag, ProgressDialog dialog) {
+	public AsynchRequest setParameters(Activity activity, String url, String tag, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		this.url = url;
 		this.activity = (SmartActivity) activity;
 		this.tag = tag;;

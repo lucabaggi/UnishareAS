@@ -173,7 +173,7 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
         drawerToggle.syncState();
     }
 	
-	public void initializeFragmentUI(String text, ProgressDialog dialog){
+	public void initializeFragmentUI(String text, com.gc.materialdesign.widgets.ProgressDialog dialog){
     	if(text != null && text != "") {
     		searchCourses(0, text, dialog);
     	}
@@ -212,11 +212,9 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 				String title = "";
 				String message = "Opinione inserita. Grazie per il tuo contributo!";
 				application.alertMessage(title, message);
-				ProgressDialog dialog = new ProgressDialog(this);
-				String dialogTitle = "Searching";
-				String dialogMessage = "Please wait...";
+                String dialogTitle = "Searching";
+				com.gc.materialdesign.widgets.ProgressDialog dialog = new com.gc.materialdesign.widgets.ProgressDialog(this, dialogTitle);
 				dialog.setTitle(dialogTitle);
-				dialog.setMessage(dialogMessage);
 				refreshOpinions(courseId, dialog);
 			}
 		}
@@ -248,7 +246,7 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 	}
 	
 	@Override
-	public void onCourseSelected(String courseId, String courseName, ProgressDialog dialog) {
+	public void onCourseSelected(String courseId, String courseName, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		this.courseName = courseName;
 		this.courseId = Integer.parseInt(courseId);
 		getOpinion(this.courseId, dialog);
@@ -271,7 +269,7 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 		transaction.commit();	
 	}
 	
-	public void insertOpinion(String opinion, float rating, ProgressDialog dialog){
+	public void insertOpinion(String opinion, float rating, com.gc.materialdesign.widgets.ProgressDialog dialog){
 		Log.i(TAG, "Calling db for inserting opinion");
 		Log.i(TAG, "Commento: " + opinion + "\nvoto: " + rating +" per il corso " + courseId);
 		insertOpinion(courseId, rating, opinion, 2418, dialog);
@@ -286,7 +284,7 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 	// 	   Calls to database       //
 	/////////////////////////////////
 	
-	private void searchCourses(int campusId, String text, ProgressDialog dialog) {
+	private void searchCourses(int campusId, String text, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		try {
 			application.databaseCall("courses_search.php?q=" + URLEncoder.encode(text, "UTF-8") + "&s=" + campusId, COURSE_SEARCH_TAG, dialog);
 		} catch (UnsupportedEncodingException e) {
@@ -294,15 +292,15 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 		}	
 	}
 	
-	private void getOpinion(int courseId, ProgressDialog dialog){
+	private void getOpinion(int courseId, com.gc.materialdesign.widgets.ProgressDialog dialog){
 		application.databaseCall("opinions.php?id=" + courseId, OPINION_TAG, dialog);
 	}
 	
-	private void refreshOpinions(int courseId, ProgressDialog dialog){
+	private void refreshOpinions(int courseId, com.gc.materialdesign.widgets.ProgressDialog dialog){
 		application.databaseCall("opinions.php?id=" + courseId, REFRESH_OPINIONS_ADAPTER, dialog);
 	}
 
-	private void insertOpinion(int courseId, float rating, String text, int cdsId, ProgressDialog dialog){
+	private void insertOpinion(int courseId, float rating, String text, int cdsId, com.gc.materialdesign.widgets.ProgressDialog dialog){
 		try {
 			application.databaseCall("opinions_insert.php?id=" + courseId + "&v=" + rating + "&c=" + URLEncoder.encode(text, "UTF-8") + "&u=" + cdsId, INSERT_OPINION_TAG, dialog);
 		} catch (UnsupportedEncodingException e) {

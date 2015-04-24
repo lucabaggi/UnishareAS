@@ -70,7 +70,7 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
     		Log.i(TAG, "No opinions for this course");
     		String title = "";
     		String message = "Nessuna opinione presente per questo corso";
-    		MyApplication.alertMessage(getActivity(), title, message);
+    		activity.getMyApplication().alertMessage(title, message);
     	}			
 		TextView courseNameTextView = (TextView) view.findViewById(R.id.courseName);
 		courseNameTextView.setText(courseName);
