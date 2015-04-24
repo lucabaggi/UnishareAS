@@ -25,13 +25,16 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
 	
 	private CoursesActivity activity;
 	private OpinionsAdapter opinionsAdapter;
+
+    private int counter;
 	
 	public OpinionsFragment(){
 		
 	}
 	
 	public OpinionsFragment (String courseName){
-		this.courseName = courseName;
+		this.counter = 0;
+        this.courseName = courseName;
 	}
 	
 	@Override
@@ -64,9 +67,9 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
 			}
 		});
 		listview = (ListView) view.findViewById(R.id.opinionsListView);
-    	if(opinionsAdapter.getCount() > 0)
-    		listview.setAdapter(opinionsAdapter);
-    	else{
+    	listview.setAdapter(opinionsAdapter);
+        if(opinionsAdapter.getCount() == 0 && counter == 0){
+            counter++;
     		Log.i(TAG, "No opinions for this course");
     		String title = "";
     		String message = "Nessuna opinione presente per questo corso";

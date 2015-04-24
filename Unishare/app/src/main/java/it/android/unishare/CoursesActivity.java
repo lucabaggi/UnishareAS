@@ -214,7 +214,6 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 				application.alertMessage(title, message);
                 String dialogTitle = "Searching";
 				com.gc.materialdesign.widgets.ProgressDialog dialog = new com.gc.materialdesign.widgets.ProgressDialog(this, dialogTitle);
-				dialog.setTitle(dialogTitle);
 				refreshOpinions(courseId, dialog);
 			}
 		}
