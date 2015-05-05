@@ -172,13 +172,12 @@ public class MyApplication extends android.app.Application {
 	*/
 	
 	//Create request to database
-	public void databaseCall(String url, String tag, ProgressDialog dialog) {
+	public void databaseCall(String url, String tag, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		new AsynchRequest().setParameters(currentActivity,url,tag,dialog).execute();
 	}
-	
-	//Creates alert box with a message
+
 	public void alertMessage(String title, String message) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
+		android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(currentContext);
 		builder.setMessage(message);
 	    builder.setTitle(title);
 	    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -186,44 +185,20 @@ public class MyApplication extends android.app.Application {
 	            // User clicked OK button
 	        }
 	    });
-	    AlertDialog dialog = builder.create();
-	    dialog.show();
-	}
-	public static void alertMessage(Context context, String title, String message) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setMessage(message);
-	    builder.setTitle(title);
-	    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int id) {
-	            // User clicked OK button
-	        }
-	    });
-	    AlertDialog dialog = builder.create();
+	    android.support.v7.app.AlertDialog dialog = builder.create();
 	    dialog.show();
 	}
 	
 	//Creates dialog box with a question
 	public void alertDecision(String title, String message, DialogInterface.OnClickListener actionTrue, DialogInterface.OnClickListener actionFalse) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
+		android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(currentContext);
 		builder.setMessage(message);
 	    builder.setTitle(title);
 	    builder.setPositiveButton("Si", actionTrue);
 	    builder.setNegativeButton("No", actionFalse);
-	    AlertDialog dialog = builder.create();
+        android.support.v7.app.AlertDialog dialog = builder.create();
 	    dialog.show();
 	}
-	
-	/*
-	public static void alertDecision(Context context, String title, String message, DialogInterface.OnClickListener actionTrue, DialogInterface.OnClickListener actionFalse) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setMessage(message);
-	    builder.setTitle(title);
-	    builder.setPositiveButton("Si", actionTrue);
-	    builder.setNegativeButton("No", actionFalse);
-	    AlertDialog dialog = builder.create();
-	    dialog.show();
-	}
-	*/
 	
 	public void toastMessage(Context context, String message) {
 		if(actualToast != null) actualToast.cancel();

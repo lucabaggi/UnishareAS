@@ -28,7 +28,7 @@ public class CoursesSearchFragment extends Fragment implements ViewInitiator {
 	
 	EditText searchForm;
 	ListView listview;
-	ProgressDialog dialog;
+	com.gc.materialdesign.widgets.ProgressDialog dialog;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,10 +78,8 @@ public class CoursesSearchFragment extends Fragment implements ViewInitiator {
         btn.setOnClickListener(new OnClickListener() {
 	        @Override
 	        public void onClick(View view) {
-	        	dialog = new ProgressDialog(getActivity());
-	        	dialog.setTitle("Searching");
-	            dialog.setMessage("Please wait...");
-	            dialog.setIndeterminate(false);
+                String title = "Searching";
+                dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
 	        	activity.initializeFragmentUI(searchForm.getText().toString(), dialog);
 	        }
         });	
@@ -91,7 +89,7 @@ public class CoursesSearchFragment extends Fragment implements ViewInitiator {
 		clearList(adapter);
 		adapter = activity.getAdapter();
 		fillList(result);
-		MyApplication.alertMessage(activity, "Ricerca di '" + searchForm.getText().toString() + "'", (result.size()) + " risultati trovati");
+		activity.getMyApplication().alertMessage("Ricerca di '" + searchForm.getText().toString() + "'", (result.size()) + " risultati trovati");
 	}
 
 

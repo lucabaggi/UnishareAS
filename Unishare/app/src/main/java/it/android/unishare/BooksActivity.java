@@ -123,7 +123,7 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
         return super.onOptionsItemSelected(item);
     }
 
-    public void initializeFragmentUI(String text, ProgressDialog dialog){
+    public void initializeFragmentUI(String text, com.gc.materialdesign.widgets.ProgressDialog dialog){
     	if(text != null && text != "") {
     		searchBooks(0, text, dialog);
     	}
@@ -161,7 +161,7 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 
 
 	@Override
-	public void onBookSelected(String bookId, ProgressDialog dialog) {
+	public void onBookSelected(String bookId, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		int id = Integer.parseInt(bookId);
 		getBook(id, dialog);
 		/*
@@ -206,7 +206,7 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 	//Calls to database
 	/////////////////////////////////////////////////
 
-	private void searchBooks(int campusId, String text, ProgressDialog dialog) {
+	private void searchBooks(int campusId, String text, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		try {
 			application.databaseCall("books_search.php?q=" + URLEncoder.encode(text, "UTF-8") + "&s=" + campusId, BOOKS_SEARCH_TAG, dialog);
 		} catch (UnsupportedEncodingException e) {
@@ -214,12 +214,12 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 		}
 	}
 
-	private void getBook(int bookId, ProgressDialog dialog) {
+	private void getBook(int bookId, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		application.databaseCall("books_detail.php?id=" + bookId, BOOK_DETAILS_TAG, dialog);
 	}
 
 	//USELESS FOR MOBILE?
-	private void getBookList(int campusId, ProgressDialog dialog) {
+	private void getBookList(int campusId, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		application.databaseCall("books.php?s=" + campusId, "bookList", dialog);
 	}
 

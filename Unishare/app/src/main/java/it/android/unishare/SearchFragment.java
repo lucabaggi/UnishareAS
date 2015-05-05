@@ -35,16 +35,16 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 	//UI elements
 	ListView listview;
 	EditText searchForm;
-	ProgressDialog dialog;
+	com.gc.materialdesign.widgets.ProgressDialog dialog;
 	ArrayAdapter<Entity> adapter;
 	
 	
 	public interface OnBookSelectedListener {
-        public void onBookSelected(String bookId, ProgressDialog dialog);
+        public void onBookSelected(String bookId, com.gc.materialdesign.widgets.ProgressDialog dialog);
     }
 	
 	public interface OnCourseSelectedListener {
-		public void onCourseSelected(String courseId, String courseName, ProgressDialog dialog);
+		public void onCourseSelected(String courseId, String courseName, com.gc.materialdesign.widgets.ProgressDialog dialog);
 	}
 
     public SearchFragment() {
@@ -106,10 +106,8 @@ public class SearchFragment extends Fragment implements ViewInitiator {
     					Entity book = (Entity)parent.getItemAtPosition(position);
     					String bookId = book.get("id");
     					Log.i(TAG, "Clicked on book " + bookId);
-    					dialog = new ProgressDialog(getActivity());
-    		        	dialog.setTitle("Searching");
-    		            dialog.setMessage("Please wait...");
-    		            dialog.setIndeterminate(false);
+                        String title = "Searching";
+    					dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
     					SearchFragment.this.bookListener.onBookSelected(bookId, dialog);			
     				}
     					
@@ -124,10 +122,8 @@ public class SearchFragment extends Fragment implements ViewInitiator {
     					String courseId = course.get("id");
     					String courseName = course.get("nome");
     					Log.i(TAG, "Clicked on course " + courseId);
-    					dialog = new ProgressDialog(getActivity());
-    		        	dialog.setTitle("Searching");
-    		            dialog.setMessage("Please wait...");
-    		            dialog.setIndeterminate(false);
+                        String title = "Searching";
+    					dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
     		            SearchFragment.this.courseListener.onCourseSelected(courseId, courseName, dialog);
     				}
 				});
@@ -139,10 +135,8 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 	        @Override
 	        public void onClick(View view) {
 	        	clearList(adapter);
-	        	dialog = new ProgressDialog(getActivity());
-	        	dialog.setTitle("Searching");
-	            dialog.setMessage("Please wait...");
-	            dialog.setIndeterminate(false);
+                String title = "Searching";
+                dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
                 activity.getMyApplication().hideKeyboard((Context)activity);
 	        	activity.initializeFragmentUI(searchForm.getText().toString(), dialog);
 	        }
@@ -154,7 +148,7 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 		adapter = activity.getAdapter();
 		Log.i(TAG, "l'adapter dell'activity ha dimensione " + activity.getAdapter().getCount());
 		fillList();
-		MyApplication.alertMessage(activity, "Ricerca di '" + searchForm.getText().toString() + "'", (adapter.getCount()) + " risultati trovati");
+		activity.getMyApplication().alertMessage("Ricerca di '" + searchForm.getText().toString() + "'", (adapter.getCount()) + " risultati trovati");
 	}
 	
 	private void fillList() {
@@ -169,10 +163,8 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 					Entity book = (Entity)parent.getItemAtPosition(position);
 					String bookId = book.get("id");
 					Log.i(TAG, "Clicked on book " + bookId);
-					dialog = new ProgressDialog(getActivity());
-		        	dialog.setTitle("Searching");
-		            dialog.setMessage("Please wait...");
-		            dialog.setIndeterminate(false);
+                    String title = "Searching";
+                    dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
 					SearchFragment.this.bookListener.onBookSelected(bookId, dialog);			
 				}
 					
@@ -187,10 +179,8 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 					String courseId = course.get("id");
 					String courseName = course.get("nome");
 					Log.i(TAG, "Clicked on course " + courseId);
-					dialog = new ProgressDialog(getActivity());
-		        	dialog.setTitle("Searching");
-		            dialog.setMessage("Please wait...");
-		            dialog.setIndeterminate(false);
+                    String title = "Searching";
+                    dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
 		            SearchFragment.this.courseListener.onCourseSelected(courseId, courseName, dialog);
 				}
 			});

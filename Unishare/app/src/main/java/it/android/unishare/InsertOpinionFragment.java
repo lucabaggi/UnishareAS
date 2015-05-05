@@ -3,8 +3,6 @@ package it.android.unishare;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +10,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -25,7 +22,7 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 	private TextView commentTextView;
 	private RatingBar ratingBar;
 	
-	private ProgressDialog dialog;
+	private com.gc.materialdesign.widgets.ProgressDialog dialog;
 	
 	private CoursesActivity activity;
 	
@@ -47,10 +44,9 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 	@Override
 	public void initializeUI(View view) {
 		commentTextView = (TextView) view.findViewById(R.id.opinionText);		
-		ratingBar = (RatingBar) view.findViewById(R.id.ratingInsertedBar);	
-		dialog = new ProgressDialog(activity);
-		dialog.setTitle("Inserting opinion");
-		dialog.setMessage("Please wait...");
+		ratingBar = (RatingBar) view.findViewById(R.id.ratingInsertedBar);
+        String title = "Inserting";
+        dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
 		Button btn = (Button) view.findViewById(R.id.insertOpinionConfirmButton);
 		btn.setOnClickListener(new OnClickListener() {
 			
@@ -61,7 +57,7 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 				float rating = ratingBar.getRating();
 				Log.i(TAG, "Opinione: " + opinion + ", voto: " + rating);
 				if(opinion != null && rating > 0) {
-                    activity.getMyApplication().hideKeyboard((Context) activity);
+                    activity.getMyApplication().hideKeyboard(activity);
                     activity.insertOpinion(opinion, rating, dialog);
                 }
 

@@ -51,10 +51,8 @@ public class MainFragment extends Fragment implements ViewInitiator {
 	        @Override
 	        public void onClick(View view) {
 
-                MyApplication.getInstance(activity).newActivity(FacebookActivity.class);
 	        	//Application.databaseCall(activity, "user.php?id=1", "userName", MainFragment.this);
 
-                /*
 	        	ContentValues values = new ContentValues();
 	        	values.put(MyCoursesTable.COLUMN_COURSE_ID, 1);
 	        	values.put(MyCoursesTable.COLUMN_NAME, "Corso di prova");
@@ -76,8 +74,6 @@ public class MainFragment extends Fragment implements ViewInitiator {
 	    		    sortOrder                                 // The sort order
 	    		);
 	    		cursor.moveToFirst();
-	    		MyApplication.alertMessage(activity,"Prova",cursor.getString(cursor.getColumnIndexOrThrow(MyCoursesTable.COLUMN_NAME)));
-	    		*/
 	        }
         });
         

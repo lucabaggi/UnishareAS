@@ -14,7 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.view.View;
 
 
 public class MainActivity extends SmartActivity {
@@ -93,7 +93,7 @@ public class MainActivity extends SmartActivity {
         }
     	String title = "Exit";
     	String message ="Sei sicuro di voler uscire?";
-    	DialogInterface.OnClickListener actionTrue = new DialogInterface.OnClickListener() {
+        DialogInterface.OnClickListener actionTrue = new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -128,6 +128,10 @@ public class MainActivity extends SmartActivity {
         drawerLayout.closeDrawers();
     }
 
-
+    public MyApplication getMyApplication(){
+        return this.application;
+    }
+    
+    
 
 }
