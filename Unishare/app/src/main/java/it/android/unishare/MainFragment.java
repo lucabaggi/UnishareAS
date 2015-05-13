@@ -10,6 +10,7 @@ import android.app.Fragment;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,16 +18,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.facebook.Profile;
+
 public class MainFragment extends Fragment implements ViewInitiator {
 	
 	public final static String TAG = "it.android.unishare.MainFragment";
 	
 	private Activity activity;
 	private View view;
+    private Profile profile;
 	
 
-    public MainFragment() {
-    	
+    public MainFragment(Profile profile) {
+    	this.profile = profile;
     }
 
     @Override
@@ -46,7 +50,9 @@ public class MainFragment extends Fragment implements ViewInitiator {
     @Override
 	public void initializeUI(View view) {
     	//Build view
-        Button btn = (Button) view.findViewById(R.id.insertOpinionButton);
+        TextView text = (TextView) view.findViewById(R.id.welcomeTextView);
+        text.setText("Bentornato " + profile.getFirstName());
+        Button btn = (Button) view.findViewById(R.id.logout_button);
         btn.setOnClickListener(new OnClickListener() {
 	        @Override
 	        public void onClick(View view) {

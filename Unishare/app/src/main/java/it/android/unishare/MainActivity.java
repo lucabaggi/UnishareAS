@@ -6,8 +6,10 @@ import it.android.unishare.R;
 
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +17,8 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.facebook.Profile;
 
 
 public class MainActivity extends SmartActivity {
@@ -29,6 +33,11 @@ public class MainActivity extends SmartActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        Profile profile = (Profile) intent.getParcelableExtra("profile");
+
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if(toolbar != null){
@@ -38,7 +47,7 @@ public class MainActivity extends SmartActivity {
             drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);
-        getFragmentManager().beginTransaction().add(R.id.container, new MainFragment(), MainFragment.TAG).commit();
+        getFragmentManager().beginTransaction().add(R.id.container, new MainFragment(profile), MainFragment.TAG).commit();
         //Starts background service
         //Intent service = new Intent(this.getApplicationContext(), BackgroundService.class);
         //this.getApplicationContext().startService(service);

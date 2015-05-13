@@ -23,12 +23,12 @@
         android:text="Vai a Libri" />
 
     <Button
-        android:id="@+id/insertOpinionButton"
+        android:id="@+id/logout_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button2"
         android:layout_alignLeft="@+id/button2"
-        android:text="Carica utente" />
+        android:text="@string/logout_button" />
 
     <Button
         android:id="@+id/button3"
@@ -37,5 +37,13 @@
         android:layout_alignLeft="@+id/button2"
         android:layout_below="@+id/button2"
         android:text="Vai a Corsi" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/welcomeTextView"
+        android:layout_below="@+id/textView1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

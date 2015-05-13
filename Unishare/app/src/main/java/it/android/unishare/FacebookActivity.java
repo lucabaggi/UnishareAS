@@ -49,6 +49,7 @@ public class FacebookActivity extends ActionBarActivity {
         if(profile != null) {
             Log.i("FBStatus: ", "Already logged as " + profile.getName());
             application.alertMessage("Bentornato, " + profile.getFirstName(), "Bella zio, sei già connesso B)");
+            //application.newActivityWithParameter(MainActivity.class, "profile", profile);
         } else {
             Log.i("FBStatus: ", "Not yet logged");
         }
@@ -80,10 +81,11 @@ public class FacebookActivity extends ActionBarActivity {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                 if(currentProfile != null) {
-                    Log.i("FBStatus: ", "Now logged as " + currentProfile.getName());
-                    application.alertMessage("Login eseguito correttamente", "Benvenuto, " + currentProfile.getFirstName() + "!");
                     Profile.setCurrentProfile(currentProfile);
                     profile = currentProfile;
+                    application.newActivityWithParameter(MainActivity.class, "profile", profile);
+                    Log.i("FBStatus: ", "Now logged as " + currentProfile.getName());
+                    //application.alertMessage("Login eseguito correttamente", "Benvenuto, " + currentProfile.getFirstName() + "!");
                 } else {
                     Log.i("FBStatus: ", "Now logged out");
                 }

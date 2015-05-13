@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
@@ -152,6 +153,13 @@ public class MyApplication extends android.app.Application {
 		Intent intent = new Intent(currentContext, newActivity);
 		currentContext.startActivity(intent);		
 	}
+
+    //Starts a new activity passing a parameter
+    public void newActivityWithParameter(Class<?> newActivity, String paramName, Parcelable param){
+        Intent intent = new Intent(currentContext, newActivity);
+        intent.putExtra(paramName, param);
+        currentContext.startActivity(intent);
+    }
 	
 	/*
 	//Insert the first fragment of an activity

@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Unishare</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="logout_button">Logout</string>
     <string name="welcome">Benvenuti su Unishare!</string>
     <string name="action_settings">Settings</string>
     <string name="facebook_app_id">544445032329163</string>
