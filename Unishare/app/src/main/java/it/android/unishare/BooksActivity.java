@@ -47,6 +47,7 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
         setContentView(R.layout.books_activity);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        super.setName();
         if(toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Unishare");

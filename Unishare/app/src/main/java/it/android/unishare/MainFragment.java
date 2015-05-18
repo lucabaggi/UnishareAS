@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import it.android.unishare.DatabaseContract.MyCoursesTable;
 import it.android.unishare.R;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.ContentValues;
@@ -20,11 +21,12 @@ import android.widget.TextView;
 
 import com.facebook.Profile;
 
+@SuppressLint("ValidFragment")
 public class MainFragment extends Fragment implements ViewInitiator {
 	
 	public final static String TAG = "it.android.unishare.MainFragment";
 	
-	private Activity activity;
+	private MainActivity activity;
 	private View view;
     private Profile profile;
 	
@@ -32,6 +34,8 @@ public class MainFragment extends Fragment implements ViewInitiator {
     public MainFragment(Profile profile) {
     	this.profile = profile;
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,7 +61,7 @@ public class MainFragment extends Fragment implements ViewInitiator {
 	        @Override
 	        public void onClick(View view) {
 
-                MyApplication.getInstance(activity).newActivity(FacebookActivity.class);
+                activity.logout();
 
 	        	//Application.databaseCall(activity, "user.php?id=1", "userName", MainFragment.this);
 

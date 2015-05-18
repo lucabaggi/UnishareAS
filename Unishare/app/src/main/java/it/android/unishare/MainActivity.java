@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.facebook.Profile;
 
@@ -40,6 +41,7 @@ public class MainActivity extends SmartActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        super.setName();
         if(toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Unishare");
@@ -106,7 +108,7 @@ public class MainActivity extends SmartActivity {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				MainActivity.this.finish();
+				finish();
 				
 			}
 		};
@@ -139,6 +141,13 @@ public class MainActivity extends SmartActivity {
 
     public MyApplication getMyApplication(){
         return this.application;
+    }
+
+    public void logout(){
+        Intent intent = new Intent(this, FacebookActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
     
     

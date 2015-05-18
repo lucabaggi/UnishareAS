@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.facebook.Profile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +25,7 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
     ListView listView;
     String drawerItem[] = new String[]{"Vai ai Libri", "Vai ai Corsi"};
     DrawerAdapter drawerAdapter;
+    Profile profile;
 
 
     public DrawerFragment() {
@@ -73,5 +77,13 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
 
         });
 
+        if(profile != null)
+            setName(profile);
+
+    }
+
+    public void setName(Profile profile){
+        TextView nameTextView = (TextView) view.findViewById(R.id.nameTextView);
+        nameTextView.setText(profile.getFirstName().toString());
     }
 }

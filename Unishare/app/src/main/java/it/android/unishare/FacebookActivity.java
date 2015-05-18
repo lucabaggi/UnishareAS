@@ -1,18 +1,24 @@
 package it.android.unishare;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.facebook.*;
 import com.facebook.login.LoginManager;
@@ -33,6 +39,8 @@ public class FacebookActivity extends ActionBarActivity {
     private ProfileTracker profileTracker;
     private Profile profile;
 
+    private Button returnButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,20 +51,33 @@ public class FacebookActivity extends ActionBarActivity {
         callbackManager = CallbackManager.Factory.create();
 
         setContentView(R.layout.activity_facebook);
+        loginButton = (LoginButton) findViewById(R.id.login_button);
 
         //Profile.fetchProfileForCurrentAccessToken();
         profile = Profile.getCurrentProfile();
         if(profile != null) {
             Log.i("FBStatus: ", "Already logged as " + profile.getName());
             application.alertMessage("Bentornato, " + profile.getFirstName(), "Bella zio, sei già connesso B)");
-            //application.newActivityWithParameter(MainActivity.class, "profile", profile);
+            returnButton = new Button(this);
+            returnButton.setText("Torna ad Unishare");
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.BELOW, R.id.login_button);
+            returnButton.setLayoutParams(params);
+            returnButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SmartActivity.profile = profile;
+                    application.newActivityWithParameter(MainActivity.class, "profile", profile);
+                    finish();
+                }
+            });
+            RelativeLayout layout = (RelativeLayout) findViewById(R.id.facebook_layout);
+            layout.addView(returnButton);
         } else {
             Log.i("FBStatus: ", "Not yet logged");
         }
 
-
-
-        loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends"));
 
         // Callback registration
@@ -83,10 +104,18 @@ public class FacebookActivity extends ActionBarActivity {
                 if(currentProfile != null) {
                     Profile.setCurrentProfile(currentProfile);
                     profile = currentProfile;
-                    application.newActivityWithParameter(MainActivity.class, "profile", profile);
+                    SmartActivity.profile = profile;
+                    Intent intent = new Intent(FacebookActivity.this, MainActivity.class);
+                    intent.putExtra("profile", profile);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    FacebookActivity.this.finish();
                     Log.i("FBStatus: ", "Now logged as " + currentProfile.getName());
-                    //application.alertMessage("Login eseguito correttamente", "Benvenuto, " + currentProfile.getFirstName() + "!");
                 } else {
+                    if(returnButton != null){
+                        RelativeLayout layout = (RelativeLayout) findViewById(R.id.facebook_layout);
+                        layout.removeView(returnButton);
+                    }
                     Log.i("FBStatus: ", "Now logged out");
                 }
             }
@@ -135,6 +164,31 @@ public class FacebookActivity extends ActionBarActivity {
         } catch (NoSuchAlgorithmException e) {
 
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+
+        String title = "Exit";
+        String message ="Sei sicuro di voler uscire?";
+        DialogInterface.OnClickListener actionTrue = new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+
+            }
+        };
+        DialogInterface.OnClickListener actionFalse = new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+
+            }
+        };
+
+        application.alertDecision(title, message, actionTrue, actionFalse);
     }
 
 

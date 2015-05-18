@@ -63,6 +63,7 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 		setContentView(R.layout.activity_courses);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        super.setName();
         if(toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Unishare");

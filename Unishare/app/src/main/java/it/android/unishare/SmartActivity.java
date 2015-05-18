@@ -5,8 +5,13 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
+
+import com.facebook.Profile;
 
 public class SmartActivity extends ActionBarActivity {
+
+    public static Profile profile;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +26,11 @@ public class SmartActivity extends ActionBarActivity {
 
     public void launchNewActivity(int position){
 
+    }
+
+    protected void setName(){
+        TextView nameTextView = (TextView) findViewById(R.id.nameTextView);
+        nameTextView.setText(profile.getFirstName().toString());
     }
 
 }
