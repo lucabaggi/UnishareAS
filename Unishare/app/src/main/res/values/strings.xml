@@ -20,6 +20,7 @@
     <string name="insert_opinion_hint">Inserisci il tuo commento al corso</string>
     <string name="insert_rating_text">Assegna una valutazione al corso (da 1 a 5):</string>
     <string name="drawer_text">Unishare</string>
+    <string name="return_button">Torna ad Unishare</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

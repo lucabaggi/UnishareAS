@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/CadetBlue">
+    android:background="@color/accent_material_light">
 
 
     <TextView
@@ -23,11 +23,12 @@
         android:background="@color/Beige">
 
         <com.pkmmte.view.CircularImageView
+            android:id="@+id/circular_image"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/com_facebook_profile_picture_blank_square"
             app:border="true"
             app:border_color="#EEEEEE"
             app:border_width="4dp"

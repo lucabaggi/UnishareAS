@@ -35,13 +35,10 @@ public class MainActivity extends SmartActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = getIntent();
-        Profile profile = (Profile) intent.getParcelableExtra("profile");
-
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         super.setName();
+        super.setImage();
         if(toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Unishare");
@@ -49,7 +46,7 @@ public class MainActivity extends SmartActivity {
             drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);
-        getFragmentManager().beginTransaction().add(R.id.container, new MainFragment(profile), MainFragment.TAG).commit();
+        getFragmentManager().beginTransaction().add(R.id.container, new MainFragment(), MainFragment.TAG).commit();
         //Starts background service
         //Intent service = new Intent(this.getApplicationContext(), BackgroundService.class);
         //this.getApplicationContext().startService(service);

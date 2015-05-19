@@ -30,7 +30,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 
-public class FacebookActivity extends ActionBarActivity {
+public class FacebookActivity extends SmartActivity {
 
     private MyApplication application;
 
@@ -52,28 +52,24 @@ public class FacebookActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_facebook);
         loginButton = (LoginButton) findViewById(R.id.login_button);
+        returnButton = (Button) findViewById(R.id.return_button);
+        returnButton.setVisibility(View.INVISIBLE);
 
         //Profile.fetchProfileForCurrentAccessToken();
         profile = Profile.getCurrentProfile();
         if(profile != null) {
             Log.i("FBStatus: ", "Already logged as " + profile.getName());
             application.alertMessage("Bentornato, " + profile.getFirstName(), "Bella zio, sei già connesso B)");
-            returnButton = new Button(this);
-            returnButton.setText("Torna ad Unishare");
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.BELOW, R.id.login_button);
-            returnButton.setLayoutParams(params);
+
             returnButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     SmartActivity.profile = profile;
-                    application.newActivityWithParameter(MainActivity.class, "profile", profile);
+                    application.newActivity(MainActivity.class);
                     finish();
                 }
             });
-            RelativeLayout layout = (RelativeLayout) findViewById(R.id.facebook_layout);
-            layout.addView(returnButton);
+            returnButton.setVisibility(View.VISIBLE);
         } else {
             Log.i("FBStatus: ", "Not yet logged");
         }
@@ -106,16 +102,12 @@ public class FacebookActivity extends ActionBarActivity {
                     profile = currentProfile;
                     SmartActivity.profile = profile;
                     Intent intent = new Intent(FacebookActivity.this, MainActivity.class);
-                    intent.putExtra("profile", profile);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     FacebookActivity.this.finish();
                     Log.i("FBStatus: ", "Now logged as " + currentProfile.getName());
                 } else {
-                    if(returnButton != null){
-                        RelativeLayout layout = (RelativeLayout) findViewById(R.id.facebook_layout);
-                        layout.removeView(returnButton);
-                    }
+                    returnButton.setVisibility(View.INVISIBLE);
                     Log.i("FBStatus: ", "Now logged out");
                 }
             }
