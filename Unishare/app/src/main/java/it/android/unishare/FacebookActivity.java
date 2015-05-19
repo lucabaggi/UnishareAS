@@ -40,6 +40,7 @@ public class FacebookActivity extends SmartActivity {
     private Profile profile;
 
     private Button returnButton;
+    private boolean atStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +55,25 @@ public class FacebookActivity extends SmartActivity {
         loginButton = (LoginButton) findViewById(R.id.login_button);
         returnButton = (Button) findViewById(R.id.return_button);
         returnButton.setVisibility(View.INVISIBLE);
+        atStart = false;
+
+        Intent intent = getIntent();
+        int show = intent.getIntExtra("showActivity", 1);
+        if(show == 0){
+            Log.i("FacebookActivity", "Intent ha valore true");
+            atStart = true;
+        }
+
 
         //Profile.fetchProfileForCurrentAccessToken();
         profile = Profile.getCurrentProfile();
         if(profile != null) {
             Log.i("FBStatus: ", "Already logged as " + profile.getName());
+            if(atStart){
+                Log.i("FacebookActivity", "atStart = " + atStart);
+                switchActivity();
+                return;
+            }
             application.alertMessage("Bentornato, " + profile.getFirstName(), "Bella zio, sei già connesso B)");
 
             returnButton.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +81,7 @@ public class FacebookActivity extends SmartActivity {
                 public void onClick(View v) {
                     SmartActivity.profile = profile;
                     application.newActivity(MainActivity.class);
-                    finish();
+                    FacebookActivity.this.finish();
                 }
             });
             returnButton.setVisibility(View.VISIBLE);
@@ -113,6 +128,13 @@ public class FacebookActivity extends SmartActivity {
             }
         };
         //profileTracker.startTracking();
+    }
+
+    private void switchActivity() {
+        SmartActivity.profile = profile;
+        application.newActivity(MainActivity.class);
+        atStart = false;
+        finish();
     }
 
     @Override

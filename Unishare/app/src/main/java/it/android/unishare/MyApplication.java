@@ -142,6 +142,7 @@ public class MyApplication extends android.app.Application {
             @Override
             public void run() {
                 final Intent mainIntent = new Intent(currentContext, newActivity);
+                mainIntent.putExtra("showActivity", 0);
                 currentContext.startActivity(mainIntent);
                 ((Activity) currentContext).finish();
             }
