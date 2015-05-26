@@ -26,6 +26,10 @@ public class SmartActivity extends ActionBarActivity {
 		
 	}
 
+    public void handleError(String tag){
+
+    }
+
     public void launchNewActivity(int position){
 
     }

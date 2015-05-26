@@ -29,6 +29,7 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 
 	private static final String BOOKS_SEARCH_TAG = "bookSearch";
 	private static final String BOOK_DETAILS_TAG = "bookDetail";
+    private static final String ERROR = "error";
 
 	private MyApplication application;
 	private SearchFragment searchFragment;
@@ -143,14 +144,18 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
-	@Override
-	public void handleResult(ArrayList<Entity> result, String tag) {
-        if(result.isEmpty()){
+    @Override
+    public void handleError(String tag){
+        if(tag == ERROR){
             String title = "Nessun risultato";
             String message = "Controlla la tua connessione o modifica la tua ricerca";
             getMyApplication().alertMessage(title, message);
-            return;
         }
+
+    }
+
+	@Override
+	public void handleResult(ArrayList<Entity> result, String tag) {
 		if(tag == BOOKS_SEARCH_TAG) {
 			adapter.addAll(result);
 			searchFragment = (SearchFragment) getFragmentManager().findFragmentByTag(SearchFragment.TAG);

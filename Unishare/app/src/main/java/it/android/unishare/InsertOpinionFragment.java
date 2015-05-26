@@ -58,6 +58,12 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 				Log.i(TAG, "Opinione: " + opinion + ", voto: " + rating);
 				if(opinion != null && rating > 0) {
                     activity.getMyApplication().hideKeyboard(activity);
+					if(!Utilities.checkNetworkState(activity)){
+						String title = "Errore";
+						String message = "Verifica la tua connessione a Internet e riprova";
+						activity.getMyApplication().alertMessage(title, message);
+						return;
+					}
                     activity.insertOpinion(opinion, rating, dialog);
                 }
 

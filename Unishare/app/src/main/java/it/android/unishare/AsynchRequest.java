@@ -17,7 +17,7 @@ public class AsynchRequest extends AsyncTask<Void,ArrayList<Entity>,ArrayList<En
 	public AsynchRequest setParameters(Activity activity, String url, String tag, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		this.url = url;
 		this.activity = (SmartActivity) activity;
-		this.tag = tag;;
+		this.tag = tag;
 		this.dialog = dialog;
 		return this;
 	}
@@ -31,8 +31,9 @@ public class AsynchRequest extends AsyncTask<Void,ArrayList<Entity>,ArrayList<En
 	}
 	
 	protected void onPreExecute() {
-        super.onPreExecute(); 
-        dialog.show();
+        super.onPreExecute();
+		if(dialog != null)
+        	dialog.show();
 	}
    
    /** The system calls this to perform work in the UI thread and delivers
@@ -42,12 +43,14 @@ public class AsynchRequest extends AsyncTask<Void,ArrayList<Entity>,ArrayList<En
 		MyApplication.log("Finished in " + finishedIn + "ms : " + tag);
 		if(result == null) {
 			//MyApplication.getInstance(activity).toastMessage(activity.getApplicationContext(), "Errore");
-			result = new ArrayList<>();
-			dialog.dismiss();
-			activity.handleResult(result, tag);
+			String tag = "error";
+            if(dialog != null)
+			    dialog.dismiss();
+			activity.handleError(tag);
 			return;
 		}
-		dialog.dismiss();
+        if(dialog != null)
+		    dialog.dismiss();
 		activity.handleResult(result, tag);
 	}
 

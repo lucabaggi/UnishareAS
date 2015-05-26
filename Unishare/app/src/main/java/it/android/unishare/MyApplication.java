@@ -185,6 +185,7 @@ public class MyApplication extends android.app.Application {
 		new AsynchRequest().setParameters(currentActivity,url,tag,dialog).execute();
 	}
 
+
 	public void alertMessage(String title, String message) {
 		android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(currentContext);
 		builder.setMessage(message);

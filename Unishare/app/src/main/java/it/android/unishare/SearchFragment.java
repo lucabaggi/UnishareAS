@@ -103,6 +103,12 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 
     				@Override
     				public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
+                        if(!Utilities.checkNetworkState(activity)){
+                            String title = "Errore";
+                            String message = "Verifica la tua connessione a Internet e riprova";
+                            activity.getMyApplication().alertMessage(title, message);
+                            return;
+                        }
     					Entity book = (Entity)parent.getItemAtPosition(position);
     					String bookId = book.get("id");
     					Log.i(TAG, "Clicked on book " + bookId);
@@ -118,6 +124,12 @@ public class SearchFragment extends Fragment implements ViewInitiator {
     				
     				@Override
     				public void onItemClick(AdapterView<?> parent, View view, int position,	long id){
+                        if(!Utilities.checkNetworkState(activity)){
+                            String title = "Errore";
+                            String message = "Verifica la tua connessione a Internet e riprova";
+                            activity.getMyApplication().alertMessage(title, message);
+                            return;
+                        }
     					Entity course = (Entity)parent.getItemAtPosition(position);
     					String courseId = course.get("id");
     					String courseName = course.get("nome");
@@ -132,14 +144,20 @@ public class SearchFragment extends Fragment implements ViewInitiator {
     	searchForm = (EditText) view.findViewById(R.id.opinionText);
     	ButtonRectangle btn = (ButtonRectangle) view.findViewById(R.id.searchButton);
         btn.setOnClickListener(new OnClickListener() {
-	        @Override
-	        public void onClick(View view) {
-	        	clearList(adapter);
+            @Override
+            public void onClick(View view) {
+                if (!Utilities.checkNetworkState(activity)) {
+                    String title = "Errore";
+                    String message = "Verifica la tua connessione a Internet e riprova";
+                    activity.getMyApplication().alertMessage(title, message);
+                    return;
+                }
+                clearList(adapter);
                 String title = "Searching";
                 dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
-                activity.getMyApplication().hideKeyboard((Context)activity);
-	        	activity.initializeFragmentUI(searchForm.getText().toString(), dialog);
-	        }
+                activity.getMyApplication().hideKeyboard((Context) activity);
+                activity.initializeFragmentUI(searchForm.getText().toString(), dialog);
+            }
         });
     	
 	}
@@ -160,6 +178,12 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
+					if(!Utilities.checkNetworkState(activity)){
+						String title = "Errore";
+						String message = "Verifica la tua connessione a Internet e riprova";
+						activity.getMyApplication().alertMessage(title, message);
+                        return;
+					}
 					Entity book = (Entity)parent.getItemAtPosition(position);
 					String bookId = book.get("id");
 					Log.i(TAG, "Clicked on book " + bookId);
@@ -175,6 +199,12 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 				
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position,	long id){
+                    if(!Utilities.checkNetworkState(activity)){
+                        String title = "Errore";
+                        String message = "Verifica la tua connessione a Internet e riprova";
+                        activity.getMyApplication().alertMessage(title, message);
+                        return;
+                    }
 					Entity course = (Entity)parent.getItemAtPosition(position);
 					String courseId = course.get("id");
 					String courseName = course.get("nome");

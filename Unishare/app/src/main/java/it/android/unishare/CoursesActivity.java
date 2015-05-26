@@ -7,7 +7,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -39,6 +38,7 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 	private static final String OPINION_TAG = "opinionSearch";
 	private static final String INSERT_OPINION_TAG = "insertOpinion";
 	private static final String REFRESH_OPINIONS_ADAPTER = "refreshOpinionsAdapter";
+	private static final String ERROR = "error";
 	
 	private MyApplication application;
 	private SearchFragment searchFragment;
@@ -195,13 +195,16 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
     }
 
 	@Override
-	public void handleResult(ArrayList<Entity> result, String tag) {
-		if(result.isEmpty()){
-            String title = "Nessun risultato";
-            String message = "Controlla la tua connessione o modifica la tua ricerca";
-            getMyApplication().alertMessage(title, message);
-			return;
+	public void handleError(String tag){
+		if(tag == ERROR){
+			String title = "Nessun risultato";
+			String message = "Controlla la tua connessione o modifica la tua ricerca";
+			getMyApplication().alertMessage(title, message);
 		}
+	}
+
+	@Override
+	public void handleResult(ArrayList<Entity> result, String tag) {
 		if(tag == COURSE_SEARCH_TAG) {
 			coursesAdapter.addAll(result);
 			searchFragment = (SearchFragment) getFragmentManager().findFragmentByTag(SearchFragment.TAG);			
@@ -214,15 +217,22 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 		}
 		if(tag == INSERT_OPINION_TAG){
 			if(!result.isEmpty()){
+				if(result.get(0).getFirst().equals("ERROR")){
+					Log.i(CoursesActivity.TAG,"Error, opinione già inserita dall'utente");
+					getFragmentManager().beginTransaction().remove(insertOpinionFragment).commit();
+					getFragmentManager().popBackStack();
+					String title = "Errore";
+					String message = "Opinione non inserita. Verifica di non aver già recensito questo corso";
+					application.alertMessage(title, message);
+					return;
+				}
 				Log.i(TAG,"Opinione inserita correttamente");
 				getFragmentManager().beginTransaction().remove(insertOpinionFragment).commit();
 				getFragmentManager().popBackStack();
 				String title = "";
 				String message = "Opinione inserita. Grazie per il tuo contributo!";
 				application.alertMessage(title, message);
-                String dialogTitle = "Searching";
-				com.gc.materialdesign.widgets.ProgressDialog dialog = new com.gc.materialdesign.widgets.ProgressDialog(this, dialogTitle);
-				refreshOpinions(courseId, dialog);
+				refreshOpinions(courseId);
 			}
 		}
 		if(tag == REFRESH_OPINIONS_ADAPTER){
@@ -303,8 +313,8 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 		application.databaseCall("opinions.php?id=" + courseId, OPINION_TAG, dialog);
 	}
 	
-	private void refreshOpinions(int courseId, com.gc.materialdesign.widgets.ProgressDialog dialog){
-		application.databaseCall("opinions.php?id=" + courseId, REFRESH_OPINIONS_ADAPTER, dialog);
+	private void refreshOpinions(int courseId){
+		application.databaseCall("opinions.php?id=" + courseId, REFRESH_OPINIONS_ADAPTER, null);
 	}
 
 	private void insertOpinion(int courseId, float rating, String text, int cdsId, com.gc.materialdesign.widgets.ProgressDialog dialog){

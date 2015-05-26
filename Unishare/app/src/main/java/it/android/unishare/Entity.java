@@ -27,7 +27,7 @@ public class Entity implements Parcelable{
 		return elements.get(name);
 	}
 	
-	public String getFist() {
+	public String getFirst() {
 		return elements.get(elements.keySet().toArray()[0]);
 	}
 	
@@ -64,7 +64,7 @@ public class Entity implements Parcelable{
 	static ArrayList<String> entityListToStringList(ArrayList<Entity> list) {
 		ArrayList<String> result = new ArrayList<String>();
 		for(Entity element : list) {
-			result.add(element.getFist());
+			result.add(element.getFirst());
 		}
 		return result;
 	}
