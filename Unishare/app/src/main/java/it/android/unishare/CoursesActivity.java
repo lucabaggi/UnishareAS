@@ -196,6 +196,12 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 
 	@Override
 	public void handleResult(ArrayList<Entity> result, String tag) {
+		if(result.isEmpty()){
+            String title = "Nessun risultato";
+            String message = "Controlla la tua connessione o modifica la tua ricerca";
+            getMyApplication().alertMessage(title, message);
+			return;
+		}
 		if(tag == COURSE_SEARCH_TAG) {
 			coursesAdapter.addAll(result);
 			searchFragment = (SearchFragment) getFragmentManager().findFragmentByTag(SearchFragment.TAG);			
