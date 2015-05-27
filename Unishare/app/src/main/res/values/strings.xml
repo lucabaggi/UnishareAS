@@ -21,6 +21,11 @@
     <string name="insert_rating_text">Assegna una valutazione al corso (da 1 a 5):</string>
     <string name="drawer_text">Unishare</string>
     <string name="return_button">Torna ad Unishare</string>
+    <string name="sell_book_header">Compila i seguenti campi per mettere in vendita il tuo libro</string>
+    <string name="book_title">Titolo:</string>
+    <string name="book_author">Autore/i:</string>
+    <string name="book_price">Prezzo:</string>
+    <string name="sell_book_button">Metti in vendita</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

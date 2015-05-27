@@ -46,12 +46,29 @@
                 android:background="#1E88E5"
                 android:text="@string/search_button" />
         </LinearLayout>
-
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
             <ListView
                 android:id="@+id/ListView1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
             </ListView>
+
+            <com.gc.materialdesign.views.ButtonFloat
+                android:id="@+id/sellBookButtonFloat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="24dp"
+                android:layout_marginBottom="20dp"
+                android:background="#1E88E5"
+                materialdesign:animate="true"
+                materialdesign:iconDrawable="@drawable/ic_action_new" />
+        </RelativeLayout>
 
     </LinearLayout>
 

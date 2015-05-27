@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -19,7 +20,7 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 	
 	private View view;
 	
-	private TextView commentTextView;
+	private EditText commentText;
 	private RatingBar ratingBar;
 	
 	private com.gc.materialdesign.widgets.ProgressDialog dialog;
@@ -43,7 +44,7 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 
 	@Override
 	public void initializeUI(View view) {
-		commentTextView = (TextView) view.findViewById(R.id.opinionText);		
+		commentText = (EditText) view.findViewById(R.id.opinionText);
 		ratingBar = (RatingBar) view.findViewById(R.id.ratingInsertedBar);
         String title = "Inserting";
         dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
@@ -53,7 +54,7 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 			@Override
 			public void onClick(View v) {
 				Log.i(TAG, "Clicked button");
-				String opinion = commentTextView.getText().toString();
+				String opinion = commentText.getText().toString();
 				float rating = ratingBar.getRating();
 				Log.i(TAG, "Opinione: " + opinion + ", voto: " + rating);
 				if(opinion != null && rating > 0) {

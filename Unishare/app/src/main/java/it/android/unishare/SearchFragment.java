@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.gc.materialdesign.views.ButtonFlat;
+import com.gc.materialdesign.views.ButtonFloat;
 import com.gc.materialdesign.views.ButtonRectangle;
 
 public class SearchFragment extends Fragment implements ViewInitiator {
@@ -159,6 +160,16 @@ public class SearchFragment extends Fragment implements ViewInitiator {
                 activity.initializeFragmentUI(searchForm.getText().toString(), dialog);
             }
         });
+
+		if(this.activity instanceof BooksActivity){
+			ButtonFloat sellBookButton = (ButtonFloat) view.findViewById(R.id.sellBookButtonFloat);
+			sellBookButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//launch sell fragment
+				}
+			});
+		}
     	
 	}
 
