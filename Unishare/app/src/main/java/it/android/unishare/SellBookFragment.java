@@ -12,7 +12,7 @@ import android.widget.EditText;
 
 public class SellBookFragment extends Fragment implements ViewInitiator {
 
-    private static final String TAG = "SellBookFragment";
+    public static final String TAG = "SellBookFragment";
 
     private View view;
     private EditText bookTitle;
@@ -27,7 +27,7 @@ public class SellBookFragment extends Fragment implements ViewInitiator {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(view == null)
-            view = inflater.inflate(R.layout.insert_opinion_fragment, container, false);
+            view = inflater.inflate(R.layout.sell_book_fragment, container, false);
         initializeUI(view);
         return view;
     }

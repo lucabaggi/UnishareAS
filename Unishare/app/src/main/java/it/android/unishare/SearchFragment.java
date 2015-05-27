@@ -166,7 +166,7 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 			sellBookButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					//launch sell fragment
+					((BooksActivity)activity).launchSellFragment();
 				}
 			});
 		}

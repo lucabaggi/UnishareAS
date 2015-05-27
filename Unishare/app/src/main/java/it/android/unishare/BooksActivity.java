@@ -186,6 +186,14 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 		*/
 	}
 
+    public void launchSellFragment() {
+        SellBookFragment sellBookFragment = new SellBookFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.books_fragment_container, sellBookFragment, SellBookFragment.TAG);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
     @Override
     public void onBackPressed(){
         if(drawerLayout.isDrawerOpen(Gravity.START|Gravity.LEFT)){
@@ -235,5 +243,6 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 	private void getBookList(int campusId, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		application.databaseCall("books.php?s=" + campusId, "bookList", dialog);
 	}
+
 
 }
