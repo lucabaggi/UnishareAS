@@ -87,6 +87,15 @@ public class MainFragment extends Fragment implements ViewInitiator {
 				MyApplication.getInstance(activity).newActivity(CoursesActivity.class);			
 			}
 		});
+
+		Button btn4 = (Button) view.findViewById(R.id.button4);
+		btn4.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				MyApplication.getInstance(activity).newActivity(WelcomeActivity.class);
+			}
+		});
         
 	}
 
