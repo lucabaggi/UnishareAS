@@ -229,7 +229,7 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 
 	private void searchBooks(int campusId, String text, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		try {
-			application.databaseCall("books_search.php?q=" + URLEncoder.encode(text, "UTF-8") + "&s=" + campusId, BOOKS_SEARCH_TAG, dialog);
+			application.databaseCall("books_search.php?q=" + URLEncoder.encode(text.trim(), "UTF-8") + "&s=" + campusId, BOOKS_SEARCH_TAG, dialog);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

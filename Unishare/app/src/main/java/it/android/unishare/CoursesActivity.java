@@ -303,7 +303,7 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 	
 	private void searchCourses(int campusId, String text, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		try {
-			application.databaseCall("courses_search.php?q=" + URLEncoder.encode(text, "UTF-8") + "&s=" + campusId, COURSE_SEARCH_TAG, dialog);
+			application.databaseCall("courses_search.php?q=" + URLEncoder.encode(text.trim(), "UTF-8") + "&s=" + campusId, COURSE_SEARCH_TAG, dialog);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}	
