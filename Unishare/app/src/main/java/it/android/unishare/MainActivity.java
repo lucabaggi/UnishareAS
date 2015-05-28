@@ -5,14 +5,17 @@ import java.util.ArrayList;
 import it.android.unishare.R;
 
 import android.app.Fragment;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +31,9 @@ public class MainActivity extends SmartActivity {
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
+    private String facebookId;
+
+    private static final String USER_INFO = "unishareUserInfo";
 
 
     @Override
@@ -39,6 +45,8 @@ public class MainActivity extends SmartActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         super.setName();
         super.setImage();
+        facebookId = super.getFacebookId();
+
         if(toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Unishare");
@@ -46,6 +54,8 @@ public class MainActivity extends SmartActivity {
             drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);
+        addUserToDb(facebookId);
+
         getFragmentManager().beginTransaction().add(R.id.container, new MainFragment(), MainFragment.TAG).commit();
         //Starts background service
         //Intent service = new Intent(this.getApplicationContext(), BackgroundService.class);
@@ -123,10 +133,33 @@ public class MainActivity extends SmartActivity {
     
     @Override
     public void handleResult(ArrayList<Entity> result, String tag){
-    	if(tag == "userName"){
-    		//MainFragment mainFragment = (MainFragment) fragment;
-    		//mainFragment.displayResults(result,tag);
-    	}
+        Log.i("SmartActivity","handling results");
+        if(tag == USER_INFO){
+            Entity userEntity = result.get(0);
+            UserInfo user = new UserInfo(userEntity);
+            ContentValues values = new ContentValues();
+            values.put(DatabaseContract.UserInfoTable.COLUMN_USER_ID, user.getUserId());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_NICKNAME, user.getNickname());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY_ID, user.getUniversityId());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY, user.getUniversity());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_CAMPUS_ID, user.getCampusId());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_CAMPUS, user.getCampus());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION_ID, user.getSpecializationId());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION, user.getSpecialization());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_LAST_ACCESS, user.getLastAccess());
+
+            Log.i("SmartActivity", "values ha grandezza" + values.size());
+            application.insertIntoDatabase(DatabaseContract.UserInfoTable.TABLE_NAME, values);
+            String[] projection = {DatabaseContract.UserInfoTable.COLUMN_NICKNAME, DatabaseContract.UserInfoTable.COLUMN_USER_ID};
+            Cursor cursor = MyApplication.getInstance(this).queryDatabase(DatabaseContract.UserInfoTable.TABLE_NAME,
+                    projection, null, null, null, null, null);
+            cursor.moveToFirst();
+            String name = cursor.getString(0);
+            int userId = cursor.getInt(1);
+            Log.i("MainActivity", "=======================================================");
+            Log.i("MainActivity", name + ", " + userId);
+            Log.i("MainActivity", "=======================================================");
+        }
     		
     }
 
@@ -140,13 +173,24 @@ public class MainActivity extends SmartActivity {
         return this.application;
     }
 
+
     public void logout(){
         Intent intent = new Intent(this, FacebookActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
-    
+
+
+    private void addUserToDb(String id){
+        Log.i("MainActivity", "adding user with fb id = " + id);
+        application.regenerateDb();
+        getUser(id);
+    }
+
+    private void getUser(String id){
+        application.databaseCall("log_user.php?id=" + id, "unishareUserInfo", null);
+    }
     
 
 }

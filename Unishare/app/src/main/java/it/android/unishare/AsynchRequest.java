@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class AsynchRequest extends AsyncTask<Void,ArrayList<Entity>,ArrayList<Entity>> {
 	
@@ -51,6 +52,7 @@ public class AsynchRequest extends AsyncTask<Void,ArrayList<Entity>,ArrayList<En
 		}
         if(dialog != null)
 		    dialog.dismiss();
+		Log.i(activity.toString(), "calling handle result");
 		activity.handleResult(result, tag);
 	}
 

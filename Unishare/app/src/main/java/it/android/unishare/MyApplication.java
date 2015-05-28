@@ -63,7 +63,7 @@ public class MyApplication extends android.app.Application {
 	
 	public void initializeDatabase() {
 		if(localDatabase == null) {
-			userID = 1;
+			//userID = 1;
 			DatabaseHelper dbHelper = new DatabaseHelper(currentActivity);
 			localDatabase = dbHelper.getWritableDatabase();
 		}
@@ -76,8 +76,13 @@ public class MyApplication extends android.app.Application {
 	
 	//Inserts new row
 	public long insertIntoDatabase (String table, ContentValues values) {
-		return localDatabase.insert(table,null,values);
+		return localDatabase.insert(table, null, values);
 	}
+
+    public void regenerateDb() {
+        if(localDatabase != null)
+            DatabaseHelper.regenerateDatabase(localDatabase);
+    }
 	
 	public static MyApplication getInstance(Activity activity) {
 	   if(instance == null) {
@@ -324,5 +329,5 @@ public class MyApplication extends android.app.Application {
 	public Context getContext() {
     	return currentContext;
     }
-	
+
 }

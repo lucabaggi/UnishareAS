@@ -2,9 +2,10 @@ package it.android.unishare;
 
 import java.util.ArrayList;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
+import it.android.unishare.DatabaseContract.UserInfoTable;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -14,6 +15,8 @@ import com.pkmmte.view.CircularImageView;
 public class SmartActivity extends ActionBarActivity {
 
     public static Profile profile;
+    private MyApplication myApplication;
+
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +26,7 @@ public class SmartActivity extends ActionBarActivity {
 	}
 	
 	void handleResult(ArrayList<Entity> result, String tag) {
-		
+
 	}
 
     public void handleError(String tag){
@@ -45,5 +48,13 @@ public class SmartActivity extends ActionBarActivity {
         Log.i("SmartActivity", imageUlr);
         new DownloadImageTask(image).execute(imageUlr);
     }
+
+    protected String getFacebookId(){
+        return profile.getId();
+    }
+
+
+
+
 
 }
