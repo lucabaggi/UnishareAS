@@ -289,7 +289,8 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 	public void insertOpinion(String opinion, float rating, com.gc.materialdesign.widgets.ProgressDialog dialog){
 		Log.i(TAG, "Calling db for inserting opinion");
 		Log.i(TAG, "Commento: " + opinion + "\nvoto: " + rating +" per il corso " + courseId);
-		insertOpinion(courseId, rating, opinion, 2418, dialog);
+		int userId = application.getUserId();
+		insertOpinion(courseId, rating, opinion, userId, dialog);
 	}
 
     @Override

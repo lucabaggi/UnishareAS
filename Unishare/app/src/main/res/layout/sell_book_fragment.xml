@@ -80,7 +80,7 @@
     </LinearLayout>
 
     <com.gc.materialdesign.views.ButtonRectangle
-        android:id="@+id/button"
+        android:id="@+id/button_sell_book"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#1E88E5"

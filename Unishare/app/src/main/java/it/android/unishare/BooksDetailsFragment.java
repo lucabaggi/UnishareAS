@@ -17,6 +17,8 @@ public class BooksDetailsFragment extends Fragment implements ViewInitiator {
 	
 	private Entity book;
 	private View view;
+
+    private BooksActivity activity;
 	
 	public BooksDetailsFragment(){
 		
@@ -37,7 +39,8 @@ public class BooksDetailsFragment extends Fragment implements ViewInitiator {
 	
 	@Override
 	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+        super.onAttach(activity);
+        this.activity = (BooksActivity) activity;
     }
 	
 	@Override
@@ -57,7 +60,15 @@ public class BooksDetailsFragment extends Fragment implements ViewInitiator {
 		
 		text1.setText("Titolo: " + book.get("titolo"));
 		text2.setText("Autore: " + book.get("autore"));
-		text3.setText("Prezzo: " + book.get("prezzo") + " euro");	
+		text3.setText("Prezzo: " + book.get("prezzo") + " euro");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+                int bookId = Integer.parseInt(book.get("id"));
+				activity.requestBook(bookId);
+			}
+		});
 	}
 	
 	

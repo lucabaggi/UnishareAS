@@ -83,6 +83,14 @@ public class MyApplication extends android.app.Application {
         if(localDatabase != null)
             DatabaseHelper.regenerateDatabase(localDatabase);
     }
+
+	public int getUserId(){
+		String[] projection = {DatabaseContract.UserInfoTable.COLUMN_USER_ID};
+		Cursor cursor = queryDatabase(DatabaseContract.UserInfoTable.TABLE_NAME, projection,null,
+				null,null,null,null);
+		cursor.moveToFirst();
+		return cursor.getInt(0);
+	}
 	
 	public static MyApplication getInstance(Activity activity) {
 	   if(instance == null) {

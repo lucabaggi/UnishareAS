@@ -54,10 +54,10 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 			@Override
 			public void onClick(View v) {
 				Log.i(TAG, "Clicked button");
-				String opinion = commentText.getText().toString();
+				String opinion = commentText.getText().toString().trim();
 				float rating = ratingBar.getRating();
 				Log.i(TAG, "Opinione: " + opinion + ", voto: " + rating);
-				if(opinion != null && rating > 0) {
+				if(opinion != null && !opinion.equals("") && rating > 0) {
                     activity.getMyApplication().hideKeyboard(activity);
 					if(!Utilities.checkNetworkState(activity)){
 						String title = "Errore";
