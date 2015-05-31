@@ -26,6 +26,13 @@
     <string name="book_author">Autore/i:</string>
     <string name="book_price">Prezzo:</string>
     <string name="sell_book_button">Metti in vendita</string>
+    <string name="add_course">Il corso che cerchi non è presente? Aggiungilo</string>
+    <string name="add">Aggiungi</string>
+    <string name="add_course_header">Compila i seguenti campi per aggiungere un nuovo corso</string>
+    <string name="course_name">Nome del corso:</string>
+    <string name="professor">Professore:</string>
+    <string name="language">Lingua:</string>
+    <string name="cfu">CFU:</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

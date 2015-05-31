@@ -17,6 +17,8 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.gc.materialdesign.widgets.ProgressDialog;
+
 public class CoursesActivity extends AdapterActivity implements OnCourseSelectedListener{
 	
 	public static final String TAG = "CoursesActivity";
@@ -37,6 +39,7 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 	private static final String COURSE_SEARCH_TAG = "courseSearch";
 	private static final String OPINION_TAG = "opinionSearch";
 	private static final String INSERT_OPINION_TAG = "insertOpinion";
+    private static final String INSERT_COURSE_TAG = "insertCourse";
 	private static final String REFRESH_OPINIONS_ADAPTER = "refreshOpinionsAdapter";
 	private static final String ERROR = "error";
 	
@@ -44,6 +47,7 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 	private SearchFragment searchFragment;
 	private OpinionsFragment opinionsFragment;
 	private InsertOpinionFragment insertOpinionFragment;
+	private AddCourseFragment addCourseFragment;
 	private CoursesAdapter coursesAdapter;
 	private OpinionsAdapter opinionsAdapter;
 	
@@ -241,6 +245,24 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 			opinionsAdapter.addAll(result);
 			opinionsAdapter.notifyDataSetChanged();
 		}
+        if(tag == INSERT_COURSE_TAG) {
+            if (!result.isEmpty()) {
+                if (result.get(0).getFirst().equals("ERROR")) {
+                    Log.i(CoursesActivity.TAG, "Errore inserimento corso");
+                    getFragmentManager().beginTransaction().remove(addCourseFragment).commit();
+                    getFragmentManager().popBackStack();
+                    String title = "Errore";
+                    String message = "Corso non inserito";
+                    application.alertMessage(title, message);
+                    return;
+                }
+                getFragmentManager().beginTransaction().remove(addCourseFragment).commit();
+                getFragmentManager().popBackStack();
+                String title = "";
+                String message = "Corso inserito correttamente. Grazie per il tuo contributo!";
+                application.alertMessage(title, message);
+            }
+        }
 	}
 
     @Override
@@ -248,6 +270,14 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
         application.launchNewActivityFromDrawer(this, position);
         drawerLayout.closeDrawers();
     }
+
+	public void launchAddCourseFragment() {
+		addCourseFragment = new AddCourseFragment();
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		transaction.replace(R.id.courses_fragment_container, addCourseFragment, AddCourseFragment.TAG);
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
 	
 	private void createOpinionFragment(){
 		opinionsFragment = new OpinionsFragment(courseName);
@@ -256,6 +286,8 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 		transaction.addToBackStack(null);
 		transaction.commit();	
 	}
+
+
 	
 	@Override
 	public CoursesAdapter getAdapter(){
@@ -288,10 +320,17 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 	
 	public void insertOpinion(String opinion, float rating, com.gc.materialdesign.widgets.ProgressDialog dialog){
 		Log.i(TAG, "Calling db for inserting opinion");
-		Log.i(TAG, "Commento: " + opinion + "\nvoto: " + rating +" per il corso " + courseId);
+		Log.i(TAG, "Commento: " + opinion + "\nvoto: " + rating + " per il corso " + courseId);
 		int userId = application.getUserId();
 		insertOpinion(courseId, rating, opinion, userId, dialog);
 	}
+
+    public void insertNewCourse(String courseName, String prof, String language, float cfu, int index, com.gc.materialdesign.widgets.ProgressDialog dialog) {
+        int userId = application.getUserId();
+        insertCourse(userId, courseName, prof, language, cfu, index, dialog);
+    }
+
+
 
     @Override
     public MyApplication getMyApplication(){
@@ -326,4 +365,12 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 		}
 	}
 
+    private void insertCourse(int userId, String courseName, String prof, String language, float cfu, int index, ProgressDialog dialog) {
+        try {
+            application.databaseCall("courses_insert.php?u=" + userId + "&n=" + URLEncoder.encode(courseName, "UTF-8") +
+                    "&p=" + URLEncoder.encode(prof, "UTF-8") + "&t=" + index + "&c=" + cfu + "&l=" + URLEncoder.encode(language, "UTF-8"), INSERT_COURSE_TAG, dialog);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
 }

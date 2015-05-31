@@ -93,6 +93,17 @@ public class SearchFragment extends Fragment implements ViewInitiator {
     
     @Override
 	public void initializeUI(View view) {
+
+        if(this.activity instanceof CoursesActivity){
+            Button btn = (Button) view.findViewById(R.id.button_add_course);
+            btn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((CoursesActivity)activity).launchAddCourseFragment();
+                }
+            });
+        }
+
     	adapter = activity.getAdapter();
     	Log.i(TAG, "l'adapter dell'activity ha dimensione " + activity.getAdapter().getCount());
     	listview = (ListView) view.findViewById(R.id.ListView1);
@@ -147,18 +158,20 @@ public class SearchFragment extends Fragment implements ViewInitiator {
         btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!Utilities.checkNetworkState(activity)) {
-                    String title = "Errore";
-                    String message = "Verifica la tua connessione a Internet e riprova";
-                    activity.getMyApplication().alertMessage(title, message);
-                    return;
-                }
-                clearList(adapter);
-                String title = "Searching";
-                dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
-                activity.getMyApplication().hideKeyboard((Context) activity);
-                activity.initializeFragmentUI(searchForm.getText().toString(), dialog);
-            }
+				if(!searchForm.getText().toString().trim().equals("")){
+					if (!Utilities.checkNetworkState(activity)) {
+						String title = "Errore";
+						String message = "Verifica la tua connessione a Internet e riprova";
+						activity.getMyApplication().alertMessage(title, message);
+						return;
+					}
+					clearList(adapter);
+					String title = "Searching";
+					dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
+					activity.getMyApplication().hideKeyboard((Context) activity);
+					activity.initializeFragmentUI(searchForm.getText().toString(), dialog);
+					}
+				}
         });
 
 		if(this.activity instanceof BooksActivity){
