@@ -4,11 +4,13 @@ package it.android.unishare;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 
@@ -68,7 +70,7 @@ public class AddCourseFragment extends Fragment implements ViewInitiator {
                 dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
 
                 if(!courseName.equals("") && !prof.equals("") && !language.equals("") && !cfuString.equals("")
-                        ){
+                        && radioGroup.getCheckedRadioButtonId() != -1){
                     activity.getMyApplication().hideKeyboard(activity);
                     if(!Utilities.checkNetworkState(activity)){
                         String dialogTitle = "Errore";
@@ -78,7 +80,11 @@ public class AddCourseFragment extends Fragment implements ViewInitiator {
                     }
                     float cfu = Float.valueOf(cfuString);
                     int index = radioGroup.getCheckedRadioButtonId();
-                    activity.insertNewCourse(courseName, prof, language, cfu, index, dialog);
+                    Log.i(AddCourseFragment.TAG, "indice selezionato: " + index);
+                    RadioButton btn = (RadioButton) AddCourseFragment.this.view.findViewById(index);
+                    Log.i(AddCourseFragment.TAG, "selezione: " + btn.getText());
+                    String radioValue = btn.getText().toString();
+                    activity.insertNewCourse(courseName, prof, language, cfu, radioValue, dialog);
                 }
 
             }

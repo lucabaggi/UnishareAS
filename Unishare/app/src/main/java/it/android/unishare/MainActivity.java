@@ -133,7 +133,7 @@ public class MainActivity extends SmartActivity {
     
     @Override
     public void handleResult(ArrayList<Entity> result, String tag){
-        Log.i("SmartActivity","handling results");
+        Log.i("MainActivity","handling results");
         if(tag == USER_INFO){
             Entity userEntity = result.get(0);
             UserInfo user = new UserInfo(userEntity);
@@ -148,7 +148,7 @@ public class MainActivity extends SmartActivity {
             values.put(DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION, user.getSpecialization());
             values.put(DatabaseContract.UserInfoTable.COLUMN_LAST_ACCESS, user.getLastAccess());
 
-            Log.i("SmartActivity", "values ha grandezza" + values.size());
+            Log.i("MainActivity", "values ha grandezza" + values.size());
             application.insertIntoDatabase(DatabaseContract.UserInfoTable.TABLE_NAME, values);
             String[] projection = {DatabaseContract.UserInfoTable.COLUMN_NICKNAME, DatabaseContract.UserInfoTable.COLUMN_USER_ID};
             Cursor cursor = MyApplication.getInstance(this).queryDatabase(DatabaseContract.UserInfoTable.TABLE_NAME,

@@ -5,6 +5,8 @@ import it.android.unishare.SearchFragment.OnCourseSelectedListener;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;
@@ -325,8 +327,10 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 		insertOpinion(courseId, rating, opinion, userId, dialog);
 	}
 
-    public void insertNewCourse(String courseName, String prof, String language, float cfu, int index, com.gc.materialdesign.widgets.ProgressDialog dialog) {
+    public void insertNewCourse(String courseName, String prof, String language, float cfu, String radioValue, ProgressDialog dialog) {
         int userId = application.getUserId();
+        int index = Faculty.getInstance().getMap().get(radioValue);
+        Log.i(CoursesActivity.TAG, radioValue + " , indice: " + index);
         insertCourse(userId, courseName, prof, language, cfu, index, dialog);
     }
 
@@ -371,6 +375,31 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
                     "&p=" + URLEncoder.encode(prof, "UTF-8") + "&t=" + index + "&c=" + cfu + "&l=" + URLEncoder.encode(language, "UTF-8"), INSERT_COURSE_TAG, dialog);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+        }
+    }
+
+
+
+    static class Faculty{
+
+        private static Faculty instance = null;
+        private static Map<String, Integer> map;
+
+        protected Faculty(){
+            map = new HashMap<>();
+            map.put("Magistrale", 0);
+            map.put("Triennale", 1);
+            map.put("Entrambi", 2);
+        }
+
+        public static Faculty getInstance(){
+            if(instance == null)
+                instance = new Faculty();
+            return instance;
+        }
+
+        public static Map<String,Integer> getMap(){
+            return map;
         }
     }
 }

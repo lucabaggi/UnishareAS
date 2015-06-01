@@ -4,9 +4,11 @@ import it.android.unishare.R;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.internal.widget.AdapterViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +64,23 @@ public class SearchFragment extends Fragment implements ViewInitiator {
             initializeUI(view);
     	}
     	return view;       
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(TAG,"Long click");
+                Entity course = (Entity) parent.getItemAtPosition(position);
+                String name = course.get("nome");
+                String title = "";
+                String message = "Long click sul corso " + name;
+                activity.getMyApplication().alertMessage(title,message);
+                return true;
+            }
+        });
     }
 
     
@@ -133,24 +152,26 @@ public class SearchFragment extends Fragment implements ViewInitiator {
     		}
     		else{
     			listview.setOnItemClickListener(new OnItemClickListener() {
-    				
-    				@Override
-    				public void onItemClick(AdapterView<?> parent, View view, int position,	long id){
-                        if(!Utilities.checkNetworkState(activity)){
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        if (!Utilities.checkNetworkState(activity)) {
                             String title = "Errore";
                             String message = "Verifica la tua connessione a Internet e riprova";
                             activity.getMyApplication().alertMessage(title, message);
                             return;
                         }
-    					Entity course = (Entity)parent.getItemAtPosition(position);
-    					String courseId = course.get("id");
-    					String courseName = course.get("nome");
-    					Log.i(TAG, "Clicked on course " + courseId);
+                        Entity course = (Entity) parent.getItemAtPosition(position);
+                        String courseId = course.get("id");
+                        String courseName = course.get("nome");
+                        Log.i(TAG, "Clicked on course " + courseId);
                         String title = "Searching";
-    					dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
-    		            SearchFragment.this.courseListener.onCourseSelected(courseId, courseName, dialog);
-    				}
-				});
+                        dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
+                        SearchFragment.this.courseListener.onCourseSelected(courseId, courseName, dialog);
+                    }
+                });
+
+
     		}
     	}    		
     	searchForm = (EditText) view.findViewById(R.id.opinionText);
