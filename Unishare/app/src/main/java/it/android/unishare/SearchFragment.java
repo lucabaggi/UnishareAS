@@ -6,11 +6,17 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v7.internal.widget.AdapterViewCompat;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -69,18 +75,8 @@ public class SearchFragment extends Fragment implements ViewInitiator {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(TAG,"Long click");
-                Entity course = (Entity) parent.getItemAtPosition(position);
-                String name = course.get("nome");
-                String title = "";
-                String message = "Long click sul corso " + name;
-                activity.getMyApplication().alertMessage(title,message);
-                return true;
-            }
-        });
+        if(activity instanceof CoursesActivity)
+            registerForContextMenu(listview);
     }
 
     
@@ -107,6 +103,43 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 				throw new ClassCastException(activity.toString() + " must implement OnBookSelectedListener");
 			}
 		}
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+        Entity course = ((CoursesActivity) activity).getAdapter().getItem(info.position);
+        String courseName = course.get("nome");
+        menu.setHeaderTitle(courseName);
+        menu.add(Menu.NONE, R.id.add_to_fav_item, Menu.NONE, "Aggiungi ai preferiti");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add_to_fav_item:
+                Log.i("ContextMenu", "Item addFav was chosen");
+                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+                Entity course = ((CoursesActivity) activity).getAdapter().getItem(info.position);
+                String courseName = course.get("nome");
+                int courseId = Integer.parseInt(course.get("id"));
+                //activity.getMyApplication().toastMessage(activity, courseName + ", id: " + courseId);
+                ContentValues values = new ContentValues();
+                values.put(DatabaseContract.MyCoursesTable.COLUMN_NAME, courseName);
+                values.put(DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID, courseId);
+                try{
+                    activity.getMyApplication().insertIntoDatabaseCatchingExceptions(DatabaseContract.MyCoursesTable.TABLE_NAME, values);
+                    activity.getMyApplication().toastMessage(activity, courseName + " è stato aggiunto ai Preferiti");
+
+                }
+                catch (SQLiteConstraintException e){
+                    Log.i(TAG, "Corso già presente nel db");
+                    activity.getMyApplication().alertMessage("", "Corso già presente fra i Preferiti");
+                }
+                return true;
+        }
+        return super.onContextItemSelected(item);
     }
     
     

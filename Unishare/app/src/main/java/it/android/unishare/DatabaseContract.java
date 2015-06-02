@@ -37,7 +37,8 @@ public class DatabaseContract {
     public static final String SQL_CREATE_COURSES_TABLE = "CREATE TABLE " + MyCoursesTable.TABLE_NAME + " (" +
             MyCoursesTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             MyCoursesTable.COLUMN_COURSE_ID + " INTEGER, " +
-            MyCoursesTable.COLUMN_NAME + " VARCHAR(100)" + ")";
+            MyCoursesTable.COLUMN_NAME + " VARCHAR(100), " +
+            "UNIQUE(" + MyCoursesTable.COLUMN_COURSE_ID + ")" + ")";
 
     public static final String SQL_CREATE_USER_TABLE = "CREATE TABLE " + UserInfoTable.TABLE_NAME + " (" +
             UserInfoTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

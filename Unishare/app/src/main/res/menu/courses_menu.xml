@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="it.android.unishare.Courses" >
+
+    <item
+        android:id="@+id/add_to_fav_item"
+        android:alphabeticShortcut="a"
+        android:title="@string/add_to_fav"/>
+
+</menu>

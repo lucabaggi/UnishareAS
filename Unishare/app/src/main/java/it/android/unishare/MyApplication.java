@@ -79,6 +79,10 @@ public class MyApplication extends android.app.Application {
 		return localDatabase.insert(table, null, values);
 	}
 
+	public long insertIntoDatabaseCatchingExceptions(String table, ContentValues values){
+		return localDatabase.insertOrThrow(table, null, values);
+	}
+
     public void regenerateDb() {
         if(localDatabase != null)
             DatabaseHelper.regenerateDatabase(localDatabase);
