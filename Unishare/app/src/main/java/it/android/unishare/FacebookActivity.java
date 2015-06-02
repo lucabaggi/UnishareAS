@@ -1,5 +1,7 @@
 package it.android.unishare;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -27,10 +29,13 @@ import com.facebook.login.widget.LoginButton;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
 public class FacebookActivity extends SmartActivity {
+
+    private static final String USER_INFO = "unishareUserInfo";
 
     private MyApplication application;
 
@@ -116,13 +121,13 @@ public class FacebookActivity extends SmartActivity {
                     Profile.setCurrentProfile(currentProfile);
                     profile = currentProfile;
                     SmartActivity.profile = profile;
-                    Intent intent = new Intent(FacebookActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    FacebookActivity.this.finish();
-                    Log.i("FBStatus: ", "Now logged as " + currentProfile.getName());
+
+                    //Adding corresponding Unishare user to db
+                    getUser(profile.getId());
                 } else {
                     returnButton.setVisibility(View.INVISIBLE);
+                    application.deleteTable(DatabaseContract.UserInfoTable.TABLE_NAME);
+                    application.deleteTable(DatabaseContract.MyCoursesTable.TABLE_NAME);
                     Log.i("FBStatus: ", "Now logged out");
                 }
             }
@@ -205,5 +210,35 @@ public class FacebookActivity extends SmartActivity {
         application.alertDecision(title, message, actionTrue, actionFalse);
     }
 
+    @Override
+    public void handleResult(ArrayList<Entity> result, String tag) {
+        Log.i("MainActivity", "handling results");
+        if (tag == USER_INFO) {
+            Entity userEntity = result.get(0);
+            UserInfo user = new UserInfo(userEntity);
+            ContentValues values = new ContentValues();
+            values.put(DatabaseContract.UserInfoTable.COLUMN_USER_ID, user.getUserId());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_NICKNAME, user.getNickname());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY_ID, user.getUniversityId());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY, user.getUniversity());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_CAMPUS_ID, user.getCampusId());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_CAMPUS, user.getCampus());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION_ID, user.getSpecializationId());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION, user.getSpecialization());
+            values.put(DatabaseContract.UserInfoTable.COLUMN_LAST_ACCESS, user.getLastAccess());
+
+            Log.i("MainActivity", "values ha grandezza" + values.size());
+            application.insertIntoDatabase(DatabaseContract.UserInfoTable.TABLE_NAME, values);
+            Intent intent = new Intent(FacebookActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            FacebookActivity.this.finish();
+            Log.i("FBStatus: ", "Now logged as " + profile.getName());
+        }
+    }
+
+    private void getUser(String id){
+        application.databaseCall("log_user.php?id=" + id, "unishareUserInfo", null);
+    }
 
 }

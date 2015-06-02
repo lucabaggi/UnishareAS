@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -73,6 +74,10 @@ public class MyApplication extends android.app.Application {
 	public Cursor queryDatabase(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
 		return localDatabase.query(table, columns, selection, selectionArgs, groupBy, having, orderBy);
 	}
+
+	public long numOfRows(String table){
+		return DatabaseUtils.queryNumEntries(localDatabase, table);
+	}
 	
 	//Inserts new row
 	public long insertIntoDatabase (String table, ContentValues values) {
@@ -82,6 +87,10 @@ public class MyApplication extends android.app.Application {
 	public long insertIntoDatabaseCatchingExceptions(String table, ContentValues values){
 		return localDatabase.insertOrThrow(table, null, values);
 	}
+
+    public void deleteTable(String tableName) {
+        localDatabase.delete(tableName, null, null);
+    }
 
     public void regenerateDb() {
         if(localDatabase != null)
@@ -341,5 +350,6 @@ public class MyApplication extends android.app.Application {
 	public Context getContext() {
     	return currentContext;
     }
+
 
 }

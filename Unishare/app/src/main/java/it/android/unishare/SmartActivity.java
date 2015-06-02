@@ -15,7 +15,6 @@ import com.pkmmte.view.CircularImageView;
 public class SmartActivity extends ActionBarActivity {
 
     public static Profile profile;
-    private MyApplication myApplication;
 
 	
 	@Override

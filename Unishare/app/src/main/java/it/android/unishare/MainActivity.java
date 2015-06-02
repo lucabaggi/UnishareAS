@@ -54,7 +54,7 @@ public class MainActivity extends SmartActivity {
             drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);
-        addUserToDb(facebookId);
+        //addUserToDb(facebookId);
 
         getFragmentManager().beginTransaction().add(R.id.container, new MainFragment(), MainFragment.TAG).commit();
         //Starts background service

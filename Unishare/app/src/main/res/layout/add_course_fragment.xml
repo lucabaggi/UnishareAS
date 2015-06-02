@@ -14,95 +14,48 @@
         android:layout_margin="15dp"
         android:id="@+id/addCourseTextView" />
 
-    <LinearLayout
-        android:orientation="horizontal"
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:hint="Nome del corso"
+        android:ems="15"
+        android:id="@+id/courseNameToAdd" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/course_name"
-            android:id="@+id/courseNameTextView" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/courseNameToAdd" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:hint="Professore"
+        android:ems="15"
+        android:id="@+id/professorName" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/professor"
-            android:id="@+id/professorTextView" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/professorName" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:hint="Lingua"
+        android:ems="15"
+        android:id="@+id/language" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/language"
-            android:id="@+id/languageTextView" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/language" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
         android:layout_margin="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/cfu"
-            android:id="@+id/cfuTextView" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/cfu" />
-
-    </LinearLayout>
+        android:hint="CFU"
+        android:ems="15"
+        android:id="@+id/cfu" />
 
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
         android:id="@+id/radioGroup"
         android:orientation="horizontal">
 

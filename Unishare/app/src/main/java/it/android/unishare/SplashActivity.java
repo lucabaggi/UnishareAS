@@ -15,9 +15,10 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash_activity);
 		application = MyApplication.getInstance(this);
-
 		getFragmentManager().beginTransaction().add(R.id.splash_fragment_container, new SplashFragment()).commit();
-		application.newDelayedActivity(TIME_SHOW_MILLIS, FacebookActivity.class);
+        application.initializeDatabase();
+        application.newDelayedActivity(TIME_SHOW_MILLIS, FacebookActivity.class);
+
 	}
 	
 
