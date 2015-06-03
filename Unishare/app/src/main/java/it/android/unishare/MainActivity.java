@@ -130,7 +130,8 @@ public class MainActivity extends SmartActivity {
 		
 		application.alertDecision(title, message, actionTrue, actionFalse);
     }
-    
+
+    /*
     @Override
     public void handleResult(ArrayList<Entity> result, String tag){
         Log.i("MainActivity","handling results");
@@ -162,6 +163,7 @@ public class MainActivity extends SmartActivity {
         }
     		
     }
+    */
 
     @Override
     public void launchNewActivity(int position){
@@ -182,6 +184,7 @@ public class MainActivity extends SmartActivity {
     }
 
 
+    /*
     private void addUserToDb(String id){
         Log.i("MainActivity", "adding user with fb id = " + id);
         application.regenerateDb();
@@ -191,6 +194,7 @@ public class MainActivity extends SmartActivity {
     private void getUser(String id){
         application.databaseCall("log_user.php?id=" + id, "unishareUserInfo", null);
     }
+    */
     
 
 }
