@@ -9,7 +9,7 @@ import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Unishare.db";
 
     public DatabaseHelper(Context context) {
@@ -18,6 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DatabaseContract.SQL_CREATE_COURSES_TABLE);
         db.execSQL(DatabaseContract.SQL_CREATE_USER_TABLE);
+        db.execSQL(DatabaseContract.SQL_CREATE_PASSED_EXAMS_TABLE);
         Log.i("Database", "creazione");
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -25,6 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // to simply to discard the data and start over
         db.execSQL(DatabaseContract.SQL_DELETE_COURSES_TABLE);
         db.execSQL(DatabaseContract.SQL_DELETE_USER_TABLE);
+        db.execSQL(DatabaseContract.SQL_DELETE_PASSED_EXAMS_TABLE);
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -34,7 +36,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static void regenerateDatabase(SQLiteDatabase db) {
         db.execSQL(DatabaseContract.SQL_DELETE_COURSES_TABLE);
         db.execSQL(DatabaseContract.SQL_DELETE_USER_TABLE);
+        db.execSQL(DatabaseContract.SQL_DELETE_PASSED_EXAMS_TABLE);
         db.execSQL(DatabaseContract.SQL_CREATE_COURSES_TABLE);
         db.execSQL(DatabaseContract.SQL_CREATE_USER_TABLE);
+        db.execSQL(DatabaseContract.SQL_CREATE_PASSED_EXAMS_TABLE);
     }
 }

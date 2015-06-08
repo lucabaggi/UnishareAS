@@ -45,5 +45,6 @@
     <string name="passed_courses">Corsi Superati</string>
     <string name="selling_books">Libri in vendita</string>
     <string name="requested_books">Libri Richiesti</string>
+    <string name="add_to_passed">Aggiungi ai corsi superati</string>
 
 </resources>

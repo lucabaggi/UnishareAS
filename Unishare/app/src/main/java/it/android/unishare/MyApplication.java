@@ -26,6 +26,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MyApplication extends android.app.Application {
@@ -227,10 +228,12 @@ public class MyApplication extends android.app.Application {
 	}
 	
 	//Creates dialog box with a question
-	public void alertDecision(String title, String message, DialogInterface.OnClickListener actionTrue, DialogInterface.OnClickListener actionFalse) {
+	public void alertDecision(String title, String message, EditText input, DialogInterface.OnClickListener actionTrue, DialogInterface.OnClickListener actionFalse) {
 		android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(currentContext);
 		builder.setMessage(message);
 	    builder.setTitle(title);
+		if(input != null)
+			builder.setView(input);
 	    builder.setPositiveButton("Si", actionTrue);
 	    builder.setNegativeButton("No", actionFalse);
         android.support.v7.app.AlertDialog dialog = builder.create();

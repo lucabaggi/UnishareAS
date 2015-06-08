@@ -7,4 +7,9 @@
         android:alphabeticShortcut="a"
         android:title="@string/add_to_fav"/>
 
+    <item
+        android:id="@+id/add_to_passed_item"
+        android:alphabeticShortcut="b"
+        android:title="@string/add_to_passed"/>
+
 </menu>

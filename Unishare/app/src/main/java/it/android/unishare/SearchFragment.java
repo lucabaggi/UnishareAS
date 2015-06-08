@@ -8,10 +8,12 @@ import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v7.internal.widget.AdapterViewCompat;
+import android.text.InputType;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -113,18 +115,21 @@ public class SearchFragment extends Fragment implements ViewInitiator {
         String courseName = course.get("nome");
         menu.setHeaderTitle(courseName);
         menu.add(Menu.NONE, R.id.add_to_fav_item, Menu.NONE, "Aggiungi ai preferiti");
+		menu.add(Menu.NONE, R.id.add_to_passed_item, Menu.NONE, "Aggiungi ai corsi superati");
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+
+		//getting course info
+		final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+		final Entity course = ((CoursesActivity) activity).getAdapter().getItem(info.position);
+		final String courseName = course.get("nome");
+		final int courseId = Integer.parseInt(course.get("id"));
+
         switch (item.getItemId()) {
             case R.id.add_to_fav_item:
                 Log.i("ContextMenu", "Item addFav was chosen");
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-                Entity course = ((CoursesActivity) activity).getAdapter().getItem(info.position);
-                String courseName = course.get("nome");
-                int courseId = Integer.parseInt(course.get("id"));
-                //activity.getMyApplication().toastMessage(activity, courseName + ", id: " + courseId);
                 ContentValues values = new ContentValues();
                 values.put(DatabaseContract.MyCoursesTable.COLUMN_NAME, courseName);
                 values.put(DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID, courseId);
@@ -137,6 +142,42 @@ public class SearchFragment extends Fragment implements ViewInitiator {
                     Log.i(TAG, "Corso già presente nel db");
                     activity.getMyApplication().alertMessage("", "Corso già presente fra i Preferiti");
                 }
+                return true;
+			case R.id.add_to_passed_item:
+				Log.i("ContextMenu", "Item addPassed was chosen");
+                final EditText input = new EditText(getActivity());
+                input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                String title = "";
+                String message ="Con quale voto hai superato il corso?";
+                DialogInterface.OnClickListener actionTrue = new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int grade = Integer.parseInt(input.getText().toString());
+                        ContentValues values = new ContentValues();
+                        values.put(DatabaseContract.PassedExams.COLUMN_NAME, courseName);
+                        values.put(DatabaseContract.PassedExams.COLUMN_COURSE_ID, courseId);
+                        values.put(DatabaseContract.PassedExams.GRADE, grade);
+                        try{
+                            activity.getMyApplication().insertIntoDatabaseCatchingExceptions(DatabaseContract.PassedExams.TABLE_NAME, values);
+                            activity.getMyApplication().toastMessage(activity, courseName + " è stato aggiunto ai Corsi superati");
+
+                        }
+                        catch (SQLiteConstraintException e){
+                            Log.i(TAG, "Corso già presente nel db");
+                            activity.getMyApplication().alertMessage("", "Corso già presente fra gli esami superati");
+                        }
+                    }
+                };
+                DialogInterface.OnClickListener actionFalse = new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+
+                    }
+                };
+                activity.getMyApplication().alertDecision(title, message, input, actionTrue, actionFalse);
                 return true;
         }
         return super.onContextItemSelected(item);

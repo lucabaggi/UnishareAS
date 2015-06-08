@@ -207,7 +207,7 @@ public class FacebookActivity extends SmartActivity {
             }
         };
 
-        application.alertDecision(title, message, actionTrue, actionFalse);
+        application.alertDecision(title, message, null, actionTrue, actionFalse);
     }
 
     @Override

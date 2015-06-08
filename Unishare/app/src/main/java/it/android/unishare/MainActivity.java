@@ -128,7 +128,7 @@ public class MainActivity extends SmartActivity {
 			}
 		};
 		
-		application.alertDecision(title, message, actionTrue, actionFalse);
+		application.alertDecision(title, message, null, actionTrue, actionFalse);
     }
 
     /*

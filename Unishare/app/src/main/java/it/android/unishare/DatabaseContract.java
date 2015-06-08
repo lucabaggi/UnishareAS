@@ -14,6 +14,13 @@ public class DatabaseContract {
         public static final String COLUMN_NAME = "name";
     }
 
+    public static abstract class PassedExams implements BaseColumns{
+        public static final String TABLE_NAME = "passed_exams";
+        public static final String COLUMN_COURSE_ID = "course_id";
+        public static final String COLUMN_NAME = "name";
+        public static final String GRADE = "grade";
+    }
+
     
     public static abstract class UserInfoTable implements BaseColumns {
         public static final String TABLE_NAME = "user_info";
@@ -40,6 +47,14 @@ public class DatabaseContract {
             MyCoursesTable.COLUMN_NAME + " VARCHAR(100), " +
             "UNIQUE(" + MyCoursesTable.COLUMN_COURSE_ID + ")" + ")";
 
+    public static final String SQL_CREATE_PASSED_EXAMS_TABLE = "CREATE TABLE " + PassedExams.TABLE_NAME + " (" +
+            PassedExams._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            PassedExams.COLUMN_COURSE_ID + " INTEGER, " +
+            PassedExams.COLUMN_NAME + " VARCHAR(100), " +
+            PassedExams.GRADE + " INTEGER, " +
+            "UNIQUE(" + PassedExams.COLUMN_COURSE_ID + ")" + ")";
+
+
     public static final String SQL_CREATE_USER_TABLE = "CREATE TABLE " + UserInfoTable.TABLE_NAME + " (" +
             UserInfoTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             UserInfoTable.COLUMN_USER_ID + " INTEGER, " +
@@ -54,5 +69,6 @@ public class DatabaseContract {
 
     public static final String SQL_DELETE_COURSES_TABLE = "DROP TABLE IF EXISTS " + MyCoursesTable.TABLE_NAME;
     public static final String SQL_DELETE_USER_TABLE = "DROP TABLE IF EXISTS " + UserInfoTable.TABLE_NAME;
+    public static final String SQL_DELETE_PASSED_EXAMS_TABLE = "DROP TABLE IF EXISTS " + PassedExams.TABLE_NAME;
 
 }
