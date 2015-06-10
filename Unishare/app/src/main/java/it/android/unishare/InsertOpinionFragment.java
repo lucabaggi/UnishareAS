@@ -25,7 +25,7 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 	
 	private com.gc.materialdesign.widgets.ProgressDialog dialog;
 	
-	private CoursesActivity activity;
+	private SmartActivity activity;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,7 +38,10 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		this.activity = (CoursesActivity) activity;
+		if(activity instanceof CoursesActivity)
+			this.activity = (CoursesActivity) activity;
+		else
+			this.activity = (ProfileActivity) activity;
     }
     
 
@@ -58,15 +61,24 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 				float rating = ratingBar.getRating();
 				Log.i(TAG, "Opinione: " + opinion + ", voto: " + rating);
 				if(opinion != null && !opinion.equals("") && rating > 0) {
-                    activity.getMyApplication().hideKeyboard(activity);
+					if(activity instanceof CoursesActivity)
+						((CoursesActivity)activity).getMyApplication().hideKeyboard(activity);
+					else
+						((ProfileActivity)activity).getMyApplication().hideKeyboard(activity);
 					if(!Utilities.checkNetworkState(activity)){
 						String title = "Errore";
 						String message = "Verifica la tua connessione a Internet e riprova";
-						activity.getMyApplication().alertMessage(title, message);
-						return;
+						if(activity instanceof CoursesActivity)
+							((CoursesActivity)activity).getMyApplication().alertMessage(title, message);
+						else
+							((ProfileActivity)activity).getMyApplication().alertMessage(title, message);						return;
 					}
-                    activity.insertOpinion(opinion, rating, dialog);
-                }
+					if(activity instanceof CoursesActivity)
+						((CoursesActivity)activity).insertOpinion(opinion, rating, dialog);
+					else
+						((ProfileActivity)activity).insertOpinion(opinion, rating, dialog);
+
+				}
 
 			}
 		});

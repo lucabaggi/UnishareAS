@@ -1,5 +1,6 @@
 package it.android.unishare;
 
+import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.support.v4.widget.DrawerLayout;
@@ -12,12 +13,25 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.gc.materialdesign.widgets.ProgressDialog;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
-public class ProfileActivity extends SmartActivity {
+public class ProfileActivity extends SmartActivity implements MyCoursesFragment.OnCourseSelectedListener {
+
+    public static final String TAG = "ProfileActivity";
 
     private static final String COURSE_TAG = "coursesDetail";
+    private static final String OPINION_TAG = "courseOpinions";
+    private static final String INSERT_OPINION_TAG = "insertOpinion";
+    private static final String REFRESH_OPINIONS_ADAPTER = "refreshOpinion";
+
+    private MyCoursesFragment myCoursesFragment;
+    private OpinionsFragment opinionsFragment;
+    private InsertOpinionFragment insertOpinionFragment;
 
     private MyApplication application;
     private Toolbar toolbar;
@@ -25,7 +39,10 @@ public class ProfileActivity extends SmartActivity {
     private DrawerLayout drawerLayout;
     private ArrayList<Entity> courses;
     private int numOfCourses;
+    private String courseName;
+    private int courseId;
     private CoursesAdapter coursesAdapter;
+    private OpinionsAdapter opinionsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +114,10 @@ public class ProfileActivity extends SmartActivity {
             drawerLayout.closeDrawers();
             return;
         }
+        if(getFragmentManager().getBackStackEntryCount() > 0){
+            getFragmentManager().popBackStack();
+            return;
+        }
         super.onBackPressed();
     }
 
@@ -112,13 +133,59 @@ public class ProfileActivity extends SmartActivity {
 
     @Override
     public void handleResult(ArrayList<Entity> result, String tag){
-        Entity course = result.get(0);
-        courses.add(course);
-        if(courses.size() == numOfCourses){
-            coursesAdapter.addAll(courses);
-            Log.i("ProfileActivity", "adapter riempito con dimensione " + coursesAdapter.getCount());
-            application.toastMessage(this, "Trovati " + coursesAdapter.getCount() + " corsi preferiti");
+        if(tag == COURSE_TAG){
+            Entity course = result.get(0);
+            courses.add(course);
+            if(courses.size() == numOfCourses){
+                coursesAdapter.addAll(courses);
+                Log.i("ProfileActivity", "adapter riempito con dimensione " + coursesAdapter.getCount());
+                myCoursesFragment = new MyCoursesFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.profile_fragment_container, myCoursesFragment, MyCoursesFragment.TAG);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
         }
+        if(tag == OPINION_TAG){
+            opinionsAdapter = new OpinionsAdapter(this, new ArrayList<Entity>());
+            opinionsAdapter.addAll(result);
+            createOpinionFragment();
+        }
+        if(tag == INSERT_OPINION_TAG){
+            if(!result.isEmpty()){
+                if(result.get(0).getFirst().equals("ERROR")){
+                    Log.i(CoursesActivity.TAG,"Error, opinione già inserita dall'utente");
+                    getFragmentManager().beginTransaction().remove(insertOpinionFragment).commit();
+                    getFragmentManager().popBackStack();
+                    String title = "Errore";
+                    String message = "Opinione non inserita. Verifica di non aver già recensito questo corso";
+                    application.alertMessage(title, message);
+                    return;
+                }
+                Log.i(TAG,"Opinione inserita correttamente");
+                getFragmentManager().beginTransaction().remove(insertOpinionFragment).commit();
+                getFragmentManager().popBackStack();
+                String title = "";
+                String message = "Opinione inserita. Grazie per il tuo contributo!";
+                application.alertMessage(title, message);
+                refreshOpinions(courseId);
+            }
+        }
+        if(tag == REFRESH_OPINIONS_ADAPTER){
+            Log.i(TAG, "Refreshing dell'adapter");
+            opinionsAdapter.clear();
+            opinionsAdapter.addAll(result);
+            opinionsAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    private void createOpinionFragment() {
+        opinionsFragment = new OpinionsFragment(courseName);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.profile_fragment_container, opinionsFragment, OpinionsFragment.TAG);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     public void myCourses() {
@@ -135,11 +202,61 @@ public class ProfileActivity extends SmartActivity {
         }
     }
 
-    public CoursesAdapter getAdapter(){
+    public CoursesAdapter getCoursesAdapter(){
         return this.coursesAdapter;
     }
 
-    private void getCourse(int courseId) {
-        application.databaseCall("courses_detail.php?id=" + courseId, "coursesDetail", null);
+    public OpinionsAdapter getOpinionsAdapter(){
+        return this.opinionsAdapter;
     }
+
+    public String getCourseName(){
+        return this.courseName;
+    }
+
+    @Override
+    public void onCourseSelected(String courseId, String courseName, ProgressDialog dialog) {
+        this.courseName = courseName;
+        this.courseId = Integer.parseInt(courseId);
+        getOpinion(this.courseId, dialog);
+    }
+
+    public void createInsertOpinionFragment() {
+        insertOpinionFragment = new InsertOpinionFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.profile_fragment_container, insertOpinionFragment, InsertOpinionFragment.TAG);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    public void insertOpinion(String opinion, float rating, ProgressDialog dialog) {
+        Log.i(TAG, "Calling db for inserting opinion");
+        Log.i(TAG, "Commento: " + opinion + "\nvoto: " + rating + " per il corso " + courseId);
+        int userId = application.getUserId();
+        insertOpinion(courseId, rating, opinion, userId, dialog);
+    }
+
+
+    //Calls to database
+
+    private void getCourse(int courseId) {
+        application.databaseCall("courses_detail.php?id=" + courseId, COURSE_TAG, null);
+    }
+
+    private void getOpinion(int courseId, com.gc.materialdesign.widgets.ProgressDialog dialog){
+        application.databaseCall("opinions.php?id=" + courseId, OPINION_TAG, dialog);
+    }
+
+    private void insertOpinion(int courseId, float rating, String text, int cdsId, com.gc.materialdesign.widgets.ProgressDialog dialog){
+        try {
+            application.databaseCall("opinions_insert.php?id=" + courseId + "&v=" + rating + "&c=" + URLEncoder.encode(text, "UTF-8") + "&u=" + cdsId, INSERT_OPINION_TAG, dialog);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void refreshOpinions(int courseId){
+        application.databaseCall("opinions.php?id=" + courseId, REFRESH_OPINIONS_ADAPTER, null);
+    }
+
 }

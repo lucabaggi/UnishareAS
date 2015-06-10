@@ -23,7 +23,7 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
 	private View view;
 	private ListView listview;
 	
-	private CoursesActivity activity;
+	private SmartActivity activity;
 	private OpinionsAdapter opinionsAdapter;
 
     private int counter;
@@ -48,36 +48,56 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		this.activity = (CoursesActivity) activity;
+		if(activity instanceof CoursesActivity){
+            this.activity = (CoursesActivity) activity;
+            Log.i(TAG, "fragment launched by CoursesActivity");
+        }
+        else{
+            this.activity = (ProfileActivity) activity;
+            Log.i(TAG, "fragment launched by ProfileActivity");
+        }
     }
     
 
 	@Override
 	public void initializeUI(View view) {
-		opinionsAdapter = activity.getOpinionsAdapter();
-		if(this.courseName == null)
-			this.courseName = activity.getCourseName();
-		Log.i(TAG, "l'adapter dell'activity ha dimensione " + activity.getOpinionsAdapter().getCount());
-		ButtonFloat btn = (ButtonFloat) view.findViewById(R.id.buttonFloat);
-		btn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				activity.createInsertOpinionFragment();
-			}
-		});
-		listview = (ListView) view.findViewById(R.id.opinionsListView);
-    	listview.setAdapter(opinionsAdapter);
-        if(opinionsAdapter.getCount() == 0 && counter == 0){
+        opinionsAdapter = activity instanceof CoursesActivity ? ((CoursesActivity) activity).getOpinionsAdapter()
+                : ((ProfileActivity) activity).getOpinionsAdapter();
+        Log.i(TAG, "opinionsFragment per il corso " + courseName);
+        TextView courseNameTextView = (TextView) view.findViewById(R.id.courseName);
+        courseNameTextView.setText(courseName);
+        Log.i(TAG, "TextView value = " + courseNameTextView.getText().toString());
+        if (this.courseName == null) {
+            if(activity instanceof CoursesActivity)
+                this.courseName = ((CoursesActivity)activity).getCourseName();
+            else
+                this.courseName = ((ProfileActivity)activity).getCourseName();
+        }
+
+        ButtonFloat btn = (ButtonFloat) view.findViewById(R.id.buttonFloat);
+        btn.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(activity instanceof CoursesActivity)
+                    ((CoursesActivity)activity).createInsertOpinionFragment();
+                else
+                    ((ProfileActivity)activity).createInsertOpinionFragment();
+            }
+        });
+        listview = (ListView) view.findViewById(R.id.opinionsListView);
+        listview.setAdapter(opinionsAdapter);
+        if (opinionsAdapter.getCount() == 0 && counter == 0) {
             counter++;
-    		Log.i(TAG, "No opinions for this course");
-    		String title = "";
-    		String message = "Nessuna opinione presente per questo corso";
-    		activity.getMyApplication().alertMessage(title, message);
-    	}			
-		TextView courseNameTextView = (TextView) view.findViewById(R.id.courseName);
-		courseNameTextView.setText(courseName);
-	}
+            Log.i(TAG, "No opinions for this course");
+            String title = "";
+            String message = "Nessuna opinione presente per questo corso";
+            if (activity instanceof CoursesActivity)
+                ((CoursesActivity) activity).getMyApplication().alertMessage(title, message);
+            else
+                ((ProfileActivity) activity).getMyApplication().alertMessage(title, message);
+        }
+    }
 	
 	
 
