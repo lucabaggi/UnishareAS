@@ -12,13 +12,16 @@ public class DatabaseContract {
         public static final String TABLE_NAME = "my_courses";
         public static final String COLUMN_COURSE_ID = "course_id";
         public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_PROFESSOR = "professor";
     }
 
     public static abstract class PassedExams implements BaseColumns{
         public static final String TABLE_NAME = "passed_exams";
         public static final String COLUMN_COURSE_ID = "course_id";
         public static final String COLUMN_NAME = "name";
-        public static final String GRADE = "grade";
+        public static final String COLUMN_PROFESSOR = "professor";
+        public static final String COLUMN_GRADE = "grade";
+        public static final String COLUMN_LAUDE = "laude";
     }
 
     
@@ -45,13 +48,16 @@ public class DatabaseContract {
             MyCoursesTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             MyCoursesTable.COLUMN_COURSE_ID + " INTEGER, " +
             MyCoursesTable.COLUMN_NAME + " VARCHAR(100), " +
+            MyCoursesTable.COLUMN_PROFESSOR + " VARCHAR(100), " +
             "UNIQUE(" + MyCoursesTable.COLUMN_COURSE_ID + ")" + ")";
 
     public static final String SQL_CREATE_PASSED_EXAMS_TABLE = "CREATE TABLE " + PassedExams.TABLE_NAME + " (" +
             PassedExams._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             PassedExams.COLUMN_COURSE_ID + " INTEGER, " +
             PassedExams.COLUMN_NAME + " VARCHAR(100), " +
-            PassedExams.GRADE + " INTEGER, " +
+            PassedExams.COLUMN_PROFESSOR + " VARCHAR(100), " +
+            PassedExams.COLUMN_GRADE + " INTEGER, " +
+            PassedExams.COLUMN_LAUDE + " INTEGER, " +
             "UNIQUE(" + PassedExams.COLUMN_COURSE_ID + ")" + ")";
 
 

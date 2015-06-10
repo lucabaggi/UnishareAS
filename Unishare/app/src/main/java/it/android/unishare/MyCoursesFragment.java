@@ -26,7 +26,7 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
 
     private OnCourseSelectedListener courseListener;
 
-	private ProfileActivity activity;
+	private MyCoursesActivity activity;
 	private CoursesAdapter coursesAdapter;
 
 	public MyCoursesFragment(){
@@ -48,7 +48,7 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		this.activity = (ProfileActivity) activity;
+		this.activity = (MyCoursesActivity) activity;
         try{
             this.courseListener = (OnCourseSelectedListener) activity;
         }
@@ -60,7 +60,7 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
 
 	@Override
 	public void initializeUI(View view) {
-		coursesAdapter = activity.getCoursesAdapter();
+		coursesAdapter = activity.getAdapter();
 		listview = (ListView) view.findViewById(R.id.myCoursesListView);
     	listview.setAdapter(coursesAdapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -21,7 +21,7 @@ import android.view.MenuItem;
 
 import com.gc.materialdesign.widgets.ProgressDialog;
 
-public class CoursesActivity extends AdapterActivity implements OnCourseSelectedListener{
+public class CoursesActivity extends CourseSupportActivity implements OnCourseSelectedListener{
 	
 	public static final String TAG = "CoursesActivity";
 	
@@ -38,12 +38,14 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 	/**
 	 * Tag necessari per distinguere le chiamate al db esterno e le relative risposte
 	 */
+	/*
 	private static final String COURSE_SEARCH_TAG = "courseSearch";
 	private static final String OPINION_TAG = "opinionSearch";
 	private static final String INSERT_OPINION_TAG = "insertOpinion";
     private static final String INSERT_COURSE_TAG = "insertCourse";
 	private static final String REFRESH_OPINIONS_ADAPTER = "refreshOpinionsAdapter";
 	private static final String ERROR = "error";
+	*/
 	
 	private MyApplication application;
 	private SearchFragment searchFragment;
@@ -265,30 +267,31 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
                 application.alertMessage(title, message);
             }
         }
+        if(tag == ADD_TO_ACTUAL_TAG){
+            if (!result.isEmpty()) {
+                if(!result.get(0).getFirst().equals("ERROR"))
+                    Log.i(TAG, "corso aggiunto al db esterno");
+            }
+        }
+        if(tag == ADD_TO_PAST_TAG){
+            if (!result.isEmpty()) {
+                if(!result.get(0).getFirst().equals("ERROR"))
+                    Log.i(TAG, "corso aggiunto al db esterno");
+            }
+        }
 	}
+
+    @Override
+    public MyApplication getMyApplication(){
+        return this.application;
+    }
+
 
     @Override
     public void launchNewActivity(int position){
         application.launchNewActivityFromDrawer(this, position);
         drawerLayout.closeDrawers();
     }
-
-	public void launchAddCourseFragment() {
-		addCourseFragment = new AddCourseFragment();
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-		transaction.replace(R.id.courses_fragment_container, addCourseFragment, AddCourseFragment.TAG);
-		transaction.addToBackStack(null);
-		transaction.commit();
-	}
-	
-	private void createOpinionFragment(){
-		opinionsFragment = new OpinionsFragment(courseName);
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-		transaction.replace(R.id.courses_fragment_container, opinionsFragment, OpinionsFragment.TAG);
-		transaction.addToBackStack(null);
-		transaction.commit();	
-	}
-
 
 	
 	@Override
@@ -300,18 +303,21 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 	public void onCourseSelected(String courseId, String courseName, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		this.courseName = courseName;
 		this.courseId = Integer.parseInt(courseId);
-		getOpinion(this.courseId, dialog);
+        getOpinion(this.courseId, dialog);
 		
 	}
-	
+
+    @Override
 	public OpinionsAdapter getOpinionsAdapter(){
 		return this.opinionsAdapter;
 	}
-	
+
+    @Override
 	public String getCourseName(){
 		return this.courseName;
 	}
-	
+
+    @Override
 	public void createInsertOpinionFragment() {
 		insertOpinionFragment = new InsertOpinionFragment();
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -319,13 +325,31 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
 		transaction.addToBackStack(null);
 		transaction.commit();	
 	}
-	
+
+    @Override
 	public void insertOpinion(String opinion, float rating, com.gc.materialdesign.widgets.ProgressDialog dialog){
 		Log.i(TAG, "Calling db for inserting opinion");
 		Log.i(TAG, "Commento: " + opinion + "\nvoto: " + rating + " per il corso " + courseId);
 		int userId = application.getUserId();
 		insertOpinion(courseId, rating, opinion, userId, dialog);
 	}
+
+    public void launchAddCourseFragment() {
+        addCourseFragment = new AddCourseFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.courses_fragment_container, addCourseFragment, AddCourseFragment.TAG);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void createOpinionFragment(){
+        opinionsFragment = new OpinionsFragment(courseName);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.courses_fragment_container, opinionsFragment, OpinionsFragment.TAG);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
 
     public void insertNewCourse(String courseName, String prof, String language, float cfu, String radioValue, ProgressDialog dialog) {
         int userId = application.getUserId();
@@ -334,17 +358,22 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
         insertCourse(userId, courseName, prof, language, cfu, index, dialog);
     }
 
+	public void addToActualExams(int courseId){
+		int userId = application.getUserId();
+		addToActualExams(userId, courseId);
+	}
 
-
-    @Override
-    public MyApplication getMyApplication(){
-        return this.application;
+    public void addToPassedExams(int courseId, int grade, int lode){
+        int userId = application.getUserId();
+        addToPassedExams(userId, courseId, grade, lode);
     }
-	
+
+
 	/////////////////////////////////
 	// 	   Calls to database       //
 	/////////////////////////////////
-	
+
+	/*
 	private void searchCourses(int campusId, String text, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		try {
 			application.databaseCall("courses_search.php?q=" + URLEncoder.encode(text.trim(), "UTF-8") + "&s=" + campusId, COURSE_SEARCH_TAG, dialog);
@@ -377,6 +406,7 @@ public class CoursesActivity extends AdapterActivity implements OnCourseSelected
             e.printStackTrace();
         }
     }
+    */
 
 
 

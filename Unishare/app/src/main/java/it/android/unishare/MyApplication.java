@@ -7,6 +7,7 @@ import java.io.InputStream;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -25,8 +26,11 @@ import android.os.Parcelable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class MyApplication extends android.app.Application {
@@ -76,6 +80,10 @@ public class MyApplication extends android.app.Application {
 	public Cursor queryDatabase(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
 		return localDatabase.query(table, columns, selection, selectionArgs, groupBy, having, orderBy);
 	}
+
+    public int deleteFromTable(String table, String where, String[] whereArgs){
+        return localDatabase.delete(table, where, whereArgs);
+    }
 
 	public long numOfRows(String table){
 		return DatabaseUtils.queryNumEntries(localDatabase, table);
@@ -167,14 +175,14 @@ public class MyApplication extends android.app.Application {
 	//Starts a new activity after ms milliseconds
 	public void newDelayedActivity(int ms, final Class<?> newActivity){
 		new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                final Intent mainIntent = new Intent(currentContext, newActivity);
-                mainIntent.putExtra("showActivity", 0);
-                currentContext.startActivity(mainIntent);
-                ((Activity) currentContext).finish();
-            }
-        }, ms);
+			@Override
+			public void run() {
+				final Intent mainIntent = new Intent(currentContext, newActivity);
+				mainIntent.putExtra("showActivity", 0);
+				currentContext.startActivity(mainIntent);
+				((Activity) currentContext).finish();
+			}
+		}, ms);
 	}
 	
 	//Starts a new activity
@@ -219,23 +227,28 @@ public class MyApplication extends android.app.Application {
 		builder.setMessage(message);
 	    builder.setTitle(title);
 	    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int id) {
-	            // User clicked OK button
-	        }
-	    });
+			public void onClick(DialogInterface dialog, int id) {
+				// User clicked OK button
+			}
+		});
 	    android.support.v7.app.AlertDialog dialog = builder.create();
 	    dialog.show();
 	}
 	
 	//Creates dialog box with a question
-	public void alertDecision(String title, String message, EditText input, DialogInterface.OnClickListener actionTrue, DialogInterface.OnClickListener actionFalse) {
+	public void alertDecision(String title, String message, EditText input, CheckBox checkBox, DialogInterface.OnClickListener actionTrue, DialogInterface.OnClickListener actionFalse) {
 		android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(currentContext);
 		builder.setMessage(message);
 	    builder.setTitle(title);
-		if(input != null)
-			builder.setView(input);
-	    builder.setPositiveButton("Si", actionTrue);
-	    builder.setNegativeButton("No", actionFalse);
+		if(input != null) {
+            LinearLayout ll = new LinearLayout(this.getActivity());
+            ll.setOrientation(LinearLayout.VERTICAL);
+            ll.addView(input);
+			ll.addView(checkBox);
+            builder.setView(ll);
+		}
+	    builder.setPositiveButton("Ok", actionTrue);
+	    builder.setNegativeButton("Cancel", actionFalse);
         android.support.v7.app.AlertDialog dialog = builder.create();
 	    dialog.show();
 	}

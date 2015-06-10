@@ -1,18 +1,13 @@
 package it.android.unishare;
 
-import it.android.unishare.R;
-
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.ListFragment;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.support.v7.internal.widget.AdapterViewCompat;
 import android.text.InputType;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -26,10 +21,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.gc.materialdesign.views.ButtonRectangle;
 
@@ -125,48 +120,70 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 		final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 		final Entity course = ((CoursesActivity) activity).getAdapter().getItem(info.position);
 		final String courseName = course.get("nome");
+		final String professor = course.get("professore");
 		final int courseId = Integer.parseInt(course.get("id"));
 
         switch (item.getItemId()) {
             case R.id.add_to_fav_item:
                 Log.i("ContextMenu", "Item addFav was chosen");
-                ContentValues values = new ContentValues();
-                values.put(DatabaseContract.MyCoursesTable.COLUMN_NAME, courseName);
-                values.put(DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID, courseId);
-                try{
-                    activity.getMyApplication().insertIntoDatabaseCatchingExceptions(DatabaseContract.MyCoursesTable.TABLE_NAME, values);
-                    activity.getMyApplication().toastMessage(activity, courseName + " è stato aggiunto ai Preferiti");
-
+                if(!inPassedExams(courseId)){
+                    ContentValues values = new ContentValues();
+                    values.put(DatabaseContract.MyCoursesTable.COLUMN_NAME, courseName);
+                    values.put(DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID, courseId);
+                    values.put(DatabaseContract.MyCoursesTable.COLUMN_PROFESSOR, professor);
+                    try{
+                        activity.getMyApplication().insertIntoDatabaseCatchingExceptions(DatabaseContract.MyCoursesTable.TABLE_NAME, values);
+                        activity.getMyApplication().toastMessage(activity, courseName + " è stato aggiunto ai Preferiti");
+                        ((CoursesActivity)activity).addToActualExams(courseId);
+                    }
+                    catch (SQLiteConstraintException e){
+                        Log.i(TAG, "Corso già presente nel db");
+                        activity.getMyApplication().alertMessage("", "Corso già presente fra i Preferiti");
+                    }
                 }
-                catch (SQLiteConstraintException e){
-                    Log.i(TAG, "Corso già presente nel db");
-                    activity.getMyApplication().alertMessage("", "Corso già presente fra i Preferiti");
-                }
+                else
+                    activity.getMyApplication().toastMessage(activity, "Corso già presente tra gli esami sostenuti");
                 return true;
 			case R.id.add_to_passed_item:
 				Log.i("ContextMenu", "Item addPassed was chosen");
                 final EditText input = new EditText(getActivity());
                 input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+				final CheckBox checkbox = new CheckBox(getActivity());
+				checkbox.setText("Lode");
                 String title = "";
                 String message ="Con quale voto hai superato il corso?";
                 DialogInterface.OnClickListener actionTrue = new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int grade = Integer.parseInt(input.getText().toString());
-                        ContentValues values = new ContentValues();
-                        values.put(DatabaseContract.PassedExams.COLUMN_NAME, courseName);
-                        values.put(DatabaseContract.PassedExams.COLUMN_COURSE_ID, courseId);
-                        values.put(DatabaseContract.PassedExams.GRADE, grade);
-                        try{
-                            activity.getMyApplication().insertIntoDatabaseCatchingExceptions(DatabaseContract.PassedExams.TABLE_NAME, values);
-                            activity.getMyApplication().toastMessage(activity, courseName + " è stato aggiunto ai Corsi superati");
-
+                        String gradeString = input.getText().toString().trim();
+                        boolean isChecked = checkbox.isChecked();
+                        if(isValid(gradeString, isChecked, courseId)){
+                            int grade = Integer.parseInt(input.getText().toString());
+                            int lode = 0;
+                            ContentValues values = new ContentValues();
+                            values.put(DatabaseContract.PassedExams.COLUMN_NAME, courseName);
+                            values.put(DatabaseContract.PassedExams.COLUMN_COURSE_ID, courseId);
+                            values.put(DatabaseContract.PassedExams.COLUMN_PROFESSOR, professor);
+                            values.put(DatabaseContract.PassedExams.COLUMN_GRADE, grade);
+                            if(isChecked){
+                                values.put(DatabaseContract.PassedExams.COLUMN_LAUDE, 1);
+                                lode = 1;
+                            }
+                            else
+                                values.put(DatabaseContract.PassedExams.COLUMN_LAUDE, 0);
+                            try{
+                                activity.getMyApplication().insertIntoDatabaseCatchingExceptions(DatabaseContract.PassedExams.TABLE_NAME, values);
+                                activity.getMyApplication().toastMessage(activity, courseName + " è stato aggiunto ai Corsi superati");
+                                ((CoursesActivity)activity).addToPassedExams(courseId, grade, lode);
+                            }
+                            catch (SQLiteConstraintException e){
+                                Log.i(TAG, "Corso già presente nel db");
+                                activity.getMyApplication().alertMessage("", "Corso già presente fra gli esami superati");
+                            }
                         }
-                        catch (SQLiteConstraintException e){
-                            Log.i(TAG, "Corso già presente nel db");
-                            activity.getMyApplication().alertMessage("", "Corso già presente fra gli esami superati");
-                        }
+                        else
+                            activity.getMyApplication().toastMessage(activity, "Verifica che i dati inseriti siano corretti");
                     }
                 };
                 DialogInterface.OnClickListener actionFalse = new DialogInterface.OnClickListener() {
@@ -177,10 +194,45 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 
                     }
                 };
-                activity.getMyApplication().alertDecision(title, message, input, actionTrue, actionFalse);
+                activity.getMyApplication().alertDecision(title, message, input, checkbox, actionTrue, actionFalse);
                 return true;
         }
         return super.onContextItemSelected(item);
+    }
+
+    private boolean inPassedExams(int courseId){
+        String[] selectionArgs = {((Integer)courseId).toString()};
+        Cursor cursor = activity.getMyApplication().queryDatabase(DatabaseContract.PassedExams.TABLE_NAME, null,
+                DatabaseContract.PassedExams.COLUMN_COURSE_ID + " = ?", selectionArgs, null, null, null);
+        if(cursor.getCount() > 0)
+            return true;
+        return false;
+    }
+
+    private boolean isValid(String gradeString, boolean isChecked, int courseId){
+        if(gradeString != ""){
+            int grade = Integer.parseInt(gradeString);
+            if(grade >= 18 && ((grade < 30 && !isChecked) || (grade == 30)))
+                if(coursePresentInCurrent(courseId))
+                    deleteFromCurrent(courseId);
+                return true;
+        }
+        return false;
+    }
+
+    private boolean coursePresentInCurrent(int courseId){
+        String[] selectionArgs = {((Integer)courseId).toString()};
+        Cursor cursor = activity.getMyApplication().queryDatabase(DatabaseContract.MyCoursesTable.TABLE_NAME, null,
+                DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID + " = ?", selectionArgs, null, null, null);
+        if(cursor.getCount() > 0)
+            return true;
+        return false;
+    }
+
+    private void deleteFromCurrent(int courseId){
+        String whereArgs[] = {((Integer)courseId).toString()};
+        activity.getMyApplication().deleteFromTable(DatabaseContract.MyCoursesTable.TABLE_NAME,
+                DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID + " = ?", whereArgs);
     }
     
     

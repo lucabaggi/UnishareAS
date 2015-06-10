@@ -1,6 +1,7 @@
 package it.android.unishare;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.support.v4.widget.DrawerLayout;
@@ -20,18 +21,13 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
-public class ProfileActivity extends SmartActivity implements MyCoursesFragment.OnCourseSelectedListener {
+public class ProfileActivity extends SmartActivity {
 
     public static final String TAG = "ProfileActivity";
+    private static final String ACTUAL_COURSES_TAG = "actualCourses";
 
-    private static final String COURSE_TAG = "coursesDetail";
-    private static final String OPINION_TAG = "courseOpinions";
-    private static final String INSERT_OPINION_TAG = "insertOpinion";
-    private static final String REFRESH_OPINIONS_ADAPTER = "refreshOpinion";
 
     private MyCoursesFragment myCoursesFragment;
-    private OpinionsFragment opinionsFragment;
-    private InsertOpinionFragment insertOpinionFragment;
 
     private MyApplication application;
     private Toolbar toolbar;
@@ -39,10 +35,7 @@ public class ProfileActivity extends SmartActivity implements MyCoursesFragment.
     private DrawerLayout drawerLayout;
     private ArrayList<Entity> courses;
     private int numOfCourses;
-    private String courseName;
-    private int courseId;
-    private CoursesAdapter coursesAdapter;
-    private OpinionsAdapter opinionsAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +54,6 @@ public class ProfileActivity extends SmartActivity implements MyCoursesFragment.
             drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);
-        coursesAdapter = new CoursesAdapter(this, new ArrayList<Entity>());
 
         getFragmentManager().beginTransaction().add(R.id.profile_fragment_container, new ProfileFragment(), ProfileFragment.TAG).commit();
     }
@@ -131,132 +123,37 @@ public class ProfileActivity extends SmartActivity implements MyCoursesFragment.
         return this.application;
     }
 
-    @Override
-    public void handleResult(ArrayList<Entity> result, String tag){
-        if(tag == COURSE_TAG){
-            Entity course = result.get(0);
-            courses.add(course);
-            if(courses.size() == numOfCourses){
-                coursesAdapter.addAll(courses);
-                Log.i("ProfileActivity", "adapter riempito con dimensione " + coursesAdapter.getCount());
-                myCoursesFragment = new MyCoursesFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.profile_fragment_container, myCoursesFragment, MyCoursesFragment.TAG);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        }
-        if(tag == OPINION_TAG){
-            opinionsAdapter = new OpinionsAdapter(this, new ArrayList<Entity>());
-            opinionsAdapter.addAll(result);
-            createOpinionFragment();
-        }
-        if(tag == INSERT_OPINION_TAG){
-            if(!result.isEmpty()){
-                if(result.get(0).getFirst().equals("ERROR")){
-                    Log.i(CoursesActivity.TAG,"Error, opinione già inserita dall'utente");
-                    getFragmentManager().beginTransaction().remove(insertOpinionFragment).commit();
-                    getFragmentManager().popBackStack();
-                    String title = "Errore";
-                    String message = "Opinione non inserita. Verifica di non aver già recensito questo corso";
-                    application.alertMessage(title, message);
-                    return;
-                }
-                Log.i(TAG,"Opinione inserita correttamente");
-                getFragmentManager().beginTransaction().remove(insertOpinionFragment).commit();
-                getFragmentManager().popBackStack();
-                String title = "";
-                String message = "Opinione inserita. Grazie per il tuo contributo!";
-                application.alertMessage(title, message);
-                refreshOpinions(courseId);
-            }
-        }
-        if(tag == REFRESH_OPINIONS_ADAPTER){
-            Log.i(TAG, "Refreshing dell'adapter");
-            opinionsAdapter.clear();
-            opinionsAdapter.addAll(result);
-            opinionsAdapter.notifyDataSetChanged();
-        }
-
-    }
-
-    private void createOpinionFragment() {
-        opinionsFragment = new OpinionsFragment(courseName);
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.profile_fragment_container, opinionsFragment, OpinionsFragment.TAG);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 
     public void myCourses() {
         courses = new ArrayList<>();
-        coursesAdapter.clear();
-        String[] projection = {DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID};
+        String[] projection = {DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID,
+                DatabaseContract.MyCoursesTable.COLUMN_NAME,
+                DatabaseContract.MyCoursesTable.COLUMN_PROFESSOR};
         Cursor cursor = application.queryDatabase(DatabaseContract.MyCoursesTable.TABLE_NAME, projection,
                 null, null, null, null, null);
         numOfCourses = cursor.getCount();
         Log.i("ProfileActivity", "Trovati " + numOfCourses + " corsi nel db locale");
+        if(numOfCourses == 0){
+            String title = "";
+            String message = "Nessun corso presente, vai nella sezione Corsi e aggiungi i corsi che stai frequentando";
+            application.alertMessage(title, message);
+            return;
+        }
         while(cursor.moveToNext()){
-            int courseId = cursor.getInt(0);
-            getCourse(courseId);
+            Integer courseId = cursor.getInt(0);
+            String name = cursor.getString(1);
+            String professor = cursor.getString(2);
+            Entity course = new Entity();
+            course.addElement("id", courseId.toString());
+            course.addElement("nome", name);
+            course.addElement("professore", professor);
+            courses.add(course);
         }
-    }
-
-    public CoursesAdapter getCoursesAdapter(){
-        return this.coursesAdapter;
-    }
-
-    public OpinionsAdapter getOpinionsAdapter(){
-        return this.opinionsAdapter;
-    }
-
-    public String getCourseName(){
-        return this.courseName;
-    }
-
-    @Override
-    public void onCourseSelected(String courseId, String courseName, ProgressDialog dialog) {
-        this.courseName = courseName;
-        this.courseId = Integer.parseInt(courseId);
-        getOpinion(this.courseId, dialog);
-    }
-
-    public void createInsertOpinionFragment() {
-        insertOpinionFragment = new InsertOpinionFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.profile_fragment_container, insertOpinionFragment, InsertOpinionFragment.TAG);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
-    public void insertOpinion(String opinion, float rating, ProgressDialog dialog) {
-        Log.i(TAG, "Calling db for inserting opinion");
-        Log.i(TAG, "Commento: " + opinion + "\nvoto: " + rating + " per il corso " + courseId);
-        int userId = application.getUserId();
-        insertOpinion(courseId, rating, opinion, userId, dialog);
-    }
-
-
-    //Calls to database
-
-    private void getCourse(int courseId) {
-        application.databaseCall("courses_detail.php?id=" + courseId, COURSE_TAG, null);
-    }
-
-    private void getOpinion(int courseId, com.gc.materialdesign.widgets.ProgressDialog dialog){
-        application.databaseCall("opinions.php?id=" + courseId, OPINION_TAG, dialog);
-    }
-
-    private void insertOpinion(int courseId, float rating, String text, int cdsId, com.gc.materialdesign.widgets.ProgressDialog dialog){
-        try {
-            application.databaseCall("opinions_insert.php?id=" + courseId + "&v=" + rating + "&c=" + URLEncoder.encode(text, "UTF-8") + "&u=" + cdsId, INSERT_OPINION_TAG, dialog);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void refreshOpinions(int courseId){
-        application.databaseCall("opinions.php?id=" + courseId, REFRESH_OPINIONS_ADAPTER, null);
+        for(Entity e : courses)
+            Log.i(TAG, "{" + e.get("id") + " ," + e.get("nome") + " ," + e.get("professore") + "}\n");
+        Intent intent = new Intent(this, MyCoursesActivity.class);
+        intent.putExtra(ACTUAL_COURSES_TAG, courses);
+        startActivity(intent);
     }
 
 }

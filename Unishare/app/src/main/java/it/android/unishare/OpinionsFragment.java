@@ -23,7 +23,7 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
 	private View view;
 	private ListView listview;
 	
-	private SmartActivity activity;
+	private CourseSupportActivity activity;
 	private OpinionsAdapter opinionsAdapter;
 
     private int counter;
@@ -53,7 +53,7 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
             Log.i(TAG, "fragment launched by CoursesActivity");
         }
         else{
-            this.activity = (ProfileActivity) activity;
+            this.activity = (MyCoursesActivity) activity;
             Log.i(TAG, "fragment launched by ProfileActivity");
         }
     }
@@ -61,17 +61,13 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
 
 	@Override
 	public void initializeUI(View view) {
-        opinionsAdapter = activity instanceof CoursesActivity ? ((CoursesActivity) activity).getOpinionsAdapter()
-                : ((ProfileActivity) activity).getOpinionsAdapter();
+        opinionsAdapter = activity.getOpinionsAdapter();
         Log.i(TAG, "opinionsFragment per il corso " + courseName);
         TextView courseNameTextView = (TextView) view.findViewById(R.id.courseName);
         courseNameTextView.setText(courseName);
         Log.i(TAG, "TextView value = " + courseNameTextView.getText().toString());
         if (this.courseName == null) {
-            if(activity instanceof CoursesActivity)
-                this.courseName = ((CoursesActivity)activity).getCourseName();
-            else
-                this.courseName = ((ProfileActivity)activity).getCourseName();
+                this.courseName = activity.getCourseName();
         }
 
         ButtonFloat btn = (ButtonFloat) view.findViewById(R.id.buttonFloat);
@@ -79,10 +75,7 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
 
             @Override
             public void onClick(View v) {
-                if(activity instanceof CoursesActivity)
-                    ((CoursesActivity)activity).createInsertOpinionFragment();
-                else
-                    ((ProfileActivity)activity).createInsertOpinionFragment();
+                activity.createInsertOpinionFragment();
             }
         });
         listview = (ListView) view.findViewById(R.id.opinionsListView);
@@ -92,10 +85,7 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
             Log.i(TAG, "No opinions for this course");
             String title = "";
             String message = "Nessuna opinione presente per questo corso";
-            if (activity instanceof CoursesActivity)
-                ((CoursesActivity) activity).getMyApplication().alertMessage(title, message);
-            else
-                ((ProfileActivity) activity).getMyApplication().alertMessage(title, message);
+            activity.getMyApplication().alertMessage(title, message);
         }
     }
 	

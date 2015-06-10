@@ -110,7 +110,7 @@ public class MainActivity extends SmartActivity {
             return;
         }
     	String title = "Exit";
-    	String message ="Sei sicuro di voler uscire?";
+    	String message ="Premi OK per uscire";
         DialogInterface.OnClickListener actionTrue = new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -128,42 +128,9 @@ public class MainActivity extends SmartActivity {
 			}
 		};
 		
-		application.alertDecision(title, message, null, actionTrue, actionFalse);
+		application.alertDecision(title, message, null, null, actionTrue, actionFalse);
     }
 
-    /*
-    @Override
-    public void handleResult(ArrayList<Entity> result, String tag){
-        Log.i("MainActivity","handling results");
-        if(tag == USER_INFO){
-            Entity userEntity = result.get(0);
-            UserInfo user = new UserInfo(userEntity);
-            ContentValues values = new ContentValues();
-            values.put(DatabaseContract.UserInfoTable.COLUMN_USER_ID, user.getUserId());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_NICKNAME, user.getNickname());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY_ID, user.getUniversityId());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY, user.getUniversity());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_CAMPUS_ID, user.getCampusId());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_CAMPUS, user.getCampus());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION_ID, user.getSpecializationId());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION, user.getSpecialization());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_LAST_ACCESS, user.getLastAccess());
-
-            Log.i("MainActivity", "values ha grandezza" + values.size());
-            application.insertIntoDatabase(DatabaseContract.UserInfoTable.TABLE_NAME, values);
-            String[] projection = {DatabaseContract.UserInfoTable.COLUMN_NICKNAME, DatabaseContract.UserInfoTable.COLUMN_USER_ID};
-            Cursor cursor = MyApplication.getInstance(this).queryDatabase(DatabaseContract.UserInfoTable.TABLE_NAME,
-                    projection, null, null, null, null, null);
-            cursor.moveToFirst();
-            String name = cursor.getString(0);
-            int userId = cursor.getInt(1);
-            Log.i("MainActivity", "=======================================================");
-            Log.i("MainActivity", name + ", " + userId);
-            Log.i("MainActivity", "=======================================================");
-        }
-    		
-    }
-    */
 
     @Override
     public void launchNewActivity(int position){
@@ -182,19 +149,5 @@ public class MainActivity extends SmartActivity {
         startActivity(intent);
         finish();
     }
-
-
-    /*
-    private void addUserToDb(String id){
-        Log.i("MainActivity", "adding user with fb id = " + id);
-        application.regenerateDb();
-        getUser(id);
-    }
-
-    private void getUser(String id){
-        application.databaseCall("log_user.php?id=" + id, "unishareUserInfo", null);
-    }
-    */
-    
 
 }

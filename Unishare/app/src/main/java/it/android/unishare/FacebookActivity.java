@@ -128,6 +128,7 @@ public class FacebookActivity extends SmartActivity {
                     returnButton.setVisibility(View.INVISIBLE);
                     application.deleteTable(DatabaseContract.UserInfoTable.TABLE_NAME);
                     application.deleteTable(DatabaseContract.MyCoursesTable.TABLE_NAME);
+                    application.deleteTable(DatabaseContract.PassedExams.TABLE_NAME);
                     Log.i("FBStatus: ", "Now logged out");
                 }
             }
@@ -189,7 +190,7 @@ public class FacebookActivity extends SmartActivity {
     public void onBackPressed(){
 
         String title = "Exit";
-        String message ="Sei sicuro di voler uscire?";
+        String message ="Premi OK per uscire";
         DialogInterface.OnClickListener actionTrue = new DialogInterface.OnClickListener() {
 
             @Override
@@ -207,7 +208,7 @@ public class FacebookActivity extends SmartActivity {
             }
         };
 
-        application.alertDecision(title, message, null, actionTrue, actionFalse);
+        application.alertDecision(title, message, null, null, actionTrue, actionFalse);
     }
 
     @Override

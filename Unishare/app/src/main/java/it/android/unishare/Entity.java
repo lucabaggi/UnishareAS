@@ -19,7 +19,7 @@ public class Entity implements Parcelable{
 	
 	private Map<String,String> elements;
 	
-	private void addElement(String key, String value) {
+	public void addElement(String key, String value) {
 		elements.put(key, value);
 	}
 	
@@ -106,4 +106,18 @@ public class Entity implements Parcelable{
 		parcel.writeMap(elements);
 		
 	}
+
+	public Entity(Parcel source){
+		this.elements = source.readHashMap(ClassLoader.getSystemClassLoader());
+	}
+
+	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+		public Entity createFromParcel(Parcel in) {
+			return new Entity(in);
+		}
+
+		public Entity[] newArray(int size) {
+			return new Entity[size];
+		}
+	};
 }
