@@ -34,18 +34,17 @@
     <string name="language">Lingua:</string>
     <string name="cfu">CFU:</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_facebook">FacebookActivity</string>
-    <string name="add_to_fav">Aggiungi ai preferiti</string>
+    <string name="add_to_fav">Aggiungi ai corsi attuali</string>
     <string name="title_activity_profile">ProfileActivity</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="my_courses">Corsi Preferiti</string>
+    <string name="my_courses">Corsi Attuali</string>
     <string name="passed_courses">Corsi Superati</string>
     <string name="selling_books">Libri in vendita</string>
     <string name="requested_books">Libri Richiesti</string>
     <string name="add_to_passed">Aggiungi ai corsi superati</string>
     <string name="title_activity_course_support">CourseSupportActivity</string>
+    <string name="delete_item">Elimina Corso</string>
 
 </resources>

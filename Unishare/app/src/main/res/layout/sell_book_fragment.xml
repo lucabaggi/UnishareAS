@@ -1,53 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="it.android.unishare.BooksActivity$PlaceholderFragment" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="it.android.unishare.BooksActivity$PlaceholderFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/sell_book_header"
-        android:layout_margin="15dp"
-        android:id="@+id/textView" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/sell_book_header"
+            android:layout_margin="15dp"
+            android:id="@+id/textView" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:hint="Titolo"
-        android:ems="15"
-        android:id="@+id/bookTitle" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:hint="Titolo"
+            android:ems="15"
+            android:id="@+id/bookTitle" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:hint="Autore/i"
-        android:ems="15"
-        android:id="@+id/bookAuthor" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:hint="Autore/i"
+            android:ems="15"
+            android:id="@+id/bookAuthor" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:hint="Prezzo"
-        android:inputType="numberDecimal"
-        android:ems="15"
-        android:id="@+id/bookPrice" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:hint="Prezzo"
+            android:inputType="numberDecimal"
+            android:ems="15"
+            android:id="@+id/bookPrice" />
 
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:id="@+id/button_sell_book"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#1E88E5"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:text="@string/sell_book_button" />
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/button_sell_book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#1E88E5"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:text="@string/sell_book_button" />
 
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

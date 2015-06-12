@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="it.android.unishare.Courses" >
+
+    <item
+        android:id="@+id/delete_item"
+        android:alphabeticShortcut="a"
+        android:title="@string/delete_item"/>
+
+</menu>

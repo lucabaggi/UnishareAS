@@ -1,90 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="it.android.unishare.CoursesActivity$PlaceholderFragment" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="it.android.unishare.CoursesActivity$PlaceholderFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/add_course_header"
-        android:layout_margin="15dp"
-        android:id="@+id/addCourseTextView" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:hint="Nome del corso"
-        android:ems="15"
-        android:id="@+id/courseNameToAdd" />
-
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:hint="Professore"
-        android:ems="15"
-        android:id="@+id/professorName" />
-
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:hint="Lingua"
-        android:ems="15"
-        android:id="@+id/language" />
-
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:layout_margin="15dp"
-        android:hint="CFU"
-        android:ems="15"
-        android:id="@+id/cfu" />
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:id="@+id/radioGroup"
-        android:orientation="horizontal">
-
-        <RadioButton
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Triennale"
-            android:id="@+id/radioButtonTriennale" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/add_course_header"
+            android:layout_margin="15dp"
+            android:id="@+id/addCourseTextView" />
 
-        <RadioButton
+
+        <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Magistrale"
-            android:id="@+id/radioButtonMagistrale" />
+            android:layout_margin="15dp"
+            android:hint="Nome del corso"
+            android:ems="15"
+            android:id="@+id/courseNameToAdd" />
 
-        <RadioButton
+
+        <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Entrambi"
-            android:id="@+id/radioButtonBoth" />
-    </RadioGroup>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="@string/add"
-        android:id="@+id/button_insert_course"
-        android:layout_gravity="center_horizontal" />
+            android:layout_margin="15dp"
+            android:hint="Professore"
+            android:ems="15"
+            android:id="@+id/professorName" />
 
 
-</LinearLayout>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:hint="Lingua"
+            android:ems="15"
+            android:id="@+id/language" />
+
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:layout_margin="15dp"
+            android:hint="CFU"
+            android:ems="15"
+            android:id="@+id/cfu" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/radioGroup"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Triennale"
+                android:id="@+id/radioButtonTriennale" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Magistrale"
+                android:id="@+id/radioButtonMagistrale" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Entrambi"
+                android:id="@+id/radioButtonBoth" />
+        </RadioGroup>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/add"
+            android:id="@+id/button_insert_course"
+            android:layout_gravity="center_horizontal" />
+
+
+    </LinearLayout>
+</ScrollView>
+

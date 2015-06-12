@@ -23,6 +23,8 @@ public class CourseSupportActivity extends AdapterActivity {
     public static final String COURSE_SEARCH_TAG = "courseSearch";
     public static final String ADD_TO_ACTUAL_TAG = "addToActual";
     public static final String ADD_TO_PAST_TAG = "addToPast";
+    public static final String DELETE_FROM_ACTUAL_TAG = "deleteFromActual";
+    public static final String DELETE_FROM_PAST_TAG = "deleteFromPast";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,5 +104,13 @@ public class CourseSupportActivity extends AdapterActivity {
 
     public void addToPassedExams(int userId, int courseId, int grade, int lode){
         getMyApplication().databaseCall("courses_past.php?u=" + userId + "&id=" + courseId + "&m=0" + "&v=" + grade + "&l=" + lode, ADD_TO_PAST_TAG, null);
+    }
+
+    public void deleteFromActualExams(int userId, int courseId){
+        getMyApplication().databaseCall("courses_current.php?u=" + userId + "&id=" + courseId + "&m=1", DELETE_FROM_ACTUAL_TAG, null);
+    }
+
+    public void deleteFromPastExams(int userId, int courseId){
+        getMyApplication().databaseCall("courses_past.php?u=" + userId + "&id=" + courseId + "&m=1", DELETE_FROM_PAST_TAG, null);
     }
 }

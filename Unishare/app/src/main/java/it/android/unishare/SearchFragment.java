@@ -210,14 +210,26 @@ public class SearchFragment extends Fragment implements ViewInitiator {
     }
 
     private boolean isValid(String gradeString, boolean isChecked, int courseId){
-        if(gradeString != ""){
+        if(isInteger(gradeString)){
             int grade = Integer.parseInt(gradeString);
-            if(grade >= 18 && ((grade < 30 && !isChecked) || (grade == 30)))
+            if(grade >= 18 && grade <= 30 && ((!isChecked) || (grade == 30))){
                 if(coursePresentInCurrent(courseId))
                     deleteFromCurrent(courseId);
                 return true;
+            }
         }
         return false;
+    }
+
+    private boolean isInteger(String s){
+        if(s == null || s.length()==0)
+            return false;
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(c <= '/' || c >= ':')
+                return false;
+        }
+        return true;
     }
 
     private boolean coursePresentInCurrent(int courseId){

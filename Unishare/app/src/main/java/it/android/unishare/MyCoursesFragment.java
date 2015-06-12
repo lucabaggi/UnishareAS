@@ -5,7 +5,10 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -22,12 +25,14 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
 
 	private View view;
 	private ListView listview;
+    private TextView header;
     private ProgressDialog dialog;
 
     private OnCourseSelectedListener courseListener;
 
 	private MyCoursesActivity activity;
 	private CoursesAdapter coursesAdapter;
+    private PassedCoursesAdapter passedCoursesAdapter;
 
 	public MyCoursesFragment(){
 
@@ -44,8 +49,60 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
         initializeUI(view);
         return view;
     }
-	
-	@Override
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+            registerForContextMenu(listview);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+        Entity course;
+        if(activity.getAdapter() != null)
+            course = activity.getAdapter().getItem(info.position);
+        else
+            course = activity.getPassedCoursesAdapter().getItem(info.position);
+        String courseName = course.get("nome");
+        menu.setHeaderTitle(courseName);
+        menu.add(Menu.NONE, R.id.delete_item, Menu.NONE, "Elimina corso");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        //getting course info
+        Entity course;
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if(activity.getAdapter() != null)
+            course = activity.getAdapter().getItem(info.position);
+        else
+            course = activity.getPassedCoursesAdapter().getItem(info.position);
+        final String courseId = course.get("id");
+
+        switch (item.getItemId()) {
+            case R.id.delete_item:
+                String whereArgs[] = {courseId};
+                if(activity.getAdapter() != null) {
+                    activity.getMyApplication().deleteFromTable(DatabaseContract.MyCoursesTable.TABLE_NAME,
+                        DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID + " = ?", whereArgs);
+                    activity.refreshActualCourses(courseId);
+                }
+                else{
+                    activity.getMyApplication().deleteFromTable(DatabaseContract.PassedExams.TABLE_NAME,
+                            DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID + " = ?", whereArgs);
+                    activity.refreshPastCourses(courseId);
+                }
+
+        }
+        return super.onContextItemSelected(item);
+
+    }
+
+
+    @Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		this.activity = (MyCoursesActivity) activity;
@@ -60,9 +117,18 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
 
 	@Override
 	public void initializeUI(View view) {
-		coursesAdapter = activity.getAdapter();
-		listview = (ListView) view.findViewById(R.id.myCoursesListView);
-    	listview.setAdapter(coursesAdapter);
+        listview = (ListView) view.findViewById(R.id.myCoursesListView);
+        header = (TextView) view.findViewById(R.id.myCoursesTextView);
+        if(activity.getAdapter() != null){
+            header.setText("Corsi Attuali");
+            coursesAdapter = activity.getAdapter();
+            listview.setAdapter(coursesAdapter);
+        }
+        else{
+            header.setText("Corsi Superati");
+            passedCoursesAdapter = activity.getPassedCoursesAdapter();
+            listview.setAdapter(passedCoursesAdapter);
+        }
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

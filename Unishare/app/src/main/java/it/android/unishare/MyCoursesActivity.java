@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.gc.materialdesign.widgets.ProgressDialog;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class MyCoursesActivity extends CourseSupportActivity implements MyCoursesFragment.OnCourseSelectedListener {
@@ -31,6 +32,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     private String courseName;
     private int courseId;
     private CoursesAdapter coursesAdapter;
+    private PassedCoursesAdapter passedCoursesAdapter;
     private OpinionsAdapter opinionsAdapter;
 
     private ArrayList<Entity> courses;
@@ -54,12 +56,20 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         application = MyApplication.getInstance(this);
 
         courses = new ArrayList<>();
-        courses = getIntent().getParcelableArrayListExtra("actualCourses");
-        coursesAdapter = new CoursesAdapter(this, new ArrayList<Entity>());
-        coursesAdapter.addAll(courses);
+        if(getIntent().getExtras().containsKey(ProfileActivity.ACTUAL_COURSES_TAG)){
+            courses = getIntent().getParcelableArrayListExtra(ProfileActivity.ACTUAL_COURSES_TAG);
+            coursesAdapter = new CoursesAdapter(this, new ArrayList<Entity>());
+            coursesAdapter.addAll(courses);
+        }
+        else if(getIntent().getExtras().containsKey(ProfileActivity.PASSED_EXAMS_TAG)){
+            courses = getIntent().getParcelableArrayListExtra(ProfileActivity.PASSED_EXAMS_TAG);
+            passedCoursesAdapter = new PassedCoursesAdapter(this, new ArrayList<Entity>());
+            passedCoursesAdapter.addAll(courses);
+        }
 
         getFragmentManager().beginTransaction().add(R.id.my_courses_fragment_container,
                 new MyCoursesFragment(), MyCoursesFragment.TAG).commit();
+
     }
 
     @Override
@@ -160,6 +170,12 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
             opinionsAdapter.addAll(result);
             opinionsAdapter.notifyDataSetChanged();
         }
+        if(tag == DELETE_FROM_ACTUAL_TAG){
+            Log.i(TAG, "Corso attuale eliminato dal db esterno");
+        }
+        if(tag == DELETE_FROM_PAST_TAG){
+            Log.i(TAG, "Corso passato eliminato dal db esterno");
+        }
 
     }
 
@@ -171,9 +187,41 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         transaction.commit();
     }
 
+    public void refreshActualCourses(String courseId){
+        int id = Integer.parseInt(courseId);
+        int userId = application.getUserId();
+        deleteFromActualExams(userId, id);
+        Iterator<Entity> it = courses.iterator();
+        while(it.hasNext()){
+            Entity e = it.next();
+            if(e.get("id").equals(courseId))
+                it.remove();
+        }
+        coursesAdapter.clear();
+        coursesAdapter.addAll(courses);
+        coursesAdapter.notifyDataSetChanged();
+    }
+
+    public void refreshPastCourses(String courseId){
+        int id = Integer.parseInt(courseId);
+        int userId = application.getUserId();
+        deleteFromPastExams(userId, id);
+        Iterator<Entity> it = courses.iterator();
+        while(it.hasNext()){
+            Entity e = it.next();
+            if(e.get("id").equals(courseId))
+                it.remove();
+        }
+        passedCoursesAdapter.clear();
+        passedCoursesAdapter.addAll(courses);
+        passedCoursesAdapter.notifyDataSetChanged();
+    }
+
     public CoursesAdapter getAdapter(){
         return this.coursesAdapter;
     }
+
+    public PassedCoursesAdapter getPassedCoursesAdapter(){ return this.passedCoursesAdapter; }
 
     public OpinionsAdapter getOpinionsAdapter(){
         return this.opinionsAdapter;
