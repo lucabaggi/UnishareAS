@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -199,6 +200,12 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
             getFragmentManager().popBackStack();
             return;
         }
+		if(getFragmentManager().getBackStackEntryCount() == 0){
+			Intent intent = new Intent(this, MainActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+			finish();
+		}
         super.onBackPressed();
     }
 

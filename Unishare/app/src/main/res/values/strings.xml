@@ -46,5 +46,8 @@
     <string name="add_to_passed">Aggiungi ai corsi superati</string>
     <string name="title_activity_course_support">CourseSupportActivity</string>
     <string name="delete_item">Elimina Corso</string>
+    <string name="title_activity_my_books">MyBooksActivity</string>
+    <string name="my_books">Libri in vendita</string>
+    <string name="requests_header">Richieste Libro</string>
 
 </resources>

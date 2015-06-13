@@ -79,7 +79,6 @@ public class FacebookActivity extends SmartActivity {
                 switchActivity();
                 return;
             }
-            application.alertMessage("Bentornato, " + profile.getFirstName(), "Bella zio, sei già connesso B)");
 
             returnButton.setOnClickListener(new View.OnClickListener() {
                 @Override

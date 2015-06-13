@@ -22,7 +22,7 @@ public class SellBookFragment extends Fragment implements ViewInitiator {
     private EditText bookPrice;
     private com.gc.materialdesign.widgets.ProgressDialog dialog;
 
-    private BooksActivity booksActivity;
+    private MyBooksActivity booksActivity;
 
     public SellBookFragment() {
     }
@@ -39,7 +39,7 @@ public class SellBookFragment extends Fragment implements ViewInitiator {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.booksActivity = (BooksActivity) activity;
+        this.booksActivity = (MyBooksActivity) activity;
     }
 
     @Override

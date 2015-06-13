@@ -54,5 +54,13 @@ public class ProfileFragment extends Fragment implements ViewInitiator {
                 profileActivity.passedExams();
             }
         });
+
+        Button soldBooksButton = (Button) view.findViewById(R.id.selling_books_button);
+        soldBooksButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profileActivity.soldBooks();
+            }
+        });
     }
 }

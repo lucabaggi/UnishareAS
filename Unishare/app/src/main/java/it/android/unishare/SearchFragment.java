@@ -327,21 +327,11 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 					clearList(adapter);
 					String title = "Searching";
 					dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
-					activity.getMyApplication().hideKeyboard((Context) activity);
+					activity.getMyApplication().hideKeyboard(activity);
 					activity.initializeFragmentUI(searchForm.getText().toString(), dialog);
 					}
 				}
         });
-
-		if(this.activity instanceof BooksActivity){
-			ButtonFloat sellBookButton = (ButtonFloat) view.findViewById(R.id.sellBookButtonFloat);
-			sellBookButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					((BooksActivity)activity).launchSellFragment();
-				}
-			});
-		}
     	
 	}
 

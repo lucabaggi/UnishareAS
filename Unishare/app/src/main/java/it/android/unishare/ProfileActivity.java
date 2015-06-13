@@ -112,6 +112,12 @@ public class ProfileActivity extends SmartActivity {
             getFragmentManager().popBackStack();
             return;
         }
+        if(getFragmentManager().getBackStackEntryCount() == 0){
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
         super.onBackPressed();
     }
 
@@ -193,6 +199,11 @@ public class ProfileActivity extends SmartActivity {
             Log.i(TAG, "{" + e.get("id") + " ," + e.get("nome") + " ," + e.get("professore") + ", " + e.get("valutazione") + "}\n");
         Intent intent = new Intent(this, MyCoursesActivity.class);
         intent.putExtra(PASSED_EXAMS_TAG, passedExams);
+        startActivity(intent);
+    }
+
+    public void soldBooks(){
+        Intent intent = new Intent(this, MyBooksActivity.class);
         startActivity(intent);
     }
 

@@ -10,6 +10,7 @@ import it.android.unishare.DatabaseContract.UserInfoTable;
 
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -31,13 +32,11 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 
 	private static final String BOOKS_SEARCH_TAG = "bookSearch";
 	private static final String BOOK_DETAILS_TAG = "bookDetail";
-    private static final String SELL_BOOK_TAG = "bookSelling";
     private static final String REQUEST_BOOK_TAG = "bookRequest";
     private static final String ERROR = "error";
 
 	private MyApplication application;
 	private SearchFragment searchFragment;
-    private SellBookFragment sellBookFragment;
     private BooksAdapter adapter;
 	private Entity book;
 
@@ -175,25 +174,6 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 			transaction.addToBackStack(null);
 			transaction.commit();
 		}
-        if(tag == SELL_BOOK_TAG) {
-            if (!result.isEmpty()) {
-                if (result.get(0).getFirst().equals("ERROR")) {
-                    Log.i(BooksActivity.TAG, "Error, libro non inserito");
-                    getFragmentManager().beginTransaction().remove(sellBookFragment).commit();
-                    getFragmentManager().popBackStack();
-                    String title = "Errore";
-                    String message = "Libro non inserito";
-                    application.alertMessage(title, message);
-                    return;
-                }
-                Log.i(BooksActivity.TAG, "Libro inserito correttamente");
-                getFragmentManager().beginTransaction().remove(sellBookFragment).commit();
-                getFragmentManager().popBackStack();
-                String title = "";
-                String message = "Libro messo in vendita. Grazie per il contributo!";
-                application.alertMessage(title, message);
-            }
-        }
         if(tag == REQUEST_BOOK_TAG) {
             if (!result.isEmpty()) {
                 if (result.get(0).getFirst().equals("ERROR")) {
@@ -223,13 +203,7 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 		*/
 	}
 
-    public void launchSellFragment() {
-        sellBookFragment = new SellBookFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.books_fragment_container, sellBookFragment, SellBookFragment.TAG);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
+
 
     @Override
     public void onBackPressed(){
@@ -240,6 +214,12 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
         if(getFragmentManager().getBackStackEntryCount() > 0){
             getFragmentManager().popBackStack();
             return;
+        }
+        if(getFragmentManager().getBackStackEntryCount() == 0){
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         }
         super.onBackPressed();
     }
@@ -260,11 +240,6 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
         return this.application;
     }
 
-    public void sellBook(String bookTitle, String author, float price, com.gc.materialdesign.widgets.ProgressDialog dialog){
-        Log.i(BooksActivity.TAG,"Selling book");
-        int userId = application.getUserId();
-        insertSellingBook(bookTitle, author, price, userId, dialog);
-    }
 
     public void requestBook(int bookId) {
         int userId = application.getUserId();
@@ -288,14 +263,6 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 		application.databaseCall("books_detail.php?id=" + bookId, BOOK_DETAILS_TAG, dialog);
 	}
 
-    private void insertSellingBook(String bookTitle, String author, float price, int userId, com.gc.materialdesign.widgets.ProgressDialog dialog) {
-        try {
-            application.databaseCall("books_insert.php?u=" + userId + "&t=" + URLEncoder.encode(bookTitle, "UTF-8")
-                            + "&a=" + URLEncoder.encode(author, "UTF-8") + "&p=" + price, SELL_BOOK_TAG, dialog);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void callRequestBook(int userId, int bookId) {
         application.databaseCall("books_request.php?id=" + bookId + "&u=" + userId, REQUEST_BOOK_TAG, null);
