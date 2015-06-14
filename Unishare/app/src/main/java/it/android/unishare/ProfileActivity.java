@@ -207,4 +207,9 @@ public class ProfileActivity extends SmartActivity {
         startActivity(intent);
     }
 
+    public void requestedBooks(){
+        Intent intent = new Intent(this, RequestedBooksActivity.class);
+        startActivity(intent);
+    }
+
 }

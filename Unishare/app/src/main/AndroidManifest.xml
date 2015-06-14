@@ -101,6 +101,10 @@
             android:label="@string/title_activity_profile">
         </activity>
         <activity
+            android:name=".RequestedBooksActivity"
+            android:label="@string/title_activity_profile">
+        </activity>
+        <activity
             android:name=".CourseSupportActivity"
             android:label="@string/title_activity_course_support" >
         </activity>
