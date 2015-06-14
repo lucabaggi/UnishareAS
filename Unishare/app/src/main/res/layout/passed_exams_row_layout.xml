@@ -10,20 +10,21 @@
     <TextView
         android:id="@+id/first_column"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:layout_weight="0.6" />
 
     <TextView
         android:id="@+id/second_column"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="0.3"
         android:gravity="center" />
 
     <TextView
         android:id="@+id/third_column"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="0.1"
         android:gravity="center" />
 
