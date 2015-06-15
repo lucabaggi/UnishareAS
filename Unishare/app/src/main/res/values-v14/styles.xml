@@ -9,6 +9,9 @@
         <!-- API 14 theme customizations can go here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!-- Settings for background and font color
+        <item name="android:windowBackground">@color/DodgerBlue</item>
+        <item name="android:textColor">@color/AntiqueWhite</item> -->
     </style>
 
     <style name="CustomToolbar" parent="Theme.AppCompat.NoActionBar">

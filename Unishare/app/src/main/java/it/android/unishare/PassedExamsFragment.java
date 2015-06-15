@@ -10,18 +10,16 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.gc.materialdesign.views.ButtonFloat;
 import com.gc.materialdesign.widgets.ProgressDialog;
 
-public class MyCoursesFragment extends Fragment implements ViewInitiator {
+public class PassedExamsFragment extends Fragment implements ViewInitiator {
 
-	public static final String TAG = "MyCoursesFragment";
+	public static final String TAG = "PassedExamsFragment";
 
 	private View view;
 	private ListView listview;
@@ -31,20 +29,20 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
     private OnCourseSelectedListener courseListener;
 
 	private MyCoursesActivity activity;
-	private CoursesAdapter coursesAdapter;
+    private PassedCoursesAdapter passedCoursesAdapter;
 
-	public MyCoursesFragment(){
+	public PassedExamsFragment(){
 
 	}
 
 	public interface OnCourseSelectedListener {
-		public void onCourseSelected(String courseId, String courseName, com.gc.materialdesign.widgets.ProgressDialog dialog);
+		public void onCourseSelected(String courseId, String courseName, ProgressDialog dialog);
 	}
-	
+
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if(view == null)
-			view = inflater.inflate(R.layout.my_courses_fragment, container, false);
+			view = inflater.inflate(R.layout.passed_exams_fragment, container, false);
         initializeUI(view);
         return view;
     }
@@ -60,7 +58,10 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
         Entity course;
-        course = activity.getAdapter().getItem(info.position);
+        if(activity.getAdapter() != null)
+            course = activity.getAdapter().getItem(info.position);
+        else
+            course = activity.getPassedCoursesAdapter().getItem(info.position);
         String courseName = course.get("nome");
         menu.setHeaderTitle(courseName);
         menu.add(Menu.NONE, R.id.delete_item, Menu.NONE, "Elimina corso");
@@ -72,15 +73,16 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
         //getting course info
         Entity course;
         final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        course = activity.getAdapter().getItem(info.position);
+
+        course = activity.getPassedCoursesAdapter().getItem(info.position);
         final String courseId = course.get("id");
 
         switch (item.getItemId()) {
             case R.id.delete_item:
                 String whereArgs[] = {courseId};
-                activity.getMyApplication().deleteFromTable(DatabaseContract.MyCoursesTable.TABLE_NAME,
+                activity.getMyApplication().deleteFromTable(DatabaseContract.PassedExams.TABLE_NAME,
                         DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID + " = ?", whereArgs);
-                activity.refreshActualCourses(courseId);
+                activity.refreshPastCourses(courseId);
                 break;
         }
         return super.onContextItemSelected(item);
@@ -99,15 +101,15 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
             throw new ClassCastException(activity.toString() + " must implement OnCourseSelectedListener");
         }
     }
-    
+
 
 	@Override
 	public void initializeUI(View view) {
-        listview = (ListView) view.findViewById(R.id.myCoursesListView);
-        header = (TextView) view.findViewById(R.id.myCoursesTextView);
-        header.setText("Corsi Attuali");
-        coursesAdapter = activity.getAdapter();
-        listview.setAdapter(coursesAdapter);
+        listview = (ListView) view.findViewById(R.id.passedExamsListView);
+        header = (TextView) view.findViewById(R.id.passedExamsTextView);
+        header.setText("Corsi Superati");
+        passedCoursesAdapter = activity.getPassedCoursesAdapter();
+        listview.setAdapter(passedCoursesAdapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -123,8 +125,8 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
                 String courseName = course.get("nome");
                 Log.i(TAG, "Clicked on course " + courseId);
                 String title = "Searching";
-                dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
-                MyCoursesFragment.this.courseListener.onCourseSelected(courseId, courseName, dialog);
+                dialog = new ProgressDialog(getActivity(), title);
+                PassedExamsFragment.this.courseListener.onCourseSelected(courseId, courseName, dialog);
             }
         });
 	}

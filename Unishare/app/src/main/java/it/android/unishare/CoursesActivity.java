@@ -35,18 +35,7 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
 	private static final String COURSE_NAME = "course_name_key";
 	private static final String ADAPTER_VALUES = "key_adapter";
 	private static final String OPINION_ADAPTER_VALUES = "key_opinion_adapter";
-	
-	/**
-	 * Tag necessari per distinguere le chiamate al db esterno e le relative risposte
-	 */
-	/*
-	private static final String COURSE_SEARCH_TAG = "courseSearch";
-	private static final String OPINION_TAG = "opinionSearch";
-	private static final String INSERT_OPINION_TAG = "insertOpinion";
-    private static final String INSERT_COURSE_TAG = "insertCourse";
-	private static final String REFRESH_OPINIONS_ADAPTER = "refreshOpinionsAdapter";
-	private static final String ERROR = "error";
-	*/
+
 	
 	private MyApplication application;
 	private SearchFragment searchFragment;
@@ -374,46 +363,6 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
         int userId = application.getUserId();
         addToPassedExams(userId, courseId, grade, lode);
     }
-
-
-	/////////////////////////////////
-	// 	   Calls to database       //
-	/////////////////////////////////
-
-	/*
-	private void searchCourses(int campusId, String text, com.gc.materialdesign.widgets.ProgressDialog dialog) {
-		try {
-			application.databaseCall("courses_search.php?q=" + URLEncoder.encode(text.trim(), "UTF-8") + "&s=" + campusId, COURSE_SEARCH_TAG, dialog);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}	
-	}
-	
-	private void getOpinion(int courseId, com.gc.materialdesign.widgets.ProgressDialog dialog){
-		application.databaseCall("opinions.php?id=" + courseId, OPINION_TAG, dialog);
-	}
-	
-	private void refreshOpinions(int courseId){
-		application.databaseCall("opinions.php?id=" + courseId, REFRESH_OPINIONS_ADAPTER, null);
-	}
-
-	private void insertOpinion(int courseId, float rating, String text, int cdsId, com.gc.materialdesign.widgets.ProgressDialog dialog){
-		try {
-			application.databaseCall("opinions_insert.php?id=" + courseId + "&v=" + rating + "&c=" + URLEncoder.encode(text, "UTF-8") + "&u=" + cdsId, INSERT_OPINION_TAG, dialog);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-	}
-
-    private void insertCourse(int userId, String courseName, String prof, String language, float cfu, int index, ProgressDialog dialog) {
-        try {
-            application.databaseCall("courses_insert.php?u=" + userId + "&n=" + URLEncoder.encode(courseName, "UTF-8") +
-                    "&p=" + URLEncoder.encode(prof, "UTF-8") + "&t=" + index + "&c=" + cfu + "&l=" + URLEncoder.encode(language, "UTF-8"), INSERT_COURSE_TAG, dialog);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
-    */
 
 
 

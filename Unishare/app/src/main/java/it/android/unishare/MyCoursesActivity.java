@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 
-public class MyCoursesActivity extends CourseSupportActivity implements MyCoursesFragment.OnCourseSelectedListener {
+public class MyCoursesActivity extends CourseSupportActivity implements MyCoursesFragment.OnCourseSelectedListener, PassedExamsFragment.OnCourseSelectedListener {
 
     public static final String TAG = "MyCoursesActivity";
 
@@ -61,15 +61,19 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
             courses = getIntent().getParcelableArrayListExtra(ProfileActivity.ACTUAL_COURSES_TAG);
             coursesAdapter = new CoursesAdapter(this, new ArrayList<Entity>());
             coursesAdapter.addAll(courses);
+
+            getFragmentManager().beginTransaction().add(R.id.my_courses_fragment_container,
+                    new MyCoursesFragment(), MyCoursesFragment.TAG).commit();
         }
         else if(getIntent().getExtras().containsKey(ProfileActivity.PASSED_EXAMS_TAG)){
             courses = getIntent().getParcelableArrayListExtra(ProfileActivity.PASSED_EXAMS_TAG);
             passedCoursesAdapter = new PassedCoursesAdapter(this, new ArrayList<Entity>());
             passedCoursesAdapter.addAll(courses);
+
+            getFragmentManager().beginTransaction().add(R.id.my_courses_fragment_container,
+                    new PassedExamsFragment(), PassedExamsFragment.TAG).commit();
         }
 
-        getFragmentManager().beginTransaction().add(R.id.my_courses_fragment_container,
-                new MyCoursesFragment(), MyCoursesFragment.TAG).commit();
 
     }
 
