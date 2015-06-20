@@ -1,5 +1,8 @@
 package it.android.unishare;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -7,6 +10,8 @@ import android.util.Log;
 
 import com.pkmmte.view.CircularImageView;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 
 /**
@@ -14,10 +19,10 @@ import java.io.InputStream;
  */
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
-    private CircularImageView imageView;
+    private FacebookActivity activity;
 
-    public DownloadImageTask(CircularImageView imageView){
-        this.imageView = imageView;
+    public DownloadImageTask(FacebookActivity activity){
+        this.activity = activity;
     }
 
     @Override
@@ -36,6 +41,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap result) {
-        imageView.setImageBitmap(result);
+        activity.saveToInternalStorage(result);
     }
 }

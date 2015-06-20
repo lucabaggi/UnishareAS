@@ -23,7 +23,8 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
     SmartActivity activity;
     View view;
     ListView listView;
-    String drawerItem[] = new String[]{"Il mio profilo","Vai ai Libri", "Vai ai Corsi"};
+    String drawerItem[] = new String[]{"Corsi Attuali", "Corsi Superati",
+            "Libri in vendita", "Libri richiesti", "Tutti i Libri", "Tutti i Corsi", };
     DrawerAdapter drawerAdapter;
     Profile profile;
 

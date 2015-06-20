@@ -2,11 +2,13 @@ package it.android.unishare;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -27,6 +29,8 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -46,6 +50,7 @@ public class FacebookActivity extends SmartActivity {
 
     private Button returnButton;
     private boolean atStart;
+    private Entity userEntity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,31 +219,54 @@ public class FacebookActivity extends SmartActivity {
     public void handleResult(ArrayList<Entity> result, String tag) {
         Log.i("MainActivity", "handling results");
         if (tag == USER_INFO) {
-            Entity userEntity = result.get(0);
-            UserInfo user = new UserInfo(userEntity);
-            ContentValues values = new ContentValues();
-            values.put(DatabaseContract.UserInfoTable.COLUMN_USER_ID, user.getUserId());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_NICKNAME, user.getNickname());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY_ID, user.getUniversityId());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY, user.getUniversity());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_CAMPUS_ID, user.getCampusId());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_CAMPUS, user.getCampus());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION_ID, user.getSpecializationId());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION, user.getSpecialization());
-            values.put(DatabaseContract.UserInfoTable.COLUMN_LAST_ACCESS, user.getLastAccess());
-
-            Log.i("MainActivity", "values ha grandezza" + values.size());
-            application.insertIntoDatabase(DatabaseContract.UserInfoTable.TABLE_NAME, values);
-            Intent intent = new Intent(FacebookActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            FacebookActivity.this.finish();
-            Log.i("FBStatus: ", "Now logged as " + profile.getName());
+            userEntity = result.get(0);
+            String imageUlr = profile.getProfilePictureUri(500,500).toString();
+            Log.i("FacebookActivity", "URL profile image: " + imageUlr);
+            new DownloadImageTask(this).execute(imageUlr);
         }
     }
 
     private void getUser(String id){
         application.databaseCall("log_user.php?id=" + id, "unishareUserInfo", null);
+    }
+
+    protected void saveToInternalStorage(Bitmap image) {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/Images
+        File directory = cw.getDir("Images", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath = new File(directory, "profile.jpg");
+
+        FileOutputStream fos = null;
+        try {
+
+            fos = new FileOutputStream(mypath);
+
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        UserInfo user = new UserInfo(userEntity);
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.UserInfoTable.COLUMN_USER_ID, user.getUserId());
+        values.put(DatabaseContract.UserInfoTable.COLUMN_NICKNAME, user.getNickname());
+        values.put(DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY_ID, user.getUniversityId());
+        values.put(DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY, user.getUniversity());
+        values.put(DatabaseContract.UserInfoTable.COLUMN_CAMPUS_ID, user.getCampusId());
+        values.put(DatabaseContract.UserInfoTable.COLUMN_CAMPUS, user.getCampus());
+        values.put(DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION_ID, user.getSpecializationId());
+        values.put(DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION, user.getSpecialization());
+        values.put(DatabaseContract.UserInfoTable.COLUMN_LAST_ACCESS, user.getLastAccess());
+        values.put(DatabaseContract.UserInfoTable.COLUMN_PROFILE_IMAGE_PATH, directory.getAbsolutePath());
+        Log.i("MainActivity", "values ha grandezza" + values.size());
+        application.insertIntoDatabase(DatabaseContract.UserInfoTable.TABLE_NAME, values);
+        Intent intent = new Intent(FacebookActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        FacebookActivity.this.finish();
+        Log.i("FBStatus: ", "Now logged as " + profile.getName());
     }
 
 }

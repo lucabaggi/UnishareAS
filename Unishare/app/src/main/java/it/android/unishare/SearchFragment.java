@@ -3,7 +3,6 @@ package it.android.unishare;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
@@ -26,7 +25,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.gc.materialdesign.views.ButtonFloat;
 import com.gc.materialdesign.views.ButtonRectangle;
 
 public class SearchFragment extends Fragment implements ViewInitiator {
@@ -42,6 +40,7 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 	//UI elements
 	ListView listview;
 	EditText searchForm;
+    LinearLayout searchHeader;
 	com.gc.materialdesign.widgets.ProgressDialog dialog;
 	ArrayAdapter<Entity> adapter;
 	
@@ -262,10 +261,16 @@ public class SearchFragment extends Fragment implements ViewInitiator {
             });
         }
 
+
+        searchHeader = (LinearLayout) view.findViewById(R.id.list_header);
+        searchHeader.setVisibility(View.INVISIBLE);
+
+
     	adapter = activity.getAdapter();
     	Log.i(TAG, "l'adapter dell'activity ha dimensione " + activity.getAdapter().getCount());
     	listview = (ListView) view.findViewById(R.id.ListView1);
     	if(adapter.getCount() > 0){
+            searchHeader.setVisibility(View.VISIBLE);
     		listview.setAdapter(adapter);
     		
     		if(this.activity instanceof BooksActivity){
@@ -344,7 +349,10 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 	}
 	
 	private void fillList() {
-		//adapter.addAll(result);	
+        if(adapter.getCount() > 0)
+            searchHeader.setVisibility(View.VISIBLE);
+        else
+            searchHeader.setVisibility(View.INVISIBLE);
 		listview.setAdapter(adapter);
     	
 		if(this.activity instanceof BooksActivity){

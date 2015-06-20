@@ -1,12 +1,22 @@
 package it.android.unishare;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import it.android.unishare.DatabaseContract.UserInfoTable;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.Profile;
@@ -15,12 +25,13 @@ import com.pkmmte.view.CircularImageView;
 public class SmartActivity extends ActionBarActivity {
 
     public static Profile profile;
+    private MyApplication application;
 
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        application = MyApplication.getInstance(this);
         //if(!Utilities.checkNetworkState(this)) Application.toastMessage(this, "Nessuna connessione internet");
 	}
 	
@@ -42,10 +53,12 @@ public class SmartActivity extends ActionBarActivity {
     }
 
     protected void setImage(){
-        CircularImageView image = (CircularImageView) findViewById(R.id.circular_image);
-        String imageUlr = profile.getProfilePictureUri(500,500).toString();
-        Log.i("SmartActivity", imageUlr);
-        new DownloadImageTask(image).execute(imageUlr);
+        String argsValues[] = {UserInfoTable.COLUMN_PROFILE_IMAGE_PATH};
+        Cursor cursor = application.queryDatabase(UserInfoTable.TABLE_NAME, argsValues,
+                null, null, null, null, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(0);
+        loadImageFromLocal(path);
     }
 
     protected String getFacebookId(){
@@ -53,6 +66,21 @@ public class SmartActivity extends ActionBarActivity {
     }
 
 
+    private void loadImageFromLocal(String path)
+    {
+
+        try {
+            File f = new File(path, "profile.jpg");
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            CircularImageView image = (CircularImageView) findViewById(R.id.circular_image);
+            image.setImageBitmap(b);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
 
 
 

@@ -28,7 +28,7 @@ public class PassedExamsFragment extends Fragment implements ViewInitiator {
 
     private OnCourseSelectedListener courseListener;
 
-	private MyCoursesActivity activity;
+	private PassedCoursesActivity activity;
     private PassedCoursesAdapter passedCoursesAdapter;
 
 	public PassedExamsFragment(){
@@ -93,7 +93,7 @@ public class PassedExamsFragment extends Fragment implements ViewInitiator {
     @Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		this.activity = (MyCoursesActivity) activity;
+		this.activity = (PassedCoursesActivity) activity;
         try{
             this.courseListener = (OnCourseSelectedListener) activity;
         }

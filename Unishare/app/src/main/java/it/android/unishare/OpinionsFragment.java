@@ -52,9 +52,13 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
             this.activity = (CoursesActivity) activity;
             Log.i(TAG, "fragment launched by CoursesActivity");
         }
-        else{
+        else if(activity instanceof MyCoursesActivity){
             this.activity = (MyCoursesActivity) activity;
-            Log.i(TAG, "fragment launched by ProfileActivity");
+            Log.i(TAG, "fragment launched by MyCoursesActivity");
+        }
+        else{
+            this.activity = (PassedCoursesActivity) activity;
+            Log.i(TAG, "fragment launched by PassedCoursesActivity");
         }
     }
     

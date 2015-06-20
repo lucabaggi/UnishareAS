@@ -33,8 +33,8 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     private String courseName;
     private int courseId;
     private CoursesAdapter coursesAdapter;
-    private PassedCoursesAdapter passedCoursesAdapter;
     private OpinionsAdapter opinionsAdapter;
+    private int numOfCourses;
 
     private ArrayList<Entity> courses;
 
@@ -55,26 +55,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
             drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);
-
-        courses = new ArrayList<>();
-        if(getIntent().getExtras().containsKey(ProfileActivity.ACTUAL_COURSES_TAG)){
-            courses = getIntent().getParcelableArrayListExtra(ProfileActivity.ACTUAL_COURSES_TAG);
-            coursesAdapter = new CoursesAdapter(this, new ArrayList<Entity>());
-            coursesAdapter.addAll(courses);
-
-            getFragmentManager().beginTransaction().add(R.id.my_courses_fragment_container,
-                    new MyCoursesFragment(), MyCoursesFragment.TAG).commit();
-        }
-        else if(getIntent().getExtras().containsKey(ProfileActivity.PASSED_EXAMS_TAG)){
-            courses = getIntent().getParcelableArrayListExtra(ProfileActivity.PASSED_EXAMS_TAG);
-            passedCoursesAdapter = new PassedCoursesAdapter(this, new ArrayList<Entity>());
-            passedCoursesAdapter.addAll(courses);
-
-            getFragmentManager().beginTransaction().add(R.id.my_courses_fragment_container,
-                    new PassedExamsFragment(), PassedExamsFragment.TAG).commit();
-        }
-
-
+        myCourses();
     }
 
     @Override
@@ -213,26 +194,10 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         coursesAdapter.notifyDataSetChanged();
     }
 
-    public void refreshPastCourses(String courseId){
-        int id = Integer.parseInt(courseId);
-        int userId = application.getUserId();
-        deleteFromPastExams(userId, id);
-        Iterator<Entity> it = courses.iterator();
-        while(it.hasNext()){
-            Entity e = it.next();
-            if(e.get("id").equals(courseId))
-                it.remove();
-        }
-        passedCoursesAdapter.clear();
-        passedCoursesAdapter.addAll(courses);
-        passedCoursesAdapter.notifyDataSetChanged();
-    }
 
     public CoursesAdapter getAdapter(){
         return this.coursesAdapter;
     }
-
-    public PassedCoursesAdapter getPassedCoursesAdapter(){ return this.passedCoursesAdapter; }
 
     public OpinionsAdapter getOpinionsAdapter(){
         return this.opinionsAdapter;
@@ -263,6 +228,40 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         int userId = application.getUserId();
         insertOpinion(courseId, rating, opinion, userId, dialog);
     }
+
+    public void myCourses(){
+        courses = new ArrayList<>();
+        String[] projection = {DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID,
+                DatabaseContract.MyCoursesTable.COLUMN_NAME,
+                DatabaseContract.MyCoursesTable.COLUMN_PROFESSOR};
+        Cursor cursor = application.queryDatabase(DatabaseContract.MyCoursesTable.TABLE_NAME, projection,
+                null, null, null, null, null);
+        numOfCourses = cursor.getCount();
+        Log.i("ProfileActivity", "Trovati " + numOfCourses + " corsi nel db locale");
+        if(numOfCourses == 0){
+            String title = "";
+            String message = "Nessun corso presente, vai nella sezione Corsi e aggiungi i corsi che stai frequentando";
+            application.alertMessage(title, message);
+            return;
+        }
+        while(cursor.moveToNext()){
+            Integer courseId = cursor.getInt(0);
+            String name = cursor.getString(1);
+            String professor = cursor.getString(2);
+            Entity course = new Entity();
+            course.addElement("id", courseId.toString());
+            course.addElement("nome", name);
+            course.addElement("professore", professor);
+            courses.add(course);
+        }
+
+        coursesAdapter = new CoursesAdapter(this, new ArrayList<Entity>());
+        coursesAdapter.addAll(courses);
+
+        getFragmentManager().beginTransaction().add(R.id.my_courses_fragment_container,
+                new MyCoursesFragment(), MyCoursesFragment.TAG).commit();
+    }
+
 
 
 }

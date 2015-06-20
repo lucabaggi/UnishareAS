@@ -40,6 +40,7 @@ public class DatabaseContract {
         public static final String COLUMN_SPECIALIZATION_ID = "specialization_id";
         public static final String COLUMN_SPECIALIZATION = "specialization";
         public static final String COLUMN_LAST_ACCESS = "last_access";
+        public static final String COLUMN_PROFILE_IMAGE_PATH = "image_path";
     }
 
     //Strings used to create tables
@@ -71,6 +72,7 @@ public class DatabaseContract {
             UserInfoTable.COLUMN_UNIVERSITY + " VARCHAR(100), " +
             UserInfoTable.COLUMN_SPECIALIZATION_ID + " INTEGER, " +
             UserInfoTable.COLUMN_SPECIALIZATION + " VARCHAR(100), " +
+            UserInfoTable.COLUMN_PROFILE_IMAGE_PATH + " VARCHAR(100), " +
             UserInfoTable.COLUMN_LAST_ACCESS + " INTEGER)";
 
     public static final String SQL_DELETE_COURSES_TABLE = "DROP TABLE IF EXISTS " + MyCoursesTable.TABLE_NAME;

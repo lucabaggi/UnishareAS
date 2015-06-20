@@ -37,9 +37,12 @@ public class MyApplication extends android.app.Application {
 	
 	private static MyApplication instance = null;
 
-	private static final int PROFILE = 0;
-    private static final int BOOKS = 1;
-    private static final int COURSES = 2;
+	private static final int ACTUAL_COURSES = 0;
+    private static final int PASSED_COURSES = 1;
+	private static final int SELL_BOOKS = 2;
+	private static final int REQ_BOOKS = 3;
+    private static final int BOOKS = 4;
+    private static final int COURSES = 5;
 	
 	private int userID;
 	private int campusID;
@@ -308,9 +311,18 @@ public class MyApplication extends android.app.Application {
 
     public void launchNewActivityFromDrawer(Activity activity, int position){
         switch (position){
-			case(PROFILE):
-				MyApplication.getInstance(activity).newActivity(ProfileActivity.class);
+			case(ACTUAL_COURSES):
+				MyApplication.getInstance(activity).newActivity(MyCoursesActivity.class);
 				break;
+            case(PASSED_COURSES):
+                MyApplication.getInstance(activity).newActivity(PassedCoursesActivity.class);
+                break;
+			case(SELL_BOOKS):
+				MyApplication.getInstance(activity).newActivity(MyBooksActivity.class);
+                break;
+			case(REQ_BOOKS):
+				MyApplication.getInstance(activity).newActivity(RequestedBooksActivity.class);
+                break;
             case(BOOKS):
                 MyApplication.getInstance(activity).newActivity(BooksActivity.class);
                 break;

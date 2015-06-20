@@ -1,14 +1,11 @@
 package it.android.unishare;
 
-import android.app.ActivityManager;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,31 +15,34 @@ import android.view.MenuItem;
 
 import com.gc.materialdesign.widgets.ProgressDialog;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
-public class ProfileActivity extends SmartActivity {
+public class PassedCoursesActivity extends CourseSupportActivity implements MyCoursesFragment.OnCourseSelectedListener, PassedExamsFragment.OnCourseSelectedListener {
 
-    public static final String TAG = "ProfileActivity";
-    public static final String ACTUAL_COURSES_TAG = "actualCourses";
-    public static final String PASSED_EXAMS_TAG = "passedExams";
+    public static final String TAG = "PassedCoursesActivity";
+
+    private OpinionsFragment opinionsFragment;
+    private InsertOpinionFragment insertOpinionFragment;
 
     private MyApplication application;
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
-    private ArrayList<Entity> courses;
-    private ArrayList<Entity> passedExams;
-    private int numOfCourses;
+    private String courseName;
+    private int courseId;
     private int numOfPassedExams;
 
+    private PassedCoursesAdapter passedCoursesAdapter;
+    private OpinionsAdapter opinionsAdapter;
+
+    private ArrayList<Entity> courses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_activity);
+        setContentView(R.layout.passed_courses_activity);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -56,8 +56,7 @@ public class ProfileActivity extends SmartActivity {
             drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);
-
-        getFragmentManager().beginTransaction().add(R.id.profile_fragment_container, new ProfileFragment(), ProfileFragment.TAG).commit();
+        passedExams();
     }
 
     @Override
@@ -131,41 +130,106 @@ public class ProfileActivity extends SmartActivity {
         return this.application;
     }
 
+    @Override
+    public void handleResult(ArrayList<Entity> result, String tag){
+        if(tag == OPINION_TAG){
+            opinionsAdapter = new OpinionsAdapter(this, new ArrayList<Entity>());
+            opinionsAdapter.addAll(result);
+            createOpinionFragment();
+        }
+        if(tag == INSERT_OPINION_TAG){
+            if(!result.isEmpty()){
+                if(result.get(0).getFirst().equals("ERROR")){
+                    Log.i(CoursesActivity.TAG,"Error, opinione già inserita dall'utente");
+                    getFragmentManager().beginTransaction().remove(insertOpinionFragment).commit();
+                    getFragmentManager().popBackStack();
+                    String title = "Errore";
+                    String message = "Opinione non inserita. Verifica di non aver già recensito questo corso";
+                    application.alertMessage(title, message);
+                    return;
+                }
+                Log.i(TAG,"Opinione inserita correttamente");
+                getFragmentManager().beginTransaction().remove(insertOpinionFragment).commit();
+                getFragmentManager().popBackStack();
+                String title = "";
+                String message = "Opinione inserita. Grazie per il tuo contributo!";
+                application.alertMessage(title, message);
+                refreshOpinions(courseId);
+            }
+        }
+        if(tag == REFRESH_OPINIONS_ADAPTER){
+            Log.i(TAG, "Refreshing dell'adapter");
+            opinionsAdapter.clear();
+            opinionsAdapter.addAll(result);
+            opinionsAdapter.notifyDataSetChanged();
+        }
+        if(tag == DELETE_FROM_ACTUAL_TAG){
+            Log.i(TAG, "Corso attuale eliminato dal db esterno");
+        }
+        if(tag == DELETE_FROM_PAST_TAG){
+            Log.i(TAG, "Corso passato eliminato dal db esterno");
+        }
 
-    public void myCourses() {
-        courses = new ArrayList<>();
-        String[] projection = {DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID,
-                DatabaseContract.MyCoursesTable.COLUMN_NAME,
-                DatabaseContract.MyCoursesTable.COLUMN_PROFESSOR};
-        Cursor cursor = application.queryDatabase(DatabaseContract.MyCoursesTable.TABLE_NAME, projection,
-                null, null, null, null, null);
-        numOfCourses = cursor.getCount();
-        Log.i("ProfileActivity", "Trovati " + numOfCourses + " corsi nel db locale");
-        if(numOfCourses == 0){
-            String title = "";
-            String message = "Nessun corso presente, vai nella sezione Corsi e aggiungi i corsi che stai frequentando";
-            application.alertMessage(title, message);
-            return;
+    }
+
+    private void createOpinionFragment() {
+        opinionsFragment = new OpinionsFragment(courseName);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.my_courses_fragment_container, opinionsFragment, OpinionsFragment.TAG);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+
+    public void refreshPastCourses(String courseId){
+        int id = Integer.parseInt(courseId);
+        int userId = application.getUserId();
+        deleteFromPastExams(userId, id);
+        Iterator<Entity> it = courses.iterator();
+        while(it.hasNext()){
+            Entity e = it.next();
+            if(e.get("id").equals(courseId))
+                it.remove();
         }
-        while(cursor.moveToNext()){
-            Integer courseId = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String professor = cursor.getString(2);
-            Entity course = new Entity();
-            course.addElement("id", courseId.toString());
-            course.addElement("nome", name);
-            course.addElement("professore", professor);
-            courses.add(course);
-        }
-        for(Entity e : courses)
-            Log.i(TAG, "{" + e.get("id") + " ," + e.get("nome") + " ," + e.get("professore") + "}\n");
-        Intent intent = new Intent(this, MyCoursesActivity.class);
-        intent.putExtra(ACTUAL_COURSES_TAG, courses);
-        startActivity(intent);
+        passedCoursesAdapter.clear();
+        passedCoursesAdapter.addAll(courses);
+        passedCoursesAdapter.notifyDataSetChanged();
+    }
+
+    public PassedCoursesAdapter getPassedCoursesAdapter(){ return this.passedCoursesAdapter; }
+
+    public OpinionsAdapter getOpinionsAdapter(){
+        return this.opinionsAdapter;
+    }
+
+    public String getCourseName(){
+        return this.courseName;
+    }
+
+    @Override
+    public void onCourseSelected(String courseId, String courseName, ProgressDialog dialog) {
+        this.courseName = courseName;
+        this.courseId = Integer.parseInt(courseId);
+        getOpinion(this.courseId, dialog);
+    }
+
+    public void createInsertOpinionFragment() {
+        insertOpinionFragment = new InsertOpinionFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.my_courses_fragment_container, insertOpinionFragment, InsertOpinionFragment.TAG);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    public void insertOpinion(String opinion, float rating, ProgressDialog dialog) {
+        Log.i(TAG, "Calling db for inserting opinion");
+        Log.i(TAG, "Commento: " + opinion + "\nvoto: " + rating + " per il corso " + courseId);
+        int userId = application.getUserId();
+        insertOpinion(courseId, rating, opinion, userId, dialog);
     }
 
     public void passedExams(){
-        passedExams = new ArrayList<>();
+        courses = new ArrayList<>();
         String[] projection = {DatabaseContract.PassedExams.COLUMN_COURSE_ID,
                 DatabaseContract.PassedExams.COLUMN_NAME,
                 DatabaseContract.PassedExams.COLUMN_PROFESSOR,
@@ -193,23 +257,14 @@ public class ProfileActivity extends SmartActivity {
             course.addElement("professore", professor);
             course.addElement("valutazione", grade.toString());
             course.addElement("lode", lode.toString());
-            passedExams.add(course);
+            courses.add(course);
         }
-        for(Entity e : passedExams)
-            Log.i(TAG, "{" + e.get("id") + " ," + e.get("nome") + " ," + e.get("professore") + ", " + e.get("valutazione") + "}\n");
-        Intent intent = new Intent(this, MyCoursesActivity.class);
-        intent.putExtra(PASSED_EXAMS_TAG, passedExams);
-        startActivity(intent);
+
+        passedCoursesAdapter = new PassedCoursesAdapter(this, new ArrayList<Entity>());
+        passedCoursesAdapter.addAll(courses);
+        getFragmentManager().beginTransaction().add(R.id.my_courses_fragment_container,
+                new PassedExamsFragment(), PassedExamsFragment.TAG).commit();
     }
 
-    public void soldBooks(){
-        Intent intent = new Intent(this, MyBooksActivity.class);
-        startActivity(intent);
-    }
-
-    public void requestedBooks(){
-        Intent intent = new Intent(this, RequestedBooksActivity.class);
-        startActivity(intent);
-    }
 
 }

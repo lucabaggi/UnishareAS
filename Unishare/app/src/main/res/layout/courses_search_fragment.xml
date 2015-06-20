@@ -70,7 +70,7 @@
                 android:text="@string/search_button" />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/list_courses_header"
+            android:id="@+id/list_header"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:background="@color/Orange">
