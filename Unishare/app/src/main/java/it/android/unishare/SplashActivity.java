@@ -1,9 +1,16 @@
 package it.android.unishare;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
 
 public class SplashActivity extends Activity {
 	
@@ -17,9 +24,23 @@ public class SplashActivity extends Activity {
 		application = MyApplication.getInstance(this);
 		getFragmentManager().beginTransaction().add(R.id.splash_fragment_container, new SplashFragment()).commit();
         application.initializeDatabase();
-        application.newDelayedActivity(TIME_SHOW_MILLIS, FacebookActivity.class);
-
+        if(application.numOfRows(DatabaseContract.UserInfoTable.TABLE_NAME) > 0)
+            if(Utilities.checkNetworkState(this)){
+                int userId = application.getUserId();
+                new SyncUserCoursesTask(application).execute(userId);
+            }
+            else {
+                application.toastMessage(this,
+                        "Nessuna connessione di rete. Sincronizzazione corsi fallita");
+                launchFacebookActivity();
+            }
+        else
+            launchFacebookActivity();
 	}
+
+    protected void launchFacebookActivity(){
+        application.newDelayedActivity(TIME_SHOW_MILLIS, FacebookActivity.class);
+    }
 	
 
 	@Override
@@ -40,4 +61,8 @@ public class SplashActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+    public MyApplication getMyApplication(){
+        return this.application;
+    }
 }

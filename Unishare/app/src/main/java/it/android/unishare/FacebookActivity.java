@@ -217,7 +217,7 @@ public class FacebookActivity extends SmartActivity {
 
     @Override
     public void handleResult(ArrayList<Entity> result, String tag) {
-        Log.i("MainActivity", "handling results");
+        Log.i("FacebookActivity", "handling results");
         if (tag == USER_INFO) {
             userEntity = result.get(0);
             String imageUlr = profile.getProfilePictureUri(500,500).toString();
@@ -262,6 +262,7 @@ public class FacebookActivity extends SmartActivity {
         values.put(DatabaseContract.UserInfoTable.COLUMN_PROFILE_IMAGE_PATH, directory.getAbsolutePath());
         Log.i("MainActivity", "values ha grandezza" + values.size());
         application.insertIntoDatabase(DatabaseContract.UserInfoTable.TABLE_NAME, values);
+        new SyncUserCoursesTask(application).execute(user.getUserId());
         Intent intent = new Intent(FacebookActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
