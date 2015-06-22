@@ -109,7 +109,7 @@ public class SearchFragment extends Fragment implements ViewInitiator {
         Entity course = ((CoursesActivity) activity).getAdapter().getItem(info.position);
         String courseName = course.get("nome");
         menu.setHeaderTitle(courseName);
-        menu.add(Menu.NONE, R.id.add_to_fav_item, Menu.NONE, "Aggiungi ai preferiti");
+        menu.add(Menu.NONE, R.id.add_to_fav_item, Menu.NONE, "Aggiungi ai corsi attuali");
 		menu.add(Menu.NONE, R.id.add_to_passed_item, Menu.NONE, "Aggiungi ai corsi superati");
     }
 
