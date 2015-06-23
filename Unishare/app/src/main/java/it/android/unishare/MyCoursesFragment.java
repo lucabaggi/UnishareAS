@@ -4,6 +4,7 @@ package it.android.unishare;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
 	private ListView listview;
     private TextView header;
     private ProgressDialog dialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private OnCourseSelectedListener courseListener;
 
@@ -105,6 +107,14 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
 	public void initializeUI(View view) {
         listview = (ListView) view.findViewById(R.id.myCoursesListView);
         header = (TextView) view.findViewById(R.id.myCoursesTextView);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.my_courses_swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.Green, R.color.Orange, R.color.Blue);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                activity.refreshActualCourses();
+            }
+        });
         header.setText("Corsi Attuali");
         coursesAdapter = activity.getAdapter();
         listview.setAdapter(coursesAdapter);
@@ -128,6 +138,10 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
             }
         });
 	}
+
+    public SwipeRefreshLayout getSwipeRefreshLayout(){
+        return this.swipeRefreshLayout;
+    }
 	
 	
 

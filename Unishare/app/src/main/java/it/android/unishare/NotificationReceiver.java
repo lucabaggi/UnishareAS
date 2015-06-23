@@ -1,6 +1,7 @@
 package it.android.unishare;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -19,6 +21,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     public static final int NOTIFICATION_ID = 1;
     private NotificationManager mNotificationManager;
+    private PendingIntent pendingIntent;
 
     public NotificationReceiver() {
     }
@@ -33,6 +36,24 @@ public class NotificationReceiver extends BroadcastReceiver {
         if (!extras.isEmpty()) {
 
             if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
+
+                Intent myIntent = new Intent(context, MyBooksActivity.class);
+
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                // Adds the back stack
+                stackBuilder.addParentStack(MyBooksActivity.class);
+                // Adds the Intent to the top of the stack
+                stackBuilder.addNextIntent(myIntent);
+                // Gets a PendingIntent containing the entire back stack
+                pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                /*
+                pendingIntent = PendingIntent.getActivity(
+                        context,
+                        0,
+                        myIntent,
+                        PendingIntent.FLAG_CANCEL_CURRENT);
+                        */
 
                 // retrieve del campo message della notifica
                 String json_info = intent.getExtras().getString("message");
@@ -55,8 +76,10 @@ public class NotificationReceiver extends BroadcastReceiver {
                 new NotificationCompat.Builder(ctx)
                         .setSmallIcon(R.drawable.ic_launcher)
                         .setContentTitle("Unishare")
+                        .setContentIntent(pendingIntent)
                         .setContentText(msg)
-                        .setSound(sound);
+                        .setSound(sound)
+                        .setAutoCancel(true);
 
         // effettua la notifica
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());

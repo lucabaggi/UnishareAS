@@ -318,10 +318,22 @@ public class MyApplication extends android.app.Application {
                 MyApplication.getInstance(activity).newActivity(PassedCoursesActivity.class);
                 break;
 			case(SELL_BOOKS):
-				MyApplication.getInstance(activity).newActivity(MyBooksActivity.class);
+				if(Utilities.checkNetworkState(getActivity()))
+					MyApplication.getInstance(activity).newActivity(MyBooksActivity.class);
+				else{
+					String title = "Error";
+					String message = "Verifica la tua connessione a Internet e riprova";
+					alertMessage(title, message);
+				}
                 break;
 			case(REQ_BOOKS):
-				MyApplication.getInstance(activity).newActivity(RequestedBooksActivity.class);
+				if(Utilities.checkNetworkState(getActivity()))
+					MyApplication.getInstance(activity).newActivity(RequestedBooksActivity.class);
+				else{
+					String title = "Error";
+					String message = "Verifica la tua connessione a Internet e riprova";
+					alertMessage(title, message);
+				}
                 break;
             case(BOOKS):
                 MyApplication.getInstance(activity).newActivity(BooksActivity.class);

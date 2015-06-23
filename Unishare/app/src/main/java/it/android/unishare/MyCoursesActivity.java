@@ -1,10 +1,12 @@
 package it.android.unishare;
 
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -168,7 +170,13 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         if(tag == DELETE_FROM_PAST_TAG){
             Log.i(TAG, "Corso passato eliminato dal db esterno");
         }
-
+        if(tag == ACTUAL_COURSES_TAG){
+            coursesAdapter.clear();
+            coursesAdapter.addAll(result);
+            coursesAdapter.notifyDataSetChanged();
+            MyCoursesFragment f = (MyCoursesFragment)getFragmentManager().findFragmentByTag(MyCoursesFragment.TAG);
+            f.getSwipeRefreshLayout().setRefreshing(false);
+        }
     }
 
     private void createOpinionFragment() {
@@ -192,6 +200,11 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         coursesAdapter.clear();
         coursesAdapter.addAll(courses);
         coursesAdapter.notifyDataSetChanged();
+    }
+
+    public void refreshActualCourses() {
+        int userId = application.getUserId();
+        getActualCourses(userId);
     }
 
 
