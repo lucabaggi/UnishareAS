@@ -26,6 +26,7 @@ public class CourseSupportActivity extends AdapterActivity {
     public static final String DELETE_FROM_ACTUAL_TAG = "deleteFromActual";
     public static final String DELETE_FROM_PAST_TAG = "deleteFromPast";
     public static final String ACTUAL_COURSES_TAG = "actualCourses";
+    public static final String PAST_COURSES_TAG = "passedExams";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,5 +118,10 @@ public class CourseSupportActivity extends AdapterActivity {
 
     public void getActualCourses(int userId){
         getMyApplication().databaseCall("courses_current.php?u=" + userId, ACTUAL_COURSES_TAG, null);
+    }
+
+    public void getPastCourses(int userId){
+        getMyApplication().databaseCall("courses_past.php?u=" + userId, PAST_COURSES_TAG, null);
+
     }
 }

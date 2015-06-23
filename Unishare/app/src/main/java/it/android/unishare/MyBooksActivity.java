@@ -197,7 +197,8 @@ public class MyBooksActivity extends SmartActivity {
     //Database calls
 
     private void getSoldBooks(int userId) {
-        getMyApplication().databaseCall("books_sold.php?u=" + userId, BOOKS_TAG, null);
+        ProgressDialog dialog = new ProgressDialog(this, "Searching");
+        getMyApplication().databaseCall("books_sold.php?u=" + userId, BOOKS_TAG, dialog);
     }
 
     private void insertSellingBook(String bookTitle, String author, float price, int userId, com.gc.materialdesign.widgets.ProgressDialog dialog) {

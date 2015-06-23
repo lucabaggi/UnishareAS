@@ -117,6 +117,28 @@ public class MyApplication extends android.app.Application {
 		cursor.moveToFirst();
 		return cursor.getInt(0);
 	}
+
+	public boolean existsInCurrentCourses(int id){
+		String selection = DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID + " = ?";
+        String[] selectionArgs = {((Integer)id).toString()};
+        Cursor cursor = queryDatabase(DatabaseContract.MyCoursesTable.TABLE_NAME, null, selection,
+                selectionArgs,null, null, null);
+        if(cursor.getCount() > 0)
+            return true;
+        else
+            return false;
+	}
+
+    public boolean existsInPastCourses(int id){
+        String selection = DatabaseContract.PassedExams.COLUMN_COURSE_ID + " = ?";
+        String[] selectionArgs = {((Integer)id).toString()};
+        Cursor cursor = queryDatabase(DatabaseContract.PassedExams.TABLE_NAME, null, selection,
+                selectionArgs,null, null, null);
+        if(cursor.getCount() > 0)
+            return true;
+        else
+            return false;
+    }
 	
 	public static MyApplication getInstance(Activity activity) {
 	   if(instance == null) {

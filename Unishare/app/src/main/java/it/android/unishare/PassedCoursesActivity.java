@@ -1,10 +1,12 @@
 package it.android.unishare;
 
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -169,7 +171,15 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
         if(tag == DELETE_FROM_PAST_TAG){
             Log.i(TAG, "Corso passato eliminato dal db esterno");
         }
-
+        if(tag == PAST_COURSES_TAG){
+            passedCoursesAdapter.clear();
+            passedCoursesAdapter.addAll(result);
+            passedCoursesAdapter.notifyDataSetChanged();
+            PassedExamsFragment f = (PassedExamsFragment)getFragmentManager()
+                    .findFragmentByTag(PassedExamsFragment.TAG);
+            f.getSwipeRefreshLayout().setRefreshing(false);
+            updateLocalDb(result);
+        }
     }
 
     private void createOpinionFragment() {
@@ -180,6 +190,19 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
         transaction.commit();
     }
 
+    public void refreshPastCourses(){
+        int userId = application.getUserId();
+        if(Utilities.checkNetworkState(this))
+            getPastCourses(userId);
+        else{
+            String title = "Errore";
+            String message = "Controlla la tua connessione a Internet e riprova";
+            PassedExamsFragment f = (PassedExamsFragment)getFragmentManager()
+                    .findFragmentByTag(PassedExamsFragment.TAG);
+            f.getSwipeRefreshLayout().setRefreshing(false);
+            application.alertMessage(title, message);
+        }
+    }
 
     public void refreshPastCourses(String courseId){
         int id = Integer.parseInt(courseId);
@@ -235,8 +258,9 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
                 DatabaseContract.PassedExams.COLUMN_PROFESSOR,
                 DatabaseContract.PassedExams.COLUMN_GRADE,
                 DatabaseContract.PassedExams.COLUMN_LAUDE};
+        String orderBy = DatabaseContract.PassedExams.COLUMN_NAME + " ASC";
         Cursor cursor = application.queryDatabase(DatabaseContract.PassedExams.TABLE_NAME, projection,
-                null, null, null, null, null);
+                null, null, null, null, orderBy);
         numOfPassedExams = cursor.getCount();
         Log.i("ProfileActivity", "Trovati " + numOfPassedExams + " esami superati nel db locale");
         if(numOfPassedExams == 0){
@@ -264,6 +288,31 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
         passedCoursesAdapter.addAll(courses);
         getFragmentManager().beginTransaction().add(R.id.my_courses_fragment_container,
                 new PassedExamsFragment(), PassedExamsFragment.TAG).commit();
+    }
+
+    private void updateLocalDb(ArrayList<Entity> result) {
+        final ArrayList<Entity> courses = result;
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                for(Entity course : courses){
+                    int id = Integer.parseInt(course.get("id"));
+                    if(!application.existsInPastCourses(id)) {
+                        String courseName = course.get("nome");
+                        String professor = course.get("professore");
+                        int grade = Integer.parseInt(course.get("valutazione"));
+                        int lode = Integer.parseInt(course.get("lode"));
+                        ContentValues values = new ContentValues();
+                        values.put(DatabaseContract.PassedExams.COLUMN_NAME, courseName);
+                        values.put(DatabaseContract.PassedExams.COLUMN_COURSE_ID, id);
+                        values.put(DatabaseContract.PassedExams.COLUMN_PROFESSOR, professor);
+                        values.put(DatabaseContract.PassedExams.COLUMN_GRADE, grade);
+                        values.put(DatabaseContract.PassedExams.COLUMN_LAUDE, lode);
+                        application.insertIntoDatabase(DatabaseContract.PassedExams.TABLE_NAME, values);
+                    }
+                }
+            }
+        });
     }
 
 

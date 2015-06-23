@@ -1,7 +1,9 @@
 package it.android.unishare;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -176,6 +178,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
             coursesAdapter.notifyDataSetChanged();
             MyCoursesFragment f = (MyCoursesFragment)getFragmentManager().findFragmentByTag(MyCoursesFragment.TAG);
             f.getSwipeRefreshLayout().setRefreshing(false);
+            updateLocalDb(result);
         }
     }
 
@@ -204,7 +207,15 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
 
     public void refreshActualCourses() {
         int userId = application.getUserId();
+        if(Utilities.checkNetworkState(this))
         getActualCourses(userId);
+        else{
+            String title = "Errore";
+            String message = "Controlla la tua connessione a Internet e riprova";
+            MyCoursesFragment f = (MyCoursesFragment)getFragmentManager().findFragmentByTag(MyCoursesFragment.TAG);
+            f.getSwipeRefreshLayout().setRefreshing(false);
+            application.alertMessage(title, message);
+        }
     }
 
 
@@ -247,8 +258,9 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         String[] projection = {DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID,
                 DatabaseContract.MyCoursesTable.COLUMN_NAME,
                 DatabaseContract.MyCoursesTable.COLUMN_PROFESSOR};
+        String orderBy = DatabaseContract.MyCoursesTable.COLUMN_NAME + " ASC";
         Cursor cursor = application.queryDatabase(DatabaseContract.MyCoursesTable.TABLE_NAME, projection,
-                null, null, null, null, null);
+                null, null, null, null, orderBy);
         numOfCourses = cursor.getCount();
         Log.i("ProfileActivity", "Trovati " + numOfCourses + " corsi nel db locale");
         if(numOfCourses == 0){
@@ -273,6 +285,28 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
 
         getFragmentManager().beginTransaction().add(R.id.my_courses_fragment_container,
                 new MyCoursesFragment(), MyCoursesFragment.TAG).commit();
+    }
+
+    private void updateLocalDb(ArrayList<Entity> result){
+        final ArrayList<Entity> courses = result;
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                for(Entity course : courses){
+                    int id = Integer.parseInt(course.get("id"));
+                    if(!application.existsInCurrentCourses(id)) {
+                        String courseName = course.get("nome");
+                        String professor = course.get("professore");
+                        ContentValues values = new ContentValues();
+                        values.put(DatabaseContract.MyCoursesTable.COLUMN_NAME, courseName);
+                        values.put(DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID, id);
+                        values.put(DatabaseContract.MyCoursesTable.COLUMN_PROFESSOR, professor);
+                        application.insertIntoDatabase(DatabaseContract.MyCoursesTable.TABLE_NAME, values);
+                    }
+                }
+            }
+        });
+
     }
 
 

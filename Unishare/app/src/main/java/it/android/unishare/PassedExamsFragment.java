@@ -4,6 +4,7 @@ package it.android.unishare;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ public class PassedExamsFragment extends Fragment implements ViewInitiator {
 	private ListView listview;
     private TextView header;
     private ProgressDialog dialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private OnCourseSelectedListener courseListener;
 
@@ -107,7 +109,14 @@ public class PassedExamsFragment extends Fragment implements ViewInitiator {
 	public void initializeUI(View view) {
         listview = (ListView) view.findViewById(R.id.passedExamsListView);
         header = (TextView) view.findViewById(R.id.passedExamsTextView);
-        header.setText("Corsi Superati");
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.passed_courses_swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.Green, R.color.Orange, R.color.Blue);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                activity.refreshPastCourses();
+            }
+        });
         passedCoursesAdapter = activity.getPassedCoursesAdapter();
         listview.setAdapter(passedCoursesAdapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -130,6 +139,10 @@ public class PassedExamsFragment extends Fragment implements ViewInitiator {
             }
         });
 	}
+
+    public SwipeRefreshLayout getSwipeRefreshLayout(){
+        return this.swipeRefreshLayout;
+    }
 	
 	
 
