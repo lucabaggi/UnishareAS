@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -28,9 +29,11 @@ import com.facebook.*;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -40,6 +43,7 @@ import java.util.Arrays;
 public class FacebookActivity extends SmartActivity {
 
     private static final String USER_INFO = "unishareUserInfo";
+    private static final String REG_ID_TAG = "addingRegistrationId";
 
     private MyApplication application;
 
@@ -51,6 +55,10 @@ public class FacebookActivity extends SmartActivity {
     private Button returnButton;
     private boolean atStart;
     private Entity userEntity;
+
+    private Context context;
+    private GoogleCloudMessaging gcm;
+    private String regid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,14 +268,53 @@ public class FacebookActivity extends SmartActivity {
         values.put(DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION, user.getSpecialization());
         values.put(DatabaseContract.UserInfoTable.COLUMN_LAST_ACCESS, user.getLastAccess());
         values.put(DatabaseContract.UserInfoTable.COLUMN_PROFILE_IMAGE_PATH, directory.getAbsolutePath());
-        Log.i("MainActivity", "values ha grandezza" + values.size());
+        Log.i("FacebookActivity", "values ha grandezza" + values.size());
         application.insertIntoDatabase(DatabaseContract.UserInfoTable.TABLE_NAME, values);
+
+        context = FacebookActivity.this;
+        gcm = GoogleCloudMessaging.getInstance(context);
+        registerInBackground();
+
         new SyncUserCoursesTask(application).execute(user.getUserId());
         Intent intent = new Intent(FacebookActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         FacebookActivity.this.finish();
         Log.i("FBStatus: ", "Now logged as " + profile.getName());
+    }
+
+    private void registerInBackground() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String msg = "";
+                try {
+                    if (gcm == null) {
+                        gcm = GoogleCloudMessaging.getInstance(context);
+                    }
+                    regid = gcm.register(Properties.GCM_SENDER_ID);
+
+                } catch (IOException ex) {
+                    return null;
+                }
+                return regid;
+            }
+
+            @Override
+            protected void onPostExecute(String regid) {
+                if (regid != null) {
+                    Log.i("FacebookActivity", "Registration_id = " + regid);
+                    Properties.GCM_REGISTRATION_ID = regid;
+                    int userid = application.getUserId();
+                    addRegId(userid, Properties.GCM_REGISTRATION_ID);
+                } else
+                    Log.i("FacebookActivity", "Errore: registrazione su GCM non riuscita!");
+            }
+        }.execute();
+    }
+
+    private void addRegId(int userId, String regId){
+        application.databaseCall("android_gcm_set.php?u=" + userId + "&id=" + regId, REG_ID_TAG, null);
     }
 
 }

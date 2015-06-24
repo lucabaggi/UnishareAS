@@ -56,9 +56,11 @@ public class SmartActivity extends ActionBarActivity {
         String argsValues[] = {UserInfoTable.COLUMN_PROFILE_IMAGE_PATH};
         Cursor cursor = application.queryDatabase(UserInfoTable.TABLE_NAME, argsValues,
                 null, null, null, null, null);
-        cursor.moveToFirst();
-        String path = cursor.getString(0);
-        loadImageFromLocal(path);
+        if(cursor.getCount() > 0){
+            cursor.moveToFirst();
+            String path = cursor.getString(0);
+            loadImageFromLocal(path);
+        }
     }
 
     protected String getFacebookId(){
