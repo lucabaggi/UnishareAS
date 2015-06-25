@@ -26,6 +26,10 @@ import com.facebook.Profile;
 
 
 public class MainActivity extends SmartActivity {
+
+    private static final String MAIN_FRAGMENT_INSTANCE = "main_fragment_key";
+
+    private MainFragment mainFragment;
 	
 	private MyApplication application;
     private Toolbar toolbar;
@@ -56,11 +60,28 @@ public class MainActivity extends SmartActivity {
         application = MyApplication.getInstance(this);
         //addUserToDb(facebookId);
 
-        getFragmentManager().beginTransaction().add(R.id.container, new MainFragment(), MainFragment.TAG).commit();
+        if(savedInstanceState != null){
+            Log.i("MainActivity", "Existing fragment");
+            mainFragment = (MainFragment)getFragmentManager()
+                    .getFragment(savedInstanceState, MAIN_FRAGMENT_INSTANCE);
+        }
+        else{
+            Log.i("MainActivity", "Creating new fragment");
+            mainFragment = new MainFragment();
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, mainFragment, MainFragment.TAG).commit();
+        }
+
         //Starts background service
         //Intent service = new Intent(this.getApplicationContext(), BackgroundService.class);
         //this.getApplicationContext().startService(service);
         
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        getFragmentManager().putFragment(outState, MAIN_FRAGMENT_INSTANCE, mainFragment);
     }
     
     @Override

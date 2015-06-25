@@ -25,8 +25,15 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
 
     public static final String TAG = "PassedCoursesActivity";
 
+    private static final String PASSED_COURSES_FRAGMENT_INSTANCE = "passed_courses_fragment_key";
+    private static final String INSERT_OPINION_FRAGMENT_INSTANCE = "insert_opinion_fragment_key";
+    private static final String ADAPTER_VALUES = "key_adapter";
+    private static final String OPINION_ADAPTER_VALUES = "key_opinion_adapter";
+    private static final String COURSE_NAME = "course_name_key";
+
     private OpinionsFragment opinionsFragment;
     private InsertOpinionFragment insertOpinionFragment;
+    private PassedExamsFragment passedExamsFragment;
 
     private MyApplication application;
     private Toolbar toolbar;
@@ -40,6 +47,9 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
     private OpinionsAdapter opinionsAdapter;
 
     private ArrayList<Entity> courses;
+
+    ArrayList<Entity> adapterValues = new ArrayList<Entity>();
+    ArrayList<Entity> opinionAdapterValues = new ArrayList<Entity>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +68,65 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
             drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);
-        passedExams();
+        passedCoursesAdapter = new PassedCoursesAdapter(this, new ArrayList<Entity>());
+
+        if(savedInstanceState != null){
+            passedExamsFragment = (PassedExamsFragment)getFragmentManager()
+                    .getFragment(savedInstanceState, PASSED_COURSES_FRAGMENT_INSTANCE);
+            Log.i(TAG, "Existing fragment");
+            adapterValues = savedInstanceState.getParcelableArrayList(ADAPTER_VALUES);
+            this.passedCoursesAdapter.addAll(adapterValues);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.add(R.id.my_courses_fragment_container, passedExamsFragment, PassedExamsFragment.TAG);
+
+            if(savedInstanceState.getString(COURSE_NAME) != null){
+                this.courseName = savedInstanceState.getString(COURSE_NAME);
+                opinionAdapterValues = savedInstanceState.getParcelableArrayList(OPINION_ADAPTER_VALUES);
+                opinionsAdapter = new OpinionsAdapter(this, new ArrayList<Entity>());
+                opinionsAdapter.addAll(opinionAdapterValues);
+            }
+            if(getFragmentManager().getFragment(savedInstanceState, INSERT_OPINION_FRAGMENT_INSTANCE) != null)
+                insertOpinionFragment = (InsertOpinionFragment)getFragmentManager()
+                        .getFragment(savedInstanceState, INSERT_OPINION_FRAGMENT_INSTANCE);
+        }
+        else{
+            Log.i(TAG, "Fragment not exists, creating");
+            passedExams();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        ArrayList<Entity> values = new ArrayList<Entity>();
+        /**
+         * Storing nel Bundle dei valori presenti nell'adapter, in questo modo possono essere ripristinati in seguito
+         * ad un cambio di configurazione, come il cambio di orientamento del dispositivo
+         */
+        if(passedCoursesAdapter != null){
+            for(int i = 0; i < passedCoursesAdapter.getCount(); i++)
+                values.add(passedCoursesAdapter.getItem(i));
+            outState.putParcelableArrayList(ADAPTER_VALUES, values);
+        }
+        /**
+         * Storing del CoursesSearchFragment per poterne ripristinare lo stato in seguito ad un cambio di configurazione.
+         * I valori presenti nell'adapter vanno salvati a parte poich� non vengono conservati
+         */
+        getFragmentManager().putFragment(outState, PASSED_COURSES_FRAGMENT_INSTANCE, passedExamsFragment);
+        if(this.courseName != null){
+            outState.putString(COURSE_NAME, this.courseName);
+            ArrayList<Entity> opinions = new ArrayList<Entity>();
+            if(opinionsAdapter != null){
+                for(int i = 0; i < opinionsAdapter.getCount(); i++)
+                    opinions.add(opinionsAdapter.getItem(i));
+                outState.putParcelableArrayList(OPINION_ADAPTER_VALUES, opinions);
+            }
+
+        }
+        if(this.insertOpinionFragment != null)
+            if(this.insertOpinionFragment.isVisible())
+                getFragmentManager()
+                        .putFragment(outState, INSERT_OPINION_FRAGMENT_INSTANCE, insertOpinionFragment);
     }
 
     @Override
@@ -286,8 +354,9 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
 
         passedCoursesAdapter = new PassedCoursesAdapter(this, new ArrayList<Entity>());
         passedCoursesAdapter.addAll(courses);
+        passedExamsFragment = new PassedExamsFragment();
         getFragmentManager().beginTransaction().add(R.id.my_courses_fragment_container,
-                new PassedExamsFragment(), PassedExamsFragment.TAG).commit();
+                passedExamsFragment, PassedExamsFragment.TAG).commit();
     }
 
     private void updateLocalDb(ArrayList<Entity> result) {

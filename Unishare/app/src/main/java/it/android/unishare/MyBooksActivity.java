@@ -24,9 +24,16 @@ public class MyBooksActivity extends SmartActivity {
 
     public static final String TAG = "MyBooksActivity";
 
+    private static final String ADAPTER_VALUES = "adapter_values_key";
+    private static final String REQUESTS_VALUES = "requests_values_key";
+    private static final String MY_BOOKS_FRAGMENT_INSTANCE = "my_books_fragment_key";
+    private static final String REQUESTS_FRAGMENT_INSTANCE = "requests_fragment_key";
+    private static final String SELL_FRAGMENT_INSTANCE = "sell_fragment_key";
+
     private static final String BOOKS_TAG = "soldBooks";
     private static final String SELL_BOOK_TAG = "bookSelling";
     private static final String GET_REQUESTS_TAG = "booksRequests";
+    private static final String REFRESH_BOOKS_TAG = "refreshBooks";
 
     private MyApplication application;
     private Toolbar toolbar;
@@ -36,8 +43,12 @@ public class MyBooksActivity extends SmartActivity {
     private MyBooksAdapter myBooksAdapter;
     private RequestsAdapter requestsAdapter;
 
+    private MyBooksFragment myBooksFragment;
     private SellBookFragment sellBookFragment;
     private RequestsFragment requestsFragment;
+
+    ArrayList<Entity> adapterValues = new ArrayList<Entity>();
+    ArrayList<Entity> requestsAdapterValues = new ArrayList<Entity>();
 
 
     @Override
@@ -57,10 +68,68 @@ public class MyBooksActivity extends SmartActivity {
             drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);
-
         myBooksAdapter = new MyBooksAdapter(this, new ArrayList<Entity>());
-        int userId = application.getUserId();
-        getSoldBooks(userId);
+
+        if(savedInstanceState != null) {
+            myBooksFragment = (MyBooksFragment) getFragmentManager()
+                    .getFragment(savedInstanceState, MY_BOOKS_FRAGMENT_INSTANCE);
+            Log.i(TAG, "Existing fragment");
+            adapterValues = savedInstanceState.getParcelableArrayList(ADAPTER_VALUES);
+            this.myBooksAdapter.addAll(adapterValues);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.add(R.id.my_books_fragment_container, myBooksFragment, MyBooksFragment.TAG);
+
+            if (getFragmentManager().getFragment(savedInstanceState, REQUESTS_FRAGMENT_INSTANCE) != null) {
+                requestsAdapterValues = savedInstanceState.getParcelableArrayList(REQUESTS_VALUES);
+                requestsAdapter = new RequestsAdapter(this, new ArrayList<Entity>());
+                requestsAdapter.addAll(requestsAdapterValues);
+
+                requestsFragment = (RequestsFragment) getFragmentManager()
+                        .getFragment(savedInstanceState, REQUESTS_FRAGMENT_INSTANCE);
+            }
+            if(getFragmentManager().getFragment(savedInstanceState, SELL_FRAGMENT_INSTANCE) != null){
+                sellBookFragment = (SellBookFragment) getFragmentManager()
+                        .getFragment(savedInstanceState, SELL_FRAGMENT_INSTANCE);
+            }
+        }
+        else{
+            Log.i(TAG, "Fragment not exists, creating");
+            int userId = application.getUserId();
+            getSoldBooks(userId);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        ArrayList<Entity> values = new ArrayList<Entity>();
+        /**
+         * Storing nel Bundle dei valori presenti nell'adapter, in questo modo possono essere ripristinati in seguito
+         * ad un cambio di configurazione, come il cambio di orientamento del dispositivo
+         */
+        if (myBooksAdapter != null) {
+            for (int i = 0; i < myBooksAdapter.getCount(); i++)
+                values.add(myBooksAdapter.getItem(i));
+            outState.putParcelableArrayList(ADAPTER_VALUES, values);
+        }
+        /**
+         * Storing del CoursesSearchFragment per poterne ripristinare lo stato in seguito ad un cambio di configurazione.
+         * I valori presenti nell'adapter vanno salvati a parte poich� non vengono conservati
+         */
+        getFragmentManager().putFragment(outState, MY_BOOKS_FRAGMENT_INSTANCE, myBooksFragment);
+        if (this.requestsFragment != null)
+            if(this.requestsFragment.isVisible()){
+                ArrayList<Entity> requests = new ArrayList<Entity>();
+                if (requestsAdapter != null) {
+                    for (int i = 0; i < requestsAdapter.getCount(); i++)
+                        requests.add(requestsAdapter.getItem(i));
+                    outState.putParcelableArrayList(REQUESTS_VALUES, requests);
+                }
+                getFragmentManager().putFragment(outState, REQUESTS_FRAGMENT_INSTANCE, requestsFragment);
+            }
+        if(this.sellBookFragment != null)
+            if(this.sellBookFragment.isVisible())
+                getFragmentManager().putFragment(outState, SELL_FRAGMENT_INSTANCE, sellBookFragment);
     }
 
     @Override
@@ -137,8 +206,9 @@ public class MyBooksActivity extends SmartActivity {
         if(tag == BOOKS_TAG){
             Log.i(TAG, "Handling results, launching MyBooksFragment");
             myBooksAdapter.addAll(result);
+            myBooksFragment = new MyBooksFragment();
             getFragmentManager().beginTransaction().add(R.id.my_books_fragment_container,
-                    new MyBooksFragment(), MyBooksFragment.TAG).commit();
+                    myBooksFragment, MyBooksFragment.TAG).commit();
         }
         if(tag == SELL_BOOK_TAG) {
             if (!result.isEmpty()) {
@@ -174,6 +244,14 @@ public class MyBooksActivity extends SmartActivity {
             transaction.addToBackStack(null);
             transaction.commit();
         }
+        if(tag == REFRESH_BOOKS_TAG){
+            myBooksAdapter.clear();
+            myBooksAdapter.addAll(result);
+            myBooksAdapter.notifyDataSetChanged();
+            MyBooksFragment f = (MyBooksFragment)getFragmentManager()
+                    .findFragmentByTag(MyBooksFragment.TAG);
+            f.getSwipeRefreshLayout().setRefreshing(false);
+        }
     }
 
     public void launchSellFragment() {
@@ -194,6 +272,11 @@ public class MyBooksActivity extends SmartActivity {
         getRequestsForBook(bookId, dialog);
     }
 
+    public void refreshBooks(){
+        int userId = application.getUserId();
+        refreshSoldBooks(userId);
+    }
+
     //Database calls
 
     private void getSoldBooks(int userId) {
@@ -212,5 +295,9 @@ public class MyBooksActivity extends SmartActivity {
 
     private void getRequestsForBook(String bookId, ProgressDialog dialog){
         application.databaseCall("books_requests.php?id=" + bookId, GET_REQUESTS_TAG, dialog);
+    }
+
+    private void refreshSoldBooks(int userId){
+        getMyApplication().databaseCall("books_sold.php?u=" + userId, REFRESH_BOOKS_TAG, null);
     }
 }

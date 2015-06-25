@@ -68,11 +68,11 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
         opinionsAdapter = activity.getOpinionsAdapter();
         Log.i(TAG, "opinionsFragment per il corso " + courseName);
         TextView courseNameTextView = (TextView) view.findViewById(R.id.courseName);
+        if (this.courseName == null) {
+            this.courseName = activity.getCourseName();
+        }
         courseNameTextView.setText(courseName);
         Log.i(TAG, "TextView value = " + courseNameTextView.getText().toString());
-        if (this.courseName == null) {
-                this.courseName = activity.getCourseName();
-        }
 
         ButtonFloat btn = (ButtonFloat) view.findViewById(R.id.buttonFloat);
         btn.setOnClickListener(new OnClickListener() {

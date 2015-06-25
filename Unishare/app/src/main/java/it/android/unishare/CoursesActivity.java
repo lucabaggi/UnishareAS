@@ -32,12 +32,13 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
 	 */
 	private static final String COURSES_SEARCH_FRAGMENT_INSTANCE = "courses_search_fragment_key";
 	private static final String INSERT_OPINION_FRAGMENT_INSTANCE = "insert_opinion_fragment_key";
+    private static final String ADD_COURSE_FRAGMENT_INSTANCE = "add_course_fragment_key";
 	private static final String COURSE_NAME = "course_name_key";
 	private static final String ADAPTER_VALUES = "key_adapter";
 	private static final String OPINION_ADAPTER_VALUES = "key_opinion_adapter";
 
-	
-	private MyApplication application;
+
+    private MyApplication application;
 	private SearchFragment searchFragment;
 	private OpinionsFragment opinionsFragment;
 	private InsertOpinionFragment insertOpinionFragment;
@@ -90,7 +91,11 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
         		opinionsAdapter.addAll(opinionAdapterValues);
         	}
         	if(getFragmentManager().getFragment(savedInstanceState, INSERT_OPINION_FRAGMENT_INSTANCE) != null)
-        		insertOpinionFragment = (InsertOpinionFragment)getFragmentManager().getFragment(savedInstanceState, INSERT_OPINION_FRAGMENT_INSTANCE);
+        		insertOpinionFragment = (InsertOpinionFragment)getFragmentManager()
+						.getFragment(savedInstanceState, INSERT_OPINION_FRAGMENT_INSTANCE);
+            if(getFragmentManager().getFragment(savedInstanceState, ADD_COURSE_FRAGMENT_INSTANCE) != null)
+                addCourseFragment = (AddCourseFragment)getFragmentManager()
+                        .getFragment(savedInstanceState, ADD_COURSE_FRAGMENT_INSTANCE);
         }
         else{
         	searchFragment = new SearchFragment();
@@ -142,7 +147,12 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
         }
         if(this.insertOpinionFragment != null)
         	if(this.insertOpinionFragment.isVisible())
-        		getFragmentManager().putFragment(outState, INSERT_OPINION_FRAGMENT_INSTANCE, insertOpinionFragment);
+        		getFragmentManager()
+                        .putFragment(outState, INSERT_OPINION_FRAGMENT_INSTANCE, insertOpinionFragment);
+        if(this.addCourseFragment != null)
+            if(this.addCourseFragment.isVisible())
+                getFragmentManager()
+                        .putFragment(outState, ADD_COURSE_FRAGMENT_INSTANCE, addCourseFragment);
     }
 
 	@Override

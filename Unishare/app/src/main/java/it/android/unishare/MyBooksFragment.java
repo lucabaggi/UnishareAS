@@ -4,6 +4,7 @@ package it.android.unishare;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ public class MyBooksFragment extends Fragment implements ViewInitiator {
 	private View view;
 	private ListView listview;
 	private ProgressDialog dialog;
+	private SwipeRefreshLayout swipeRefreshLayout;
 
 	private MyBooksActivity activity;
 	private MyBooksAdapter myBooksAdapter;
@@ -55,6 +57,14 @@ public class MyBooksFragment extends Fragment implements ViewInitiator {
 	@Override
 	public void initializeUI(View view) {
 		listview = (ListView) view.findViewById(R.id.myBooksListView);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.my_books_swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.Green, R.color.Orange, R.color.Blue);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                activity.refreshBooks();
+            }
+        });
 		myBooksAdapter = activity.getMyBooksAdapter();
 		listview.setAdapter(myBooksAdapter);
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -85,4 +95,8 @@ public class MyBooksFragment extends Fragment implements ViewInitiator {
 		});
 
 	}
+
+    public SwipeRefreshLayout getSwipeRefreshLayout(){
+        return this.swipeRefreshLayout;
+    }
 }

@@ -27,8 +27,16 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
 
     public static final String TAG = "MyCoursesActivity";
 
+    private static final String MY_COURSES_FRAGMENT_INSTANCE = "my_courses_fragment_key";
+    private static final String INSERT_OPINION_FRAGMENT_INSTANCE = "insert_opinion_fragment_key";
+    private static final String ADAPTER_VALUES = "key_adapter";
+    private static final String OPINION_ADAPTER_VALUES = "key_opinion_adapter";
+    private static final String COURSE_NAME = "course_name_key";
+
+
     private OpinionsFragment opinionsFragment;
     private InsertOpinionFragment insertOpinionFragment;
+    private MyCoursesFragment myCoursesFragment;
 
     private MyApplication application;
     private Toolbar toolbar;
@@ -41,6 +49,9 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     private int numOfCourses;
 
     private ArrayList<Entity> courses;
+
+    ArrayList<Entity> adapterValues = new ArrayList<Entity>();
+    ArrayList<Entity> opinionAdapterValues = new ArrayList<Entity>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +69,68 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
             drawerToggle= new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
             drawerLayout.setDrawerListener(drawerToggle);
         }
+
         application = MyApplication.getInstance(this);
-        myCourses();
+        coursesAdapter = new CoursesAdapter(this, new ArrayList<Entity>());
+
+        if(savedInstanceState != null){
+            myCoursesFragment = (MyCoursesFragment)getFragmentManager()
+                    .getFragment(savedInstanceState, MY_COURSES_FRAGMENT_INSTANCE);
+            Log.i(TAG, "Existing fragment");
+            adapterValues = savedInstanceState.getParcelableArrayList(ADAPTER_VALUES);
+            this.coursesAdapter.addAll(adapterValues);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.add(R.id.my_courses_fragment_container, myCoursesFragment, MyCoursesFragment.TAG);
+
+            if(savedInstanceState.getString(COURSE_NAME) != null){
+                this.courseName = savedInstanceState.getString(COURSE_NAME);
+                opinionAdapterValues = savedInstanceState.getParcelableArrayList(OPINION_ADAPTER_VALUES);
+                opinionsAdapter = new OpinionsAdapter(this, new ArrayList<Entity>());
+                opinionsAdapter.addAll(opinionAdapterValues);
+            }
+            if(getFragmentManager().getFragment(savedInstanceState, INSERT_OPINION_FRAGMENT_INSTANCE) != null)
+                insertOpinionFragment = (InsertOpinionFragment)getFragmentManager()
+                        .getFragment(savedInstanceState, INSERT_OPINION_FRAGMENT_INSTANCE);
+        }
+        else{
+            Log.i(TAG, "Fragment not exists, creating");
+            myCourses();
+        }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        ArrayList<Entity> values = new ArrayList<Entity>();
+        /**
+         * Storing nel Bundle dei valori presenti nell'adapter, in questo modo possono essere ripristinati in seguito
+         * ad un cambio di configurazione, come il cambio di orientamento del dispositivo
+         */
+        if(coursesAdapter != null){
+            for(int i = 0; i < coursesAdapter.getCount(); i++)
+                values.add(coursesAdapter.getItem(i));
+            outState.putParcelableArrayList(ADAPTER_VALUES, values);
+        }
+        /**
+         * Storing del CoursesSearchFragment per poterne ripristinare lo stato in seguito ad un cambio di configurazione.
+         * I valori presenti nell'adapter vanno salvati a parte poich� non vengono conservati
+         */
+        getFragmentManager().putFragment(outState, MY_COURSES_FRAGMENT_INSTANCE, myCoursesFragment);
+        if(this.courseName != null){
+            outState.putString(COURSE_NAME, this.courseName);
+            ArrayList<Entity> opinions = new ArrayList<Entity>();
+            if(opinionsAdapter != null){
+                for(int i = 0; i < opinionsAdapter.getCount(); i++)
+                    opinions.add(opinionsAdapter.getItem(i));
+                outState.putParcelableArrayList(OPINION_ADAPTER_VALUES, opinions);
+            }
+
+        }
+        if(this.insertOpinionFragment != null)
+            if(this.insertOpinionFragment.isVisible())
+                getFragmentManager()
+                        .putFragment(outState, INSERT_OPINION_FRAGMENT_INSTANCE, insertOpinionFragment);
     }
 
     @Override
@@ -283,8 +354,9 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         coursesAdapter = new CoursesAdapter(this, new ArrayList<Entity>());
         coursesAdapter.addAll(courses);
 
+        myCoursesFragment = new MyCoursesFragment();
         getFragmentManager().beginTransaction().add(R.id.my_courses_fragment_container,
-                new MyCoursesFragment(), MyCoursesFragment.TAG).commit();
+                myCoursesFragment, MyCoursesFragment.TAG).commit();
     }
 
     private void updateLocalDb(ArrayList<Entity> result){

@@ -23,8 +23,13 @@ public class RequestedBooksActivity extends SmartActivity {
 
     public static final String TAG = "RequestedBooksActivity";
 
-    private static final String REQUESTED_BOOKS_TAG = "requestedBooks";
+    private static final String REQUESTED_BOOKS_FRAGMENT_INSTANCE = "requested_books_fragment_key";
+    private static final String ADAPTER_VALUES = "key_adapter";
 
+    private static final String REQUESTED_BOOKS_TAG = "requestedBooks";
+    private static final String REFRESH_REQUESTS_TAG = "refreshRequests";
+
+    private RequestedBooksFragment requestedBooksFragment;
 
     private MyApplication application;
     private Toolbar toolbar;
@@ -32,6 +37,7 @@ public class RequestedBooksActivity extends SmartActivity {
     private DrawerLayout drawerLayout;
 
     private RequestedBooksAdapter requestedBooksAdapter;
+    private ArrayList<Entity> adapterValues;
 
 
     @Override
@@ -52,8 +58,21 @@ public class RequestedBooksActivity extends SmartActivity {
         }
         application = MyApplication.getInstance(this);
         requestedBooksAdapter = new RequestedBooksAdapter(this, new ArrayList<Entity>());
-        int userId = application.getUserId();
-        getRequestedBooks(userId);
+        if(savedInstanceState != null){
+            requestedBooksFragment = (RequestedBooksFragment)getFragmentManager()
+                    .getFragment(savedInstanceState, REQUESTED_BOOKS_FRAGMENT_INSTANCE);
+            Log.i(TAG, "Existing fragment");
+            adapterValues = savedInstanceState.getParcelableArrayList(ADAPTER_VALUES);
+            this.requestedBooksAdapter.addAll(adapterValues);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.add(R.id.requested_books_fragment_container,
+                    requestedBooksFragment, RequestedBooksFragment.TAG);
+        }
+        else{
+            Log.i(TAG, "Fragment not exisisting, creating");
+            int userId = application.getUserId();
+            getRequestedBooks(userId);
+        }
     }
 
     @Override
@@ -84,6 +103,26 @@ public class RequestedBooksActivity extends SmartActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        ArrayList<Entity> values = new ArrayList<Entity>();
+        /**
+         * Storing nel Bundle dei valori presenti nell'adapter, in questo modo possono essere ripristinati in seguito
+         * ad un cambio di configurazione, come il cambio di orientamento del dispositivo
+         */
+        if(requestedBooksAdapter != null){
+            for(int i = 0; i < requestedBooksAdapter.getCount(); i++)
+                values.add(requestedBooksAdapter.getItem(i));
+            outState.putParcelableArrayList(ADAPTER_VALUES, values);
+        }
+        /**
+         * Storing del RequestedBooksFragment per poterne ripristinare lo stato in seguito ad un cambio di configurazione.
+         * I valori presenti nell'adapter vanno salvati a parte poich� non vengono conservati
+         */
+        getFragmentManager().putFragment(outState, REQUESTED_BOOKS_FRAGMENT_INSTANCE, requestedBooksFragment);
     }
 
     @Override
@@ -136,9 +175,29 @@ public class RequestedBooksActivity extends SmartActivity {
                 return;
             }
             requestedBooksAdapter.addAll(result);
+            requestedBooksFragment = new RequestedBooksFragment();
             getFragmentManager().beginTransaction().add(R.id.requested_books_fragment_container,
-                    new RequestedBooksFragment(), RequestedBooksFragment.TAG).commit();
+                    requestedBooksFragment, RequestedBooksFragment.TAG).commit();
         }
+        if(tag == REFRESH_REQUESTS_TAG){
+            if(result.isEmpty()){
+                String message = "Nessun libro richiesto";
+                application.alertMessage("", message);
+                finish();
+                return;
+            }
+            requestedBooksAdapter.clear();
+            requestedBooksAdapter.addAll(result);
+            requestedBooksAdapter.notifyDataSetChanged();
+            RequestedBooksFragment f = (RequestedBooksFragment)getFragmentManager()
+                    .findFragmentByTag(RequestedBooksFragment.TAG);
+            f.getSwipeRefreshLayout().setRefreshing(false);
+        }
+    }
+
+    public void refreshRequests(){
+        int userId = application.getUserId();
+        refreshRequests(userId);
     }
 
 
@@ -146,7 +205,12 @@ public class RequestedBooksActivity extends SmartActivity {
     //Database calls
 
     private void getRequestedBooks(int userId) {
-        getMyApplication().databaseCall("books_requested.php?u=" + userId, REQUESTED_BOOKS_TAG, null);
+        ProgressDialog dialog = new ProgressDialog(this, "Searching");
+        getMyApplication().databaseCall("books_requested.php?u=" + userId, REQUESTED_BOOKS_TAG, dialog);
+    }
+
+    private void refreshRequests(int userId){
+        getMyApplication().databaseCall("books_requested.php?u=" + userId, REFRESH_REQUESTS_TAG, null);
     }
 
 }
