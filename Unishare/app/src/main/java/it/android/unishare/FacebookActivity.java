@@ -10,23 +10,15 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.facebook.*;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -230,7 +222,7 @@ public class FacebookActivity extends SmartActivity {
             userEntity = result.get(0);
             String imageUlr = profile.getProfilePictureUri(500,500).toString();
             Log.i("FacebookActivity", "URL profile image: " + imageUlr);
-            new DownloadImageTask(this).execute(imageUlr);
+            new DownloadProfileImageTask(this).execute(imageUlr);
         }
     }
 

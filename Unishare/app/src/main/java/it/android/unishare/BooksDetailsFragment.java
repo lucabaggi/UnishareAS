@@ -2,12 +2,18 @@ package it.android.unishare;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.net.URI;
 
 public class BooksDetailsFragment extends Fragment implements ViewInitiator {
 	
@@ -55,12 +61,50 @@ public class BooksDetailsFragment extends Fragment implements ViewInitiator {
 		TextView text1 = (TextView) view.findViewById(R.id.textView1);
 		TextView text2 = (TextView) view.findViewById(R.id.textView2);
 		TextView text3 = (TextView) view.findViewById(R.id.textView3);
-		TextView text4 = (TextView) view.findViewById(R.id.textView4);
-		Button button = (Button) view.findViewById(R.id.insertOpinionButton);
+        TextView editore = (TextView) view.findViewById(R.id.editoreTextView);
+		TextView amazonLinkTextView = (TextView) view.findViewById(R.id.amazonLink);
+        TextView amazonPriceTextView = (TextView) view.findViewById(R.id.amazonPrice);
+        ImageView amazonImage = (ImageView) view.findViewById(R.id.amazonImage);
+        Button button = (Button) view.findViewById(R.id.insertOpinionButton);
 		
 		text1.setText("Titolo: " + book.get("titolo"));
 		text2.setText("Autore: " + book.get("autore"));
 		text3.setText("Prezzo: " + book.get("prezzo") + " euro");
+        editore.setText("Editore: " + book.get("editore"));
+
+        String imageUrl = book.get("immagine");
+        if(imageUrl.length() > 0)
+        {
+            amazonImage.setTag(imageUrl);
+            new DownloadImagesTask().execute(amazonImage);
+        }
+        else
+        {
+            //TODO inserire immagine di default
+        }
+
+
+		String url = book.get("url");
+        if(url.length() > 0)
+        {
+            String amazonLink = "<a href=\"" + url + "\">Amazon Link</a>";
+            amazonLinkTextView.setText(Html.fromHtml(amazonLink));
+            amazonLinkTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        else
+        {
+            amazonLinkTextView.setText("No Amazon Link Available");
+        }
+
+        if(book.get("prezzo_amazon").length() > 0)
+        {
+            amazonPriceTextView.setText("Prezzo Amazon: " + book.get("prezzo_amazon"));
+        }
+        else
+        {
+            amazonPriceTextView.setText("Prezzo Amazon: -");
+        }
+
 
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -70,7 +114,5 @@ public class BooksDetailsFragment extends Fragment implements ViewInitiator {
 			}
 		});
 	}
-	
-	
 
 }

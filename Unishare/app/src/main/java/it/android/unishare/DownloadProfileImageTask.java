@@ -17,11 +17,11 @@ import java.io.InputStream;
 /**
  * Created by luca on 19/05/15.
  */
-public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+public class DownloadProfileImageTask extends AsyncTask<String, Void, Bitmap> {
 
     private FacebookActivity activity;
 
-    public DownloadImageTask(FacebookActivity activity){
+    public DownloadProfileImageTask(FacebookActivity activity){
         this.activity = activity;
     }
 
