@@ -1,26 +1,17 @@
 package it.android.unishare;
 
 import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 public class SplashActivity extends Activity {
 	
 	private MyApplication application;
+    private SplashFragment splashFragment;
 
-	private static final int TIME_SHOW_MILLIS = 3000;
+	private static final int TIME_SHOW_MILLIS = 2000;
 
 
 	@Override
@@ -28,7 +19,13 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash_activity);
 		application = MyApplication.getInstance(this);
-		getFragmentManager().beginTransaction().add(R.id.splash_fragment_container, new SplashFragment()).commit();
+        splashFragment = new SplashFragment();
+		getFragmentManager().beginTransaction().
+                add(R.id.splash_fragment_container, splashFragment).commit();
+	}
+
+    public void initialize()
+    {
         application.initializeDatabase();
 
         if(application.numOfRows(DatabaseContract.UserInfoTable.TABLE_NAME) > 0)
@@ -43,7 +40,7 @@ public class SplashActivity extends Activity {
             }
         else
             launchFacebookActivity();
-	}
+    }
 
     protected void launchFacebookActivity(){
         application.newDelayedActivity(TIME_SHOW_MILLIS, FacebookActivity.class);
@@ -68,6 +65,7 @@ public class SplashActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 
     public MyApplication getMyApplication(){
         return this.application;

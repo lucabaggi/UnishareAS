@@ -3,6 +3,7 @@ package it.android.unishare;
 import android.content.ContentValues;
 import android.os.AsyncTask;
 
+
 import java.util.ArrayList;
 
 /**
@@ -31,10 +32,14 @@ public class SyncUserCoursesTask extends AsyncTask<Integer, Void, Void> {
         return null;
     }
 
+
     @Override
     protected void onPostExecute(Void aVoid) {
         if(application.getActivity() instanceof SplashActivity)
+        {
             ((SplashActivity)application.getActivity()).launchFacebookActivity();
+        }
+
     }
 
     private void fillMyCoursesTable(ArrayList<Entity> courses){

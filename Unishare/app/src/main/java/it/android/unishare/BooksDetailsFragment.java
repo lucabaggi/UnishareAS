@@ -70,7 +70,7 @@ public class BooksDetailsFragment extends Fragment implements ViewInitiator {
 		text1.setText("Titolo: " + book.get("titolo"));
 		text2.setText("Autore: " + book.get("autore"));
 		text3.setText("Prezzo: " + book.get("prezzo") + " euro");
-        editore.setText("Editore: " + book.get("editore"));
+        editore.setText("Editore: " + (book.get("editore").length() > 0? book.get("editore") : " -"));
 
         String imageUrl = book.get("immagine");
         if(imageUrl.length() > 0)
@@ -80,7 +80,7 @@ public class BooksDetailsFragment extends Fragment implements ViewInitiator {
         }
         else
         {
-            //TODO inserire immagine di default
+            amazonImage.setImageResource(R.drawable.book_cover);
         }
 
 
