@@ -4,29 +4,21 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 
-import java.util.ArrayList;
+public class Welcome2Fragment extends Fragment implements ViewInitiator {
 
-public class Welcome1Fragment extends Fragment implements ViewInitiator {
+	public static final String TAG = "WelcomeFragment2";
 
-	public static final String TAG = "WelcomeFragment1";
-
+	private Entity university;
 	
 	private WelcomeActivity activity;
 	private View view;
 
-	AutoCompleteTextView universitySelector;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_welcome1, container, false);
+        view = inflater.inflate(R.layout.fragment_welcome2, container, false);
         initializeUI(view);
         return view;
     }
@@ -40,18 +32,11 @@ public class Welcome1Fragment extends Fragment implements ViewInitiator {
     
     @Override
 	public void initializeUI(View view) {
-
-
-		universitySelector = (AutoCompleteTextView) view.findViewById(R.id.autoSelectUniversity);
-		universitySelector.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				activity.goToCampusSelection(universitySelector.getText().toString());
-			}
-		});
-
+		ImageView universityImage = (ImageView) view.findViewById(R.id.universityImage);
+		universityImage.setTag("http://www.unishare.it/images/Polimi/Leonardo/HeaderLeonardo-340.jpg");
+		new DownloadImagesTask().execute(universityImage);
 	}
-
+	/*
 	public void displayUniversities(ArrayList<Entity> result) {
 		String[] universityList = new String[result.size()];
 		int i =0;
@@ -62,5 +47,5 @@ public class Welcome1Fragment extends Fragment implements ViewInitiator {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_dropdown_item_1line, universityList);
 		universitySelector.setAdapter(adapter);
 	}
-    
+    */
 }

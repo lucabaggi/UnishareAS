@@ -26,6 +26,10 @@ public class Entity implements Parcelable{
 	public String get(String name) {
 		return elements.get(name);
 	}
+
+	public int getInt(String name) {
+		return Integer.parseInt(elements.get(name));
+	}
 	
 	public String getFirst() {
 		return elements.get(elements.keySet().toArray()[0]);

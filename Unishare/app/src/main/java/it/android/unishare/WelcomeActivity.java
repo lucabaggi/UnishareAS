@@ -1,5 +1,6 @@
 package it.android.unishare;
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.gc.materialdesign.widgets.ProgressDialog;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -28,10 +31,14 @@ public class WelcomeActivity extends SmartActivity {
 	private MyApplication application;
 	private Welcome1Fragment welcome1Fragment;
 
+    private ArrayList<Entity> universities;
+    private String university;
+    private int universityId;
 
     private Toolbar toolbar;
 
     private static final String UNIVERSITY_SELECTION_TAG = "universitySelection";
+    private static final String CAMPUS_SELECTION_TAG = "campusSelection";
 
 	ArrayList<Entity> adapterValues = new ArrayList<Entity>();
 
@@ -62,7 +69,7 @@ public class WelcomeActivity extends SmartActivity {
         	.add(R.id.welcome_container, welcome1Fragment, Welcome1Fragment.TAG).commit();
         }
 
-        getUniversities(null);
+        getUniversities();
     }
 
     @Override
@@ -125,7 +132,15 @@ public class WelcomeActivity extends SmartActivity {
 	@Override
 	public void handleResult(ArrayList<Entity> result, String tag) {
 		if(tag == UNIVERSITY_SELECTION_TAG) {
-            welcome1Fragment.displayUniversities(null);
+            universities = result;
+            welcome1Fragment.displayUniversities(result);
+        }
+        else if(tag == CAMPUS_SELECTION_TAG) {
+            Fragment welcome2 = new Welcome2Fragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.welcome_container, welcome2, Welcome2Fragment.TAG);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
 	}
 
@@ -149,12 +164,29 @@ public class WelcomeActivity extends SmartActivity {
         return this.application;
     }
 
+    public void goToCampusSelection(String universityName) {
+        for(Entity e : universities) {
+            if(e.get("nome").equals(universityName)) {
+                university = e.get("nome");
+                universityId = e.getInt("id");
+                getCampuses();
+                break;
+            }
+        }
+    }
+
 	/////////////////////////////////////////////////
 	//Calls to database
 	/////////////////////////////////////////////////
 
-    private void getUniversities(com.gc.materialdesign.widgets.ProgressDialog dialog) {
+    private void getUniversities() {
+        ProgressDialog dialog = new ProgressDialog(this, "Caricamento...");
         application.databaseCall("universities.php", UNIVERSITY_SELECTION_TAG, dialog);
+    }
+
+    private void getCampuses() {
+        ProgressDialog dialog = new ProgressDialog(this, "Caricamento...");
+        application.databaseCall("campuses.php?e="+universityId, CAMPUS_SELECTION_TAG, dialog);
     }
 
 
