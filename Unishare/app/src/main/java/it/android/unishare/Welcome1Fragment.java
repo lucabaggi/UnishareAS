@@ -22,11 +22,15 @@ public class Welcome1Fragment extends Fragment implements ViewInitiator {
 	private WelcomeActivity activity;
 	private View view;
 
+	private ArrayList<String> universities;
+
 	AutoCompleteTextView universitySelector;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
         view = inflater.inflate(R.layout.fragment_welcome1, container, false);
+		universities = getArguments().getStringArrayList("universities");
         initializeUI(view);
         return view;
     }
@@ -41,7 +45,6 @@ public class Welcome1Fragment extends Fragment implements ViewInitiator {
     @Override
 	public void initializeUI(View view) {
 
-
 		universitySelector = (AutoCompleteTextView) view.findViewById(R.id.autoSelectUniversity);
 		universitySelector.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
@@ -49,18 +52,16 @@ public class Welcome1Fragment extends Fragment implements ViewInitiator {
 				activity.goToCampusSelection(universitySelector.getText().toString());
 			}
 		});
-
-	}
-
-	public void displayUniversities(ArrayList<Entity> result) {
-		String[] universityList = new String[result.size()];
-		int i =0;
-		for(Entity e : result) {
-			universityList[i] = e.get("nome");
+		String[] univs = new String[universities.size()];
+		int i = 0;
+		for(String u : universities) {
+			univs[i] = u;
 			i++;
 		}
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_dropdown_item_1line, universityList);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_dropdown_item_1line, univs);
 		universitySelector.setAdapter(adapter);
+
 	}
+
     
 }

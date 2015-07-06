@@ -94,6 +94,14 @@ public class Entity implements Parcelable{
 		}
 		return tmp;
 	}
+
+	public static ArrayList<String> entityListToStringList(ArrayList<Entity> list, String key) {
+		ArrayList<String> array = new ArrayList<String>();
+		for(Entity e : list) {
+			array.add(e.get(key));
+		}
+		return array;
+	}
 	
 	public ArrayList<String> values() {
 		return new ArrayList<String>(elements.values());

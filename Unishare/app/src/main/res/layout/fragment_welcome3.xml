@@ -8,7 +8,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/universityImage"
+        android:id="@+id/imageView"
         android:adjustViewBounds="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true" />
@@ -16,37 +16,34 @@
     <TextView
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_below="@+id/universityImage"
-        android:id="@+id/universityName"
+        android:layout_below="@+id/imageView"
+        android:id="@+id/textView4"
         android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"
-        android:text="Politecnico di Milano" />
+        android:text="Il tuo corso di studi" />
 
     <TextView
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_below="@+id/universityName"
+        android:layout_below="@+id/textView4"
         android:id="@+id/textView1"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Seleziona ora la tua sede di appartenenza:" />
+        android:text="Seleziona ora il tuo corso di studi tramite il form sottostante:" />
 
-    <RadioGroup
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
+
+    <AutoCompleteTextView
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
+        android:text=""
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/textView1"
-        android:layout_above="@+id/textView2"
-        android:id="@+id/campusSelector"
         android:layout_marginTop="20dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-    </RadioGroup>
+        android:id="@+id/autoSelectSpecialization"
+        android:layout_below="@+id/textView1" />
 
     <TextView
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -55,8 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Non trovi la tua sede tra quelle sopra elencate?"
+        android:text="Non trovi il tuo corso di studi tra quelli sopra elencati?"
         android:layout_alignParentBottom="true" />
 
 
