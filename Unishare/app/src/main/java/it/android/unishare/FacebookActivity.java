@@ -268,9 +268,17 @@ public class FacebookActivity extends SmartActivity {
         registerInBackground();
 
         new SyncUserCoursesTask(application).execute(user.getUserId());
-        Intent intent = new Intent(FacebookActivity.this, MainActivity.class);
+
+        Intent intent;
+        if(false && user.getCampusId()>0 && user.getSpecializationId()>0) {
+            intent = new Intent(FacebookActivity.this, MainActivity.class);
+        }
+        else {
+            intent = new Intent(FacebookActivity.this, WelcomeActivity.class);
+        }
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+
         FacebookActivity.this.finish();
         Log.i("FBStatus: ", "Now logged as " + profile.getName());
     }

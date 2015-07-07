@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -21,15 +22,15 @@ public class Welcome1Fragment extends Fragment implements ViewInitiator {
 	private WelcomeActivity activity;
 	private View view;
 
-	AutoCompleteTextView universitySelector;
+	private ArrayList<String> universities;
 
-	private static final String[] COUNTRIES = new String[] {
-			"Belgium", "France", "Italy", "Germany", "Spain"
-	};
+	AutoCompleteTextView universitySelector;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
         view = inflater.inflate(R.layout.fragment_welcome1, container, false);
+		universities = getArguments().getStringArrayList("universities");
         initializeUI(view);
         return view;
     }
@@ -44,15 +45,23 @@ public class Welcome1Fragment extends Fragment implements ViewInitiator {
     @Override
 	public void initializeUI(View view) {
 
-
 		universitySelector = (AutoCompleteTextView) view.findViewById(R.id.autoSelectUniversity);
-
-
-	}
-
-	public void displayUniversities(ArrayList<Entity> result) {
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_dropdown_item_1line, COUNTRIES);
+		universitySelector.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				activity.goToCampusSelection(universitySelector.getText().toString());
+			}
+		});
+		String[] univs = new String[universities.size()];
+		int i = 0;
+		for(String u : universities) {
+			univs[i] = u;
+			i++;
+		}
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_dropdown_item_1line, univs);
 		universitySelector.setAdapter(adapter);
+
 	}
+
     
 }

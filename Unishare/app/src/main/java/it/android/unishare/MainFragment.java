@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -35,58 +36,17 @@ public class MainFragment extends Fragment implements ViewInitiator {
     
     @Override
 	public void initializeUI(View view) {
-    	//Build view
+
+		ImageView campusImageView = (ImageView) view.findViewById(R.id.campusImageView);
+		Utilities.loadImage(campusImageView,"campus.jpg",activity.getApplicationContext());
+
         Button btn = (Button) view.findViewById(R.id.logout_button);
         btn.setOnClickListener(new OnClickListener() {
 	        @Override
 	        public void onClick(View view) {
-
                 activity.logout();
-
-	        	//Application.databaseCall(activity, "user.php?id=1", "userName", MainFragment.this);
-
-                /*
-	        	ContentValues values = new ContentValues();
-	        	values.put(MyCoursesTable.COLUMN_COURSE_ID, 1);
-	        	values.put(MyCoursesTable.COLUMN_NAME, "Corso di prova");
-	        	//MyApplication.getInstance(activity).insertIntoDatabase(MyCoursesTable.TABLE_NAME,values);
-	        	
-	        	//RETRIEVAL
-	        	String[] projection = {
-	    		    MyCoursesTable.COLUMN_NAME
-	    		};
-	    		String sortOrder = MyCoursesTable.COLUMN_NAME + " ASC";
-	    		
-	    		Cursor cursor = MyApplication.getInstance(activity).queryDatabase(
-	    			MyCoursesTable.TABLE_NAME,  // The table to query
-	    		    projection,                               // The columns to return
-	    		    null,                                // The columns for the WHERE clause
-	    		    null,                            // The values for the WHERE clause
-	    		    null,                                     // don't group the rows
-	    		    null,                                     // don't filter by row groups
-	    		    sortOrder                                 // The sort order
-	    		);
-	    		cursor.moveToFirst();
-	    		*/
 	        }
         });
-        
-        Button btn2 = (Button) view.findViewById(R.id.button2);
-        btn2.setOnClickListener(new OnClickListener() {
-	        @Override
-	        public void onClick(View view) {
-	        	MyApplication.getInstance(activity).newActivity(BooksActivity.class);
-	        }
-        });
-        
-        Button btn3 = (Button) view.findViewById(R.id.button3);
-        btn3.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				MyApplication.getInstance(activity).newActivity(CoursesActivity.class);			
-			}
-		});
 
 		Button btn4 = (Button) view.findViewById(R.id.button4);
 		btn4.setOnClickListener(new OnClickListener() {

@@ -26,6 +26,10 @@ public class Entity implements Parcelable{
 	public String get(String name) {
 		return elements.get(name);
 	}
+
+	public int getInt(String name) {
+		return Integer.parseInt(elements.get(name));
+	}
 	
 	public String getFirst() {
 		return elements.get(elements.keySet().toArray()[0]);
@@ -89,6 +93,14 @@ public class Entity implements Parcelable{
 			tmp += element.toString();
 		}
 		return tmp;
+	}
+
+	public static ArrayList<String> entityListToStringList(ArrayList<Entity> list, String key) {
+		ArrayList<String> array = new ArrayList<String>();
+		for(Entity e : list) {
+			array.add(e.get(key));
+		}
+		return array;
 	}
 	
 	public ArrayList<String> values() {

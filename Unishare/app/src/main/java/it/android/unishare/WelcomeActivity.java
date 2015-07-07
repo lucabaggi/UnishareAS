@@ -1,18 +1,16 @@
 package it.android.unishare;
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import com.gc.materialdesign.widgets.ProgressDialog;
+
 import java.util.ArrayList;
 
 
@@ -28,10 +26,20 @@ public class WelcomeActivity extends SmartActivity {
 	private MyApplication application;
 	private Welcome1Fragment welcome1Fragment;
 
+    private ArrayList<Entity> universities, campuses, specializations, courses;
+    private String universityName, universityImage;
+    private int universityId;
+    private String campusImage;
+    private int campusId;
+    private String specializationName;
+    private int specializationId;
 
     private Toolbar toolbar;
 
     private static final String UNIVERSITY_SELECTION_TAG = "universitySelection";
+    private static final String CAMPUS_SELECTION_TAG = "campusSelection";
+    private static final String SPECIALIZATION_SELECTION_TAG = "specializationSelection";
+    private static final String COURSES_SELECTION_TAG = "coursesSelection";
 
 	ArrayList<Entity> adapterValues = new ArrayList<Entity>();
 
@@ -56,13 +64,10 @@ public class WelcomeActivity extends SmartActivity {
         	*/
         }
         else{
-        	welcome1Fragment = new Welcome1Fragment();
-        	Log.i(TAG, "Fragment not found. Creating new fragment");
-        	getFragmentManager().beginTransaction()
-        	.add(R.id.welcome_container, welcome1Fragment, Welcome1Fragment.TAG).commit();
+
         }
 
-        getUniversities(null);
+        getUniversities();
     }
 
     @Override
@@ -125,7 +130,49 @@ public class WelcomeActivity extends SmartActivity {
 	@Override
 	public void handleResult(ArrayList<Entity> result, String tag) {
 		if(tag == UNIVERSITY_SELECTION_TAG) {
-            welcome1Fragment.displayUniversities(null);
+            universities = result;
+            welcome1Fragment = new Welcome1Fragment();
+            Bundle args = new Bundle();
+            args.putStringArrayList("universities",Entity.entityListToStringList(result,"nome"));
+            welcome1Fragment.setArguments(args);
+            getFragmentManager().beginTransaction().add(R.id.welcome_container, welcome1Fragment, Welcome1Fragment.TAG).commit();
+        }
+        else if(tag == CAMPUS_SELECTION_TAG) {
+            campuses = result;
+            Fragment welcome2 = new Welcome2Fragment();
+            Bundle args = new Bundle();
+            args.putString("universityName", universityName);
+            args.putString("universityImage",universityImage);
+            args.putStringArrayList("campuses", Entity.entityListToStringList(result,"nome"));
+            welcome2.setArguments(args);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.welcome_container, welcome2, Welcome2Fragment.TAG);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        else if(tag == SPECIALIZATION_SELECTION_TAG) {
+            specializations = result;
+            Fragment welcome3 = new Welcome3Fragment();
+            Bundle args = new Bundle();
+            args.putString("campusImage",campusImage);
+            args.putStringArrayList("specializations", Entity.entityListToStringList(result,"nome"));
+            welcome3.setArguments(args);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.welcome_container, welcome3, Welcome2Fragment.TAG);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        else if(tag == COURSES_SELECTION_TAG) {
+            courses = result;
+            Fragment welcome4 = new Welcome4Fragment();
+            Bundle args = new Bundle();
+            args.putStringArrayList("courses", Entity.entityListToStringList(result,"nome"));
+            args.putStringArrayList("professors", Entity.entityListToStringList(result,"professore"));
+            welcome4.setArguments(args);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.welcome_container, welcome4, Welcome4Fragment.TAG);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
 	}
 
@@ -149,13 +196,66 @@ public class WelcomeActivity extends SmartActivity {
         return this.application;
     }
 
+    public void goToCampusSelection(String universityName) {
+        for(Entity e : universities) {
+            if(e.get("nome").equals(universityName)) {
+                this.universityName = e.get("nome");
+                universityImage = e.get("immagine");
+                universityId = e.getInt("id");
+                getCampuses();
+                break;
+            }
+        }
+    }
+
+    public void goToSpecializationSelection(String campusName) {
+        for(Entity e : campuses) {
+            if(e.get("nome").equals(campusName)) {
+                campusImage = e.get("immagine");
+                campusId = e.getInt("id");
+                getSpecializations();
+                break;
+            }
+        }
+    }
+
+    public void goToCourseSelection(String specializationName) {
+        for(Entity e : specializations) {
+            if(e.get("nome").equals(specializationName)) {
+                this.specializationName = e.get("nome");
+                specializationId = e.getInt("id");
+                getCourses();
+                break;
+            }
+        }
+    }
+
+    public void goToDashboard() {
+        application.newActivity(MainActivity.class);
+    }
+
 	/////////////////////////////////////////////////
 	//Calls to database
 	/////////////////////////////////////////////////
 
-    private void getUniversities(com.gc.materialdesign.widgets.ProgressDialog dialog) {
+    private void getUniversities() {
+        ProgressDialog dialog = new ProgressDialog(this, "Caricamento...");
         application.databaseCall("universities.php", UNIVERSITY_SELECTION_TAG, dialog);
     }
 
+    private void getCampuses() {
+        ProgressDialog dialog = new ProgressDialog(this, "Caricamento...");
+        application.databaseCall("campuses.php?e="+universityId, CAMPUS_SELECTION_TAG, dialog);
+    }
+
+    private void getSpecializations() {
+        ProgressDialog dialog = new ProgressDialog(this, "Caricamento...");
+        application.databaseCall("specializations.php?e="+campusId, SPECIALIZATION_SELECTION_TAG, dialog);
+    }
+
+    private void getCourses() {
+        ProgressDialog dialog = new ProgressDialog(this, "Caricamento...");
+        application.databaseCall("courses.php?s="+campusId, COURSES_SELECTION_TAG, dialog);
+    }
 
 }
