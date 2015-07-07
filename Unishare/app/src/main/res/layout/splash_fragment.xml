@@ -27,10 +27,12 @@
 
         <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
             android:id="@+id/progressBarCircularIndeterminate"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_horizontal"
-            android:background="#1E88E5" />
+            android:background="@color/Azure"/>
+            <!--android:background="#1E88E5" -->
+
     </LinearLayout>
 
 

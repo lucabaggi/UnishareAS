@@ -324,6 +324,11 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         insertOpinion(courseId, rating, opinion, userId, dialog);
     }
 
+    public void addToPassedExams(int courseId, int grade, int lode){
+        int userId = application.getUserId();
+        addToPassedExams(userId, courseId, grade, lode);
+    }
+
     public void myCourses(){
         courses = new ArrayList<>();
         String[] projection = {DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID,

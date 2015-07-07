@@ -52,7 +52,7 @@ public class Welcome2Fragment extends Fragment implements ViewInitiator {
 
 		RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.campusSelector);
 		for(String name : campuses) {
-			final RadioButton button = new RadioButton(activity.getApplicationContext());
+			final RadioButton button = new RadioButton(activity);
 			button.setText(name);
 			button.setTextColor(Color.BLACK);
 			button.setOnClickListener(new View.OnClickListener() {

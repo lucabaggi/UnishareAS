@@ -59,7 +59,7 @@ public class Welcome4Fragment extends Fragment implements ViewInitiator {
 		});
 
 		courseListView = (ListView) view.findViewById(R.id.listCourses);
-		ArrayAdapter<String> coursesAdapter = new ArrayAdapter<String>(activity.getApplicationContext(),android.R.layout.simple_list_item_1,coursesList);
+		ArrayAdapter<String> coursesAdapter = new ArrayAdapter<String>(activity,android.R.layout.simple_list_item_1,coursesList);
 		courseListView.setAdapter(coursesAdapter);
 
 		coursesSelector = (AutoCompleteTextView) view.findViewById(R.id.autoSelectCourses);
@@ -67,7 +67,7 @@ public class Welcome4Fragment extends Fragment implements ViewInitiator {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				coursesList.add(coursesSelector.getText().toString());
-				ArrayAdapter<String> coursesAdapter = new ArrayAdapter<String>(activity.getApplicationContext(),android.R.layout.simple_list_item_1,coursesList);
+				ArrayAdapter<String> coursesAdapter = new ArrayAdapter<String>(activity,android.R.layout.simple_list_item_1,coursesList);
 				courseListView.setAdapter(coursesAdapter);
 				coursesSelector.setText("");
 			}
@@ -78,7 +78,7 @@ public class Welcome4Fragment extends Fragment implements ViewInitiator {
 			crss[i] = c + " (" + professors.get(i) + ")";
 			i++;
 		}
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_dropdown_item_1line, crss);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, crss);
 		coursesSelector.setAdapter(adapter);
 	}
 

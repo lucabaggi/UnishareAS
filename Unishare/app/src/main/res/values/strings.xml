@@ -49,5 +49,9 @@
     <string name="title_activity_my_books">MyBooksActivity</string>
     <string name="my_books">Libri in vendita</string>
     <string name="requests_header">Richieste Libro</string>
+    <string name="passed_course">Inserisci fra i corsi superati</string>
+    <string name="opinions">Opinioni sul Corso</string>
+    <string name="files">Appunti disponibili</string>
+    <string name="associated_books">Libri associati al Corso</string>
 
 </resources>
