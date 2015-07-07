@@ -53,5 +53,6 @@
     <string name="opinions">Opinioni sul Corso</string>
     <string name="files">Appunti disponibili</string>
     <string name="associated_books">Libri associati al Corso</string>
+    <string name="course_files">Appunti disponibili</string>
 
 </resources>

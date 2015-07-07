@@ -29,14 +29,17 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
 
     private static final String MY_COURSES_FRAGMENT_INSTANCE = "my_courses_fragment_key";
     private static final String INSERT_OPINION_FRAGMENT_INSTANCE = "insert_opinion_fragment_key";
+    private static final String FILES_FRAGMENT_INSTANCE = "files_fragment_key";
     private static final String ADAPTER_VALUES = "key_adapter";
     private static final String OPINION_ADAPTER_VALUES = "key_opinion_adapter";
+    private static final String FILE_ADAPTER_VALUES = "key_file_adapter";
     private static final String COURSE_NAME = "course_name_key";
 
 
     private OpinionsFragment opinionsFragment;
     private InsertOpinionFragment insertOpinionFragment;
     private MyCoursesFragment myCoursesFragment;
+    private CourseFilesFragment courseFilesFragment;
 
     private MyApplication application;
     private Toolbar toolbar;
@@ -46,12 +49,14 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     private int courseId;
     private CoursesAdapter coursesAdapter;
     private OpinionsAdapter opinionsAdapter;
+    private FilesAdapter filesAdapter;
     private int numOfCourses;
 
     private ArrayList<Entity> courses;
 
     ArrayList<Entity> adapterValues = new ArrayList<Entity>();
     ArrayList<Entity> opinionAdapterValues = new ArrayList<Entity>();
+    ArrayList<Entity> fileAdapterValues = new ArrayList<Entity>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +96,14 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
             if(getFragmentManager().getFragment(savedInstanceState, INSERT_OPINION_FRAGMENT_INSTANCE) != null)
                 insertOpinionFragment = (InsertOpinionFragment)getFragmentManager()
                         .getFragment(savedInstanceState, INSERT_OPINION_FRAGMENT_INSTANCE);
+            if(getFragmentManager().getFragment(savedInstanceState, FILES_FRAGMENT_INSTANCE) != null){
+                fileAdapterValues = savedInstanceState.getParcelableArrayList(FILE_ADAPTER_VALUES);
+                filesAdapter = new FilesAdapter(this, new ArrayList<Entity>());
+                filesAdapter.addAll(fileAdapterValues);
+                courseFilesFragment = (CourseFilesFragment) getFragmentManager()
+                        .getFragment(savedInstanceState, FILES_FRAGMENT_INSTANCE);
+            }
+
         }
         else{
             Log.i(TAG, "Fragment not exists, creating");
@@ -120,13 +133,22 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         if(this.courseName != null){
             outState.putString(COURSE_NAME, this.courseName);
             ArrayList<Entity> opinions = new ArrayList<Entity>();
+            ArrayList<Entity> files = new ArrayList<>();
             if(opinionsAdapter != null){
                 for(int i = 0; i < opinionsAdapter.getCount(); i++)
                     opinions.add(opinionsAdapter.getItem(i));
                 outState.putParcelableArrayList(OPINION_ADAPTER_VALUES, opinions);
             }
+            if(filesAdapter != null){
+                for(int i = 0; i < filesAdapter.getCount(); i++)
+                    files.add(filesAdapter.getItem(i));
+                outState.putParcelableArrayList(FILE_ADAPTER_VALUES, files);
+            }
 
         }
+        if(this.courseFilesFragment != null)
+            if(this.courseFilesFragment.isVisible())
+                getFragmentManager().putFragment(outState, FILES_FRAGMENT_INSTANCE, courseFilesFragment);
         if(this.insertOpinionFragment != null)
             if(this.insertOpinionFragment.isVisible())
                 getFragmentManager()
@@ -251,6 +273,21 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
             f.getSwipeRefreshLayout().setRefreshing(false);
             updateLocalDb(result);
         }
+        if(tag == COURSE_FILES_TAG){
+            if(result.isEmpty()){
+                String title = "";
+                String message = "Nessun file disponibile per questo corso";
+                application.alertMessage(title, message);
+                return;
+            }
+            filesAdapter = new FilesAdapter(this, new ArrayList<Entity>());
+            filesAdapter.addAll(result);
+            courseFilesFragment = new CourseFilesFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.my_courses_fragment_container, courseFilesFragment, CourseFilesFragment.TAG);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 
     private void createOpinionFragment() {
@@ -296,6 +333,10 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
 
     public OpinionsAdapter getOpinionsAdapter(){
         return this.opinionsAdapter;
+    }
+
+    public FilesAdapter getFilesAdapter(){
+        return this.filesAdapter;
     }
 
     public String getCourseName(){
@@ -362,6 +403,10 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         myCoursesFragment = new MyCoursesFragment();
         getFragmentManager().beginTransaction().add(R.id.my_courses_fragment_container,
                 myCoursesFragment, MyCoursesFragment.TAG).commit();
+    }
+
+    public void getFiles(int courseId, ProgressDialog dialog){
+        getCourseFiles(courseId, dialog);
     }
 
     private void updateLocalDb(ArrayList<Entity> result){
