@@ -80,7 +80,7 @@ public class BooksDetailsFragment extends Fragment implements ViewInitiator {
         }
         else
         {
-            //TODO inserire immagine di default
+            amazonImage.setImageResource(R.drawable.book_cover);
         }
 
 
