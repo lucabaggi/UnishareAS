@@ -25,6 +25,7 @@ public class BooksDetailsFragment extends Fragment implements ViewInitiator {
 	private View view;
 
     private BooksActivity activity;
+    private MyCoursesActivity myCoursesActivity;
 	
 	public BooksDetailsFragment(){
 		
@@ -46,7 +47,10 @@ public class BooksDetailsFragment extends Fragment implements ViewInitiator {
 	@Override
 	public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.activity = (BooksActivity) activity;
+        if(activity instanceof  BooksActivity)
+            this.activity = (BooksActivity) activity;
+        else
+            this.myCoursesActivity = (MyCoursesActivity) activity;
     }
 	
 	@Override
@@ -110,7 +114,10 @@ public class BooksDetailsFragment extends Fragment implements ViewInitiator {
 			@Override
 			public void onClick(View v) {
                 int bookId = Integer.parseInt(book.get("id"));
-				activity.requestBook(bookId);
+                if(activity != null)
+				    activity.requestBook(bookId);
+                else
+                    myCoursesActivity.requestBook(bookId);
 			}
 		});
 	}
