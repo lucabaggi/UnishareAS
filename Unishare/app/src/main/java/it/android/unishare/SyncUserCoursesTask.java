@@ -37,7 +37,7 @@ public class SyncUserCoursesTask extends AsyncTask<Integer, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         if(application.getActivity() instanceof SplashActivity)
         {
-            ((SplashActivity)application.getActivity()).launchFacebookActivity();
+            //((SplashActivity)application.getActivity()).launchNextActivity();
         }
 
     }

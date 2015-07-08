@@ -28,6 +28,30 @@ public class SplashActivity extends Activity {
     {
         application.initializeDatabase();
 
+        boolean status = application.fetchUserData();
+        Class nextClass;
+
+        if(status) {
+            if(Utilities.checkNetworkState(this)){
+                new SyncUserCoursesTask(application).execute(application.getUserId());
+            }
+            else {
+                application.toastMessage(this, "Nessuna connessione di rete. Sincronizzazione corsi fallita");
+            }
+            if(application.hasUserCompletedWelcome()){
+                nextClass = MainActivity.class;
+            }
+            else {
+                nextClass = WelcomeActivity.class;
+            }
+        }
+        else {
+            nextClass = FacebookActivity.class;
+        }
+
+        application.newDelayedActivity(TIME_SHOW_MILLIS, nextClass);
+
+        /*
         if(application.numOfRows(DatabaseContract.UserInfoTable.TABLE_NAME) > 0)
             if(Utilities.checkNetworkState(this)){
                 int userId = application.getUserId();
@@ -36,16 +60,13 @@ public class SplashActivity extends Activity {
             else {
                 application.toastMessage(this,
                         "Nessuna connessione di rete. Sincronizzazione corsi fallita");
-                launchFacebookActivity();
+                launchNextActivity();
             }
         else
-            launchFacebookActivity();
+            launchNextActivity();
+        */
     }
 
-    protected void launchFacebookActivity(){
-        application.newDelayedActivity(TIME_SHOW_MILLIS, FacebookActivity.class);
-    }
-	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -111,6 +111,7 @@ public class MyApplication extends android.app.Application {
             DatabaseHelper.regenerateDatabase(localDatabase);
     }
 
+	/*
 	public int getUserId(){
 		String[] projection = {DatabaseContract.UserInfoTable.COLUMN_USER_ID};
 		Cursor cursor = queryDatabase(DatabaseContract.UserInfoTable.TABLE_NAME, projection,null,
@@ -118,6 +119,7 @@ public class MyApplication extends android.app.Application {
 		cursor.moveToFirst();
 		return cursor.getInt(0);
 	}
+	*/
 
 	public boolean existsInCurrentCourses(int id){
 		String selection = DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID + " = ?";
@@ -158,7 +160,7 @@ public class MyApplication extends android.app.Application {
 	   return instance;
 	}
 	
-	
+	/*
 	//Loads initial data
 	public boolean loadInitialData(Context context) {
 		String json = loadJSONDatabase(context);
@@ -197,7 +199,8 @@ public class MyApplication extends android.app.Application {
 	    return json;
 
 	}
-	
+	*/
+
 	//Starts a new activity after ms milliseconds
 	public void newDelayedActivity(int ms, final Class<?> newActivity){
 		new Handler().postDelayed(new Runnable() {
@@ -379,7 +382,7 @@ public class MyApplication extends android.app.Application {
 	//Getters & Setters
 	///////////////////////////////////////////////////////////////////////
 	
-	public int getUserID() {
+	public int getUserId() {
 		return userID;
 	}
 	
@@ -387,19 +390,19 @@ public class MyApplication extends android.app.Application {
 		return nickname;
 	}
 	
-	public int getUniversityID() {
+	public int getUniversityId() {
 		return universityID;
 	}
 	
-	public int getCampusID() {
+	public int getCampusId() {
 		return campusID;
 	}
 	
-	public int getFacultyID() {
+	public int getFacultyId() {
 		return facultyID;
 	}
 	
-	public int getSpecializationID() {
+	public int getSpecializationId() {
 		return specializationID;
 	}
 	

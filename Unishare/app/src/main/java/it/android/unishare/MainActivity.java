@@ -49,7 +49,7 @@ public class MainActivity extends SmartActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         super.setName();
         super.setImage();
-        facebookId = super.getFacebookId();
+        //facebookId = super.getFacebookId();
 
         if(toolbar != null){
             setSupportActionBar(toolbar);
