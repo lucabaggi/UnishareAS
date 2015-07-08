@@ -16,12 +16,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/course_files"
+            android:text="@string/associated_books_header"
             android:gravity="center"
             android:layout_margin="15dp"
             android:textAppearance="?android:attr/textAppearanceLarge" />
         <LinearLayout
-            android:id="@+id/list_course_files_header"
+            android:id="@+id/list_my_courses_header"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:background="@color/Orange">
@@ -29,45 +29,30 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                android:text="Nome"
+                android:layout_weight="0.6"
+                android:text="Titolo Libro"
                 android:textColor="@color/WhiteSmoke"
                 android:gravity="center"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                android:text="Data"
+                android:layout_weight="0.4"
+                android:text="Autore"
                 android:textColor="@color/WhiteSmoke"
                 android:gravity="center"/>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:text="Dimensione"
-                android:textColor="@color/WhiteSmoke"
-                android:gravity="center"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:text=""
-                android:textColor="@color/WhiteSmoke"
-                android:gravity="center"/>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:background="@drawable/toolbar_dropshadow" />
         <!-- <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/course_files_swipe_refresh_layout"
+            android:id="@+id/passed_courses_swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"> -->
             <ListView
-                android:id="@+id/courseFilesListView"
+                android:id="@+id/courseBooksListView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
             </ListView>

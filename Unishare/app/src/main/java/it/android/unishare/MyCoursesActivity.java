@@ -23,9 +23,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 
-public class MyCoursesActivity extends CourseSupportActivity implements MyCoursesFragment.OnCourseSelectedListener, PassedExamsFragment.OnCourseSelectedListener {
+public class MyCoursesActivity extends CourseSupportActivity implements MyCoursesFragment.OnCourseSelectedListener, PassedExamsFragment.OnCourseSelectedListener, CourseBooksFragment.OnBookSelectedListener {
 
     public static final String TAG = "MyCoursesActivity";
+
+    private static final String REQUEST_BOOK_TAG = "request_book";
+    private static final String BOOK_DETAILS_TAG = "book_details";
+    private static final String ASSOCIATED_BOOKS_TAG = "associated_books";
 
     private static final String MY_COURSES_FRAGMENT_INSTANCE = "my_courses_fragment_key";
     private static final String INSERT_OPINION_FRAGMENT_INSTANCE = "insert_opinion_fragment_key";
@@ -33,13 +37,16 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     private static final String ADAPTER_VALUES = "key_adapter";
     private static final String OPINION_ADAPTER_VALUES = "key_opinion_adapter";
     private static final String FILE_ADAPTER_VALUES = "key_file_adapter";
+    private static final String BOOKS_ADAPTER_VALUES = "key_books_adapter";
     private static final String COURSE_NAME = "course_name_key";
+    private static final String BOOKS_FRAGMENT_INSTANCE = "books_fragment_key";
 
 
     private OpinionsFragment opinionsFragment;
     private InsertOpinionFragment insertOpinionFragment;
     private MyCoursesFragment myCoursesFragment;
     private CourseFilesFragment courseFilesFragment;
+    private CourseBooksFragment courseBooksFragment;
 
     private MyApplication application;
     private Toolbar toolbar;
@@ -50,13 +57,17 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     private CoursesAdapter coursesAdapter;
     private OpinionsAdapter opinionsAdapter;
     private FilesAdapter filesAdapter;
+    private BooksAdapter booksAdapter;
     private int numOfCourses;
+    private Entity book;
 
     private ArrayList<Entity> courses;
 
     ArrayList<Entity> adapterValues = new ArrayList<Entity>();
     ArrayList<Entity> opinionAdapterValues = new ArrayList<Entity>();
     ArrayList<Entity> fileAdapterValues = new ArrayList<Entity>();
+    ArrayList<Entity> booksAdapterValues = new ArrayList<Entity>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +114,16 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
                 courseFilesFragment = (CourseFilesFragment) getFragmentManager()
                         .getFragment(savedInstanceState, FILES_FRAGMENT_INSTANCE);
             }
+            if(savedInstanceState.getParcelableArrayList(BOOKS_ADAPTER_VALUES) != null){
+                booksAdapterValues = savedInstanceState.getParcelableArrayList(BOOKS_ADAPTER_VALUES);
+                booksAdapter = new BooksAdapter(this, new ArrayList<Entity>());
+                Log.i(TAG, "Adapter values size: " + booksAdapterValues.size());
+                booksAdapter.addAll(booksAdapterValues);
+            }
+            if(getFragmentManager().getFragment(savedInstanceState, BOOKS_FRAGMENT_INSTANCE) != null){
+                courseBooksFragment = (CourseBooksFragment) getFragmentManager()
+                        .getFragment(savedInstanceState, BOOKS_FRAGMENT_INSTANCE);
+            }
 
         }
         else{
@@ -133,22 +154,36 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         if(this.courseName != null){
             outState.putString(COURSE_NAME, this.courseName);
             ArrayList<Entity> opinions = new ArrayList<Entity>();
-            ArrayList<Entity> files = new ArrayList<>();
             if(opinionsAdapter != null){
                 for(int i = 0; i < opinionsAdapter.getCount(); i++)
                     opinions.add(opinionsAdapter.getItem(i));
                 outState.putParcelableArrayList(OPINION_ADAPTER_VALUES, opinions);
             }
-            if(filesAdapter != null){
-                for(int i = 0; i < filesAdapter.getCount(); i++)
-                    files.add(filesAdapter.getItem(i));
-                outState.putParcelableArrayList(FILE_ADAPTER_VALUES, files);
-            }
-
         }
+
+        if(filesAdapter != null){
+            ArrayList<Entity> files = new ArrayList<>();
+            for(int i = 0; i < filesAdapter.getCount(); i++)
+                files.add(filesAdapter.getItem(i));
+            outState.putParcelableArrayList(FILE_ADAPTER_VALUES, files);
+        }
+
+        if(booksAdapter != null){
+            ArrayList<Entity> books = new ArrayList<>();
+            for(int i = 0; i < booksAdapter.getCount(); i++)
+                books.add(booksAdapter.getItem(i));
+            Log.i(TAG, "books size: " + books.size());
+            outState.putParcelableArrayList(BOOKS_ADAPTER_VALUES, books);
+        }
+
         if(this.courseFilesFragment != null)
             if(this.courseFilesFragment.isVisible())
                 getFragmentManager().putFragment(outState, FILES_FRAGMENT_INSTANCE, courseFilesFragment);
+
+        if(this.courseBooksFragment != null)
+            if(this.courseBooksFragment.isVisible())
+                getFragmentManager().putFragment(outState, BOOKS_FRAGMENT_INSTANCE, courseBooksFragment);
+
         if(this.insertOpinionFragment != null)
             if(this.insertOpinionFragment.isVisible())
                 getFragmentManager()
@@ -288,6 +323,43 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
             transaction.addToBackStack(null);
             transaction.commit();
         }
+        if(tag == ASSOCIATED_BOOKS_TAG){
+            booksAdapter = new BooksAdapter(this, new ArrayList<Entity>());
+            if(result.isEmpty()){
+                String title = "";
+                String message = "Nessun libro associato al corso";
+                application.alertMessage(title, message);
+                return;
+            }
+            booksAdapter.addAll(result);
+            courseBooksFragment = new CourseBooksFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.my_courses_fragment_container, courseBooksFragment, CourseBooksFragment.TAG);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        if(tag == REQUEST_BOOK_TAG){
+            if (!result.isEmpty()) {
+                if (result.get(0).getFirst().equals("ERROR")) {
+                    String title = "Error";
+                    String message = "Richiesta libro non eseguita";
+                    application.alertMessage(title, message);
+                    return;
+                }
+                String title = "";
+                String message = "Libro richiesto con successo. Una notifica è appena stata inviata al venditore";
+                application.alertMessage(title, message);
+            }
+        }
+        if(tag == BOOK_DETAILS_TAG){
+            this.book = result.get(0);
+            Log.i(TAG, "BookId = " + book.get("id"));
+            BooksDetailsFragment booksDetailsFragment = new BooksDetailsFragment(book);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.my_courses_fragment_container, booksDetailsFragment, BooksDetailsFragment.TAG);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 
     private void createOpinionFragment() {
@@ -339,6 +411,10 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         return this.filesAdapter;
     }
 
+    public BooksAdapter getBooksAdapter(){
+        return this.booksAdapter;
+    }
+
     public String getCourseName(){
         return this.courseName;
     }
@@ -348,6 +424,12 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         this.courseName = courseName;
         this.courseId = Integer.parseInt(courseId);
         getOpinion(this.courseId, dialog);
+    }
+
+    @Override
+    public void onBookSelected(String bookId, ProgressDialog dialog) {
+        int id = Integer.parseInt(bookId);
+        getBook(id, dialog);
     }
 
     public void createInsertOpinionFragment() {
@@ -409,14 +491,18 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         getCourseFiles(courseId, dialog);
     }
 
+    public void getAssociatedBooks(int courseId, ProgressDialog dialog){
+        getBooks(courseId, dialog);
+    }
+
     private void updateLocalDb(ArrayList<Entity> result){
         final ArrayList<Entity> courses = result;
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                for(Entity course : courses){
+                for (Entity course : courses) {
                     int id = Integer.parseInt(course.get("id"));
-                    if(!application.existsInCurrentCourses(id)) {
+                    if (!application.existsInCurrentCourses(id)) {
                         String courseName = course.get("nome");
                         String professor = course.get("professore");
                         ContentValues values = new ContentValues();
@@ -431,6 +517,24 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
 
     }
 
+    public void requestBook(int bookId) {
+        int userId = application.getUserId();
+        callRequestBook(userId, bookId);
+    }
+
+    //Calls to DB
+
+    private void getBooks(int courseId, ProgressDialog dialog){
+        application.databaseCall("books.php?c=" + courseId, ASSOCIATED_BOOKS_TAG, dialog);
+    }
+
+    private void callRequestBook(int userId, int bookId) {
+        application.databaseCall("books_request.php?id=" + bookId + "&u=" + userId, REQUEST_BOOK_TAG, null);
+    }
+
+    private void getBook(int bookId, com.gc.materialdesign.widgets.ProgressDialog dialog) {
+        application.databaseCall("books_detail.php?id=" + bookId, BOOK_DETAILS_TAG, dialog);
+    }
 
 
 }

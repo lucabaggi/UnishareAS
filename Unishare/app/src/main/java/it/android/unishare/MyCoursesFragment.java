@@ -171,6 +171,16 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
                 dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), titleSearching);
                 activity.getFiles(Integer.parseInt(courseId), dialog);
                 break;
+            case R.id.associated_books:
+                if (!Utilities.checkNetworkState(activity)) {
+                    String titleNet = "Errore";
+                    String messageNet = "Verifica la tua connessione a Internet e riprova";
+                    activity.getMyApplication().alertMessage(titleNet, messageNet);
+                    break;
+                }
+                String t = "Searching";
+                dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), t);
+                activity.getAssociatedBooks(Integer.parseInt(courseId), dialog);
         }
         return super.onContextItemSelected(item);
 
