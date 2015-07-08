@@ -235,6 +235,8 @@ public class FacebookActivity extends SmartActivity {
         Log.i("FacebookActivity", "values ha grandezza" + values.size());
         application.insertIntoDatabase(DatabaseContract.UserInfoTable.TABLE_NAME, values);
 
+        application.fetchUserData();
+
         context = FacebookActivity.this;
         gcm = GoogleCloudMessaging.getInstance(context);
         registerInBackground();
