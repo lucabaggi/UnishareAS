@@ -47,6 +47,7 @@ public class MyApplication extends android.app.Application {
 	private static final int REQ_BOOKS = 3;
     private static final int BOOKS = 4;
     private static final int COURSES = 5;
+	private static final int FILES = 6;
 	private static final int MYDATA = 7;
 
 	private int userID;
@@ -368,10 +369,7 @@ public class MyApplication extends android.app.Application {
 		deleteTable(DatabaseContract.PassedExams.TABLE_NAME);
 		FacebookSdk.sdkInitialize(currentContext);
 		LoginManager.getInstance().logOut();
-		Intent intent = new Intent(currentActivity, SplashActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		currentActivity.startActivity(intent);
-		currentActivity.finish();
+		newActivity(SplashActivity.class);
 	}
 
     public void launchNewActivityFromDrawer(Activity activity, int position){
@@ -408,6 +406,9 @@ public class MyApplication extends android.app.Application {
                 break;
 			case(MYDATA):
 				MyApplication.getInstance(activity).newActivity(MyDataActivity.class);
+				break;
+			case(FILES):
+				MyApplication.getInstance(activity).newActivity(FilesActivity.class);
 				break;
             default:
                 Log.i("MyApplication", "Errore");

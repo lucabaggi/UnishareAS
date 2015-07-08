@@ -31,8 +31,8 @@ public class RequestsAdapter extends ArrayAdapter<Entity> {
 		TextView email = (TextView) convertView.findViewById(R.id.email);
 		// Populate the data into the template view using the data object
 		date.setText(entity.get("data"));
-		user.setText("Nome utente: " + entity.get("nickname"));
-		email.setText("Contatto e-mail: " + entity.get("email"));
+		user.setText(entity.get("name"));
+		email.setText(entity.get("email"));
 		// Return the completed view to render on screen
 		return convertView;
 
