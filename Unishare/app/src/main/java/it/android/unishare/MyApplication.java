@@ -77,7 +77,6 @@ public class MyApplication extends android.app.Application {
 
 	public void initializeDatabase() {
 		if(localDatabase == null) {
-			//userID = 1;
 			DatabaseHelper dbHelper = new DatabaseHelper(currentActivity);
 			localDatabase = dbHelper.getWritableDatabase();
 		}
