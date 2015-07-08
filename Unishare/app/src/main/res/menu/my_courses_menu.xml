@@ -7,4 +7,24 @@
         android:alphabeticShortcut="a"
         android:title="@string/delete_item"/>
 
+    <item
+        android:id="@+id/passed_course"
+        android:alphabeticShortcut="b"
+        android:title="@string/passed_course"/>
+
+    <item
+        android:id="@+id/opinions"
+        android:alphabeticShortcut="c"
+        android:title="@string/opinions"/>
+
+    <item
+        android:id="@+id/files"
+        android:alphabeticShortcut="d"
+        android:title="@string/files"/>
+
+    <item
+        android:id="@+id/associated_books"
+        android:alphabeticShortcut="d"
+        android:title="@string/associated_books"/>
+
 </menu>

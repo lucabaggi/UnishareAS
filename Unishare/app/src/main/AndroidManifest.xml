@@ -11,11 +11,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <permission android:name="it.android.unishare.permission.C2D_MESSAGE"
+    <permission
+        android:name="it.android.unishare.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="it.android.unishare.permission.C2D_MESSAGE" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -30,14 +31,13 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppBaseTheme" >
-
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
@@ -75,7 +75,7 @@
             android:label="@string/app_name" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".MainActivity" />
         </activity>
 
         <meta-data
@@ -84,7 +84,7 @@
 
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login">
+            android:label="@string/title_activity_login" >
         </activity>
 
         <service
@@ -116,20 +116,25 @@
             android:label="@string/app_name" />
         <activity
             android:name=".RequestedBooksActivity"
-            android:label="@string/title_activity_profile">
+            android:label="@string/title_activity_profile" >
         </activity>
         <activity
             android:name=".CourseSupportActivity"
             android:label="@string/title_activity_course_support" >
         </activity>
-        <receiver
-            android:name=".NotificationReceiver">
+
+        <receiver android:name=".NotificationReceiver" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="it.android.unishare" />
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".FilesActivity"
+            android:label="@string/title_activity_files" >
+        </activity>
     </application>
 
 </manifest>
