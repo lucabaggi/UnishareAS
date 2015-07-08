@@ -88,7 +88,7 @@ public class FacebookActivity extends SmartActivity {
             returnButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SmartActivity.profile = profile;
+                    //SmartActivity.profile = profile;
                     application.newActivity(MainActivity.class);
                     FacebookActivity.this.finish();
                 }
@@ -124,7 +124,7 @@ public class FacebookActivity extends SmartActivity {
                 if(currentProfile != null) {
                     Profile.setCurrentProfile(currentProfile);
                     profile = currentProfile;
-                    SmartActivity.profile = profile;
+                    //SmartActivity.profile = profile;
 
                     //Adding corresponding Unishare user to db
                     getUser(profile.getId());
@@ -141,7 +141,6 @@ public class FacebookActivity extends SmartActivity {
     }
 
     private void switchActivity() {
-        SmartActivity.profile = profile;
         application.newActivity(MainActivity.class);
         atStart = false;
         finish();
@@ -231,23 +230,11 @@ public class FacebookActivity extends SmartActivity {
     }
 
     protected void saveToInternalStorage(Bitmap image) {
+
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        // path to /data/data/yourapp/app_data/Images
         File directory = cw.getDir("Images", Context.MODE_PRIVATE);
-        // Create imageDir
-        File mypath = new File(directory, "profile.jpg");
+        Utilities.saveImage(image,"profile.jpg", getApplicationContext());
 
-        FileOutputStream fos = null;
-        try {
-
-            fos = new FileOutputStream(mypath);
-
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         UserInfo user = new UserInfo(userEntity);
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.UserInfoTable.COLUMN_USER_ID, user.getUserId());

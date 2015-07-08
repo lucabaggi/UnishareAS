@@ -38,7 +38,7 @@ public class MainFragment extends Fragment implements ViewInitiator {
 	public void initializeUI(View view) {
 
 		ImageView campusImageView = (ImageView) view.findViewById(R.id.campusImageView);
-		Utilities.loadImage(campusImageView,"campus.jpg",activity.getApplicationContext());
+		Utilities.loadImage(campusImageView, "campus.jpg", activity.getApplicationContext());
 
         Button btn = (Button) view.findViewById(R.id.logout_button);
         btn.setOnClickListener(new OnClickListener() {
@@ -56,6 +56,8 @@ public class MainFragment extends Fragment implements ViewInitiator {
 				MyApplication.getInstance(activity).newActivity(WelcomeActivity.class);
 			}
 		});
+
+		//SQL_DELETE_USER_TABLE
         
 	}
 

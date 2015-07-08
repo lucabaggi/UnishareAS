@@ -19,8 +19,8 @@ public class WidgetProvider extends AppWidgetProvider {
 	    ComponentName thisWidget = new ComponentName(context, WidgetProvider.class);
 	    int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 	    for (int widgetId : allWidgetIds) {
-	      
-	    	MyApplication.getInstance(context).loadInitialData(context);
+
+	    	MyApplication.getInstance(context).fetchUserData();
 			RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 			remoteViews.setTextViewText(R.id.update, "Utente Unishare: " + MyApplication.getInstance(context).getNickname());
 	      

@@ -24,7 +24,7 @@ import com.pkmmte.view.CircularImageView;
 
 public class SmartActivity extends ActionBarActivity {
 
-    public static Profile profile;
+    //public static Profile profile;
     private MyApplication application;
 
 	
@@ -49,7 +49,7 @@ public class SmartActivity extends ActionBarActivity {
 
     protected void setName(){
         TextView nameTextView = (TextView) findViewById(R.id.nameTextView);
-        nameTextView.setText(profile.getFirstName().toString());
+        nameTextView.setText(application.getNickname());
     }
 
     protected void setImage(){
@@ -62,11 +62,6 @@ public class SmartActivity extends ActionBarActivity {
             loadImageFromLocal(path);
         }
     }
-
-    protected String getFacebookId(){
-        return profile.getId();
-    }
-
 
     private void loadImageFromLocal(String path)
     {
