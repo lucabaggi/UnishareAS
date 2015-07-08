@@ -171,10 +171,12 @@ public class FilesActivity extends AdapterActivity {
         }
     }
 
+    /*
     @Override
     MyApplication getMyApplication() {
         return this.application;
     }
+    */
 
     @Override
     public void handleError(String tag){

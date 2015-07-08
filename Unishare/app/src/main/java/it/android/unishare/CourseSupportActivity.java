@@ -44,11 +44,6 @@ public class CourseSupportActivity extends AdapterActivity {
 
     }
 
-    @Override
-    MyApplication getMyApplication() {
-        return null;
-    }
-
     public OpinionsAdapter getOpinionsAdapter(){
         return null;
     }

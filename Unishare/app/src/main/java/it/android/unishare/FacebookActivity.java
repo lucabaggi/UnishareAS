@@ -244,7 +244,7 @@ public class FacebookActivity extends SmartActivity {
         new SyncUserCoursesTask(application).execute(user.getUserId());
 
         Intent intent;
-        if(false && user.getCampusId()>0 && user.getSpecializationId()>0) {
+        if(application.hasUserCompletedWelcome()) {
             intent = new Intent(FacebookActivity.this, MainActivity.class);
         }
         else {

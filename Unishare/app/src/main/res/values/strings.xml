@@ -55,6 +55,7 @@
     <string name="associated_books">Libri associati al Corso</string>
     <string name="course_files">Appunti disponibili</string>
     <string name="title_activity_files">FilesActivity</string>
+    <string name="title_activity_mydata">MyDataActivity</string>
     <string name="search_files_text">Inserisci il nome del corso per trovare gli appunti associati:</string>
     <string name="search_file_hint">Nome del corso o degli appunti</string>
     <string name="associated_books_header">Libri Associati</string>

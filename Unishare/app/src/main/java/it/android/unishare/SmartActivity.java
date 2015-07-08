@@ -78,7 +78,8 @@ public class SmartActivity extends ActionBarActivity {
         }
 
     }
-
-
-
+    
+    public MyApplication getMyApplication() {
+        return application;
+    }
 }
