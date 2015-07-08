@@ -41,6 +41,6 @@ public class DownloadProfileImageTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap result) {
-        activity.saveToInternalStorage(result);
+        Utilities.saveImage(result,"profile.jpg", activity.getApplicationContext());
     }
 }

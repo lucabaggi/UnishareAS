@@ -2,6 +2,7 @@ package it.android.unishare;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -48,23 +49,8 @@ public class SplashActivity extends Activity {
         else {
             nextClass = FacebookActivity.class;
         }
-
+        Log.e("Class loaded:", nextClass.toString());
         application.newDelayedActivity(TIME_SHOW_MILLIS, nextClass);
-
-        /*
-        if(application.numOfRows(DatabaseContract.UserInfoTable.TABLE_NAME) > 0)
-            if(Utilities.checkNetworkState(this)){
-                int userId = application.getUserId();
-                new SyncUserCoursesTask(application).execute(userId);
-            }
-            else {
-                application.toastMessage(this,
-                        "Nessuna connessione di rete. Sincronizzazione corsi fallita");
-                launchNextActivity();
-            }
-        else
-            launchNextActivity();
-        */
     }
 
 

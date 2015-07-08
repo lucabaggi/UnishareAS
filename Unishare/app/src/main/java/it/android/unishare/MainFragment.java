@@ -40,13 +40,15 @@ public class MainFragment extends Fragment implements ViewInitiator {
 		ImageView campusImageView = (ImageView) view.findViewById(R.id.campusImageView);
 		Utilities.loadImage(campusImageView, "campus.jpg", activity.getApplicationContext());
 
+		/*
         Button btn = (Button) view.findViewById(R.id.logout_button);
         btn.setOnClickListener(new OnClickListener() {
-	        @Override
-	        public void onClick(View view) {
-                activity.logout();
-	        }
-        });
+			@Override
+			public void onClick(View view) {
+				activity.logout();
+			}
+		});
+		*/
 
 		Button btn4 = (Button) view.findViewById(R.id.button4);
 		btn4.setOnClickListener(new OnClickListener() {
@@ -57,7 +59,14 @@ public class MainFragment extends Fragment implements ViewInitiator {
 			}
 		});
 
-		//SQL_DELETE_USER_TABLE
+		Button btn3 = (Button) view.findViewById(R.id.button3);
+		btn3.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				MyApplication.getInstance(activity).logoutUser();
+			}
+		});
         
 	}
 
