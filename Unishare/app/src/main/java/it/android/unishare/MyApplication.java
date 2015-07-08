@@ -48,7 +48,6 @@ public class MyApplication extends android.app.Application {
     private static final int BOOKS = 4;
     private static final int COURSES = 5;
 	private static final int FILES = 6;
-	private static final int MYDATA = 7;
 
 	private int userID;
 	private int campusID;
@@ -404,9 +403,6 @@ public class MyApplication extends android.app.Application {
             case(COURSES):
                 MyApplication.getInstance(activity).newActivity(CoursesActivity.class);
                 break;
-			case(MYDATA):
-				MyApplication.getInstance(activity).newActivity(MyDataActivity.class);
-				break;
 			case(FILES):
 				MyApplication.getInstance(activity).newActivity(FilesActivity.class);
 				break;

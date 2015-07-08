@@ -74,7 +74,12 @@ public class MyDataActivity extends SmartActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.mydata) {
+            application.newActivity(MyDataActivity.class);
+            return true;
+        }
+        else if(id == R.id.logout) {
+            application.logoutUser();
             return true;
         }
         if (drawerToggle.onOptionsItemSelected(item)) {

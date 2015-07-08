@@ -61,29 +61,29 @@ public final class R {
 		public static final int blue = 0x7f0d009f;
 		public static final int button_accept = 0x7f0d00b3;
 		public static final int button_cancel = 0x7f0d00b2;
-		public static final int buttonflat = 0x7f0d00fd;
+		public static final int buttonflat = 0x7f0d00ff;
 		public static final int contentDialog = 0x7f0d00af;
 		public static final int contentSelector = 0x7f0d009b;
 		public static final int dialog_rootView = 0x7f0d00ae;
 		public static final int green = 0x7f0d009e;
 		public static final int message = 0x7f0d00b1;
 		public static final int message_scrollView = 0x7f0d00b0;
-		public static final int number_indicator_spinner_content = 0x7f0d00e6;
-		public static final int progressBarCircularIndetermininate = 0x7f0d00ef;
+		public static final int number_indicator_spinner_content = 0x7f0d00e8;
+		public static final int progressBarCircularIndetermininate = 0x7f0d00f1;
 		public static final int red = 0x7f0d009d;
 		public static final int rootSelector = 0x7f0d009a;
-		public static final int shape_bacground = 0x7f0d0106;
-		public static final int snackbar = 0x7f0d00fc;
-		public static final int text = 0x7f0d00fe;
+		public static final int shape_bacground = 0x7f0d0108;
+		public static final int snackbar = 0x7f0d00fe;
+		public static final int text = 0x7f0d0100;
 		public static final int title = 0x7f0d0051;
 		public static final int viewColor = 0x7f0d009c;
 	}
 	public static final class layout {
 		public static final int color_selector = 0x7f030022;
 		public static final int dialog = 0x7f030029;
-		public static final int number_indicator_spinner = 0x7f030043;
-		public static final int progress_dialog = 0x7f030049;
-		public static final int snackbar = 0x7f030054;
+		public static final int number_indicator_spinner = 0x7f030045;
+		public static final int progress_dialog = 0x7f03004b;
+		public static final int snackbar = 0x7f030056;
 	}
 	public static final class styleable {
 		public static final int[] CustomAttributes = { 0x7f010037, 0x7f010038, 0x7f010039, 0x7f01003a, 0x7f01003b, 0x7f01003c, 0x7f01003d, 0x7f01003e, 0x7f01003f, 0x7f010040, 0x7f010041, 0x7f010042, 0x7f010043, 0x7f010044, 0x7f010045, 0x7f010046 };

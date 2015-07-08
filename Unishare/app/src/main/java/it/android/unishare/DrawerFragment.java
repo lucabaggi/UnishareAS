@@ -25,7 +25,7 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
     ListView listView;
     String drawerItem[] = new String[]{"I miei corsi", "Carriera didattica",
             "Libri in vendita", "Libri richiesti", "Tutti i Libri", "Tutti i Corsi",
-            "Appunti & Dispense", "Dati personali" };
+            "Appunti & Dispense" };
     DrawerAdapter drawerAdapter;
 
 
@@ -78,12 +78,8 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
 
         });
 
-        setName("Gino");
+        //activity.setName();
 
     }
 
-    public void setName(String name){
-        TextView nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-        nameTextView.setText(name);
-    }
 }

@@ -121,7 +121,12 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.mydata) {
+            application.newActivity(MyDataActivity.class);
+            return true;
+        }
+        else if(id == R.id.logout) {
+            application.logoutUser();
             return true;
         }
         if (drawerToggle.onOptionsItemSelected(item)) {
