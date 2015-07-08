@@ -19,12 +19,45 @@
             android:layout_margin="15dp"
             android:text="@string/requests_header"
             android:textAppearance="?android:attr/textAppearanceLarge" />
+        <LinearLayout
+            android:id="@+id/list_my_courses_header"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:background="@color/Orange">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:text="Nome Utente"
+                android:textColor="@color/WhiteSmoke"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:text="E-Mail"
+                android:textColor="@color/WhiteSmoke"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:text="Data"
+                android:textColor="@color/WhiteSmoke"
+                android:gravity="center"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/toolbar_dropshadow" />
 
         <ListView
             android:id="@+id/requestsListView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp" >
+            android:layout_height="wrap_content">
 
         </ListView>
     </LinearLayout>
