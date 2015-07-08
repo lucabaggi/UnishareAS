@@ -194,13 +194,6 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
 	public void onBookSelected(String bookId, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		int id = Integer.parseInt(bookId);
 		getBook(id, dialog);
-		/*
-		BooksDetailsFragment booksDetailsFragment = new BooksDetailsFragment(book);
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-		transaction.replace(R.id.books_fragment_container, booksDetailsFragment, BooksDetailsFragment.TAG);
-		transaction.addToBackStack(null);
-		transaction.commit();
-		*/
 	}
 
 

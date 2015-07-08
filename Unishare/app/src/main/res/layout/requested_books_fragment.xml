@@ -4,10 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="it.android.unishare.RequestedBooksActivity$PlaceholderFragment" >
 
     <LinearLayout
@@ -23,6 +19,40 @@
             android:text="@string/requested_books"
             android:layout_margin="15dp"
             android:textAppearance="?android:attr/textAppearanceLarge" />
+        <LinearLayout
+            android:id="@+id/list_my_courses_header"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:background="@color/Orange">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="Titolo"
+                android:textColor="@color/WhiteSmoke"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:text="Autore"
+                android:textColor="@color/WhiteSmoke"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:text="Prezzo"
+                android:textColor="@color/WhiteSmoke"
+                android:gravity="center"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/toolbar_dropshadow" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/requested_books_swipe_refresh_layout"
@@ -31,7 +61,8 @@
             <ListView
                 android:id="@+id/requestedBooksListView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:clickable="false">
 
             </ListView>
         </android.support.v4.widget.SwipeRefreshLayout>
