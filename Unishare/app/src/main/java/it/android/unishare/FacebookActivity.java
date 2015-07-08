@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.facebook.*;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -44,7 +45,6 @@ public class FacebookActivity extends SmartActivity {
     private ProfileTracker profileTracker;
     private Profile profile;
 
-    private Button returnButton;
     private boolean atStart;
     private Entity userEntity;
 
@@ -61,10 +61,10 @@ public class FacebookActivity extends SmartActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
+        //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends"));
+
         setContentView(R.layout.activity_facebook);
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        returnButton = (Button) findViewById(R.id.return_button);
-        returnButton.setVisibility(View.INVISIBLE);
         atStart = false;
 
         Intent intent = getIntent();
@@ -75,33 +75,23 @@ public class FacebookActivity extends SmartActivity {
         }
 
 
-        //Profile.fetchProfileForCurrentAccessToken();
         profile = Profile.getCurrentProfile();
         if(profile != null) {
-            Log.i("FBStatus: ", "Already logged as " + profile.getName());
+            Log.e("FBStatus: ", "Already logged as " + profile.getName());
             if(atStart){
-                Log.i("FacebookActivity", "atStart = " + atStart);
+                Log.e("FacebookActivity", "atStart = " + atStart);
                 switchActivity();
                 return;
             }
 
-            returnButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //SmartActivity.profile = profile;
-                    application.newActivity(MainActivity.class);
-                    FacebookActivity.this.finish();
-                }
-            });
-            returnButton.setVisibility(View.VISIBLE);
         } else {
-            Log.i("FBStatus: ", "Not yet logged");
+            Log.e("FBStatus: ", "Not yet logged");
         }
 
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends"));
+        loginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_friends"));
 
         // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.i("FBStatus: ", "Success");
@@ -124,20 +114,15 @@ public class FacebookActivity extends SmartActivity {
                 if(currentProfile != null) {
                     Profile.setCurrentProfile(currentProfile);
                     profile = currentProfile;
-                    //SmartActivity.profile = profile;
 
                     //Adding corresponding Unishare user to db
                     getUser(profile.getId());
                 } else {
-                    returnButton.setVisibility(View.INVISIBLE);
-                    application.deleteTable(DatabaseContract.UserInfoTable.TABLE_NAME);
-                    application.deleteTable(DatabaseContract.MyCoursesTable.TABLE_NAME);
-                    application.deleteTable(DatabaseContract.PassedExams.TABLE_NAME);
+                    application.logoutUser();
                     Log.i("FBStatus: ", "Now logged out");
                 }
             }
         };
-        //profileTracker.startTracking();
     }
 
     private void switchActivity() {
@@ -219,9 +204,10 @@ public class FacebookActivity extends SmartActivity {
         Log.i("FacebookActivity", "handling results");
         if (tag == USER_INFO) {
             userEntity = result.get(0);
-            String imageUlr = profile.getProfilePictureUri(500,500).toString();
-            Log.i("FacebookActivity", "URL profile image: " + imageUlr);
-            new DownloadProfileImageTask(this).execute(imageUlr);
+            String imageUrl = profile.getProfilePictureUri(500,500).toString();
+            Log.i("FacebookActivity", "URL profile image: " + imageUrl);
+            new DownloadProfileImageTask(this).execute(imageUrl);
+            insertUserIntoLocalDatabase();
         }
     }
 
@@ -229,11 +215,10 @@ public class FacebookActivity extends SmartActivity {
         application.databaseCall("log_user.php?id=" + id, "unishareUserInfo", null);
     }
 
-    protected void saveToInternalStorage(Bitmap image) {
+    protected void insertUserIntoLocalDatabase() {
 
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir("Images", Context.MODE_PRIVATE);
-        Utilities.saveImage(image,"profile.jpg", getApplicationContext());
 
         UserInfo user = new UserInfo(userEntity);
         ContentValues values = new ContentValues();

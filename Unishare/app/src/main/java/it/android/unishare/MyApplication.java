@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -33,6 +34,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+
 public class MyApplication extends android.app.Application {
 	
 	private static MyApplication instance = null;
@@ -43,35 +47,34 @@ public class MyApplication extends android.app.Application {
 	private static final int REQ_BOOKS = 3;
     private static final int BOOKS = 4;
     private static final int COURSES = 5;
-	private static final int FILES = 6;
-	
+
 	private int userID;
 	private int campusID;
 	private int universityID;
 	private int facultyID;
 	private int specializationID;
 	private String nickname;
-	
+
 	//JSON
 	private JSONObject jsonDatabase;
-	
+
 	//UI variables
 	private Toast actualToast;
-	
+
 	//Counters
 	private int notificationCount = 0;
-	
+
 	//Local database
 	private SQLiteDatabase localDatabase;
-	
+
 	//Actual context
 	private Activity currentActivity;
 	private Context currentContext;
-	
+
 	protected MyApplication() {
 		// Exists only to defeat instantiation.
 	}
-	
+
 	public void initializeDatabase() {
 		if(localDatabase == null) {
 			//userID = 1;
@@ -79,10 +82,14 @@ public class MyApplication extends android.app.Application {
 			localDatabase = dbHelper.getWritableDatabase();
 		}
 	}
-	
+
 	//Performs query on database
 	public Cursor queryDatabase(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
 		return localDatabase.query(table, columns, selection, selectionArgs, groupBy, having, orderBy);
+	}
+
+	public void customQuery(String query) {
+		localDatabase.execSQL(query);
 	}
 
     public int deleteFromTable(String table, String where, String[] whereArgs){
@@ -92,7 +99,7 @@ public class MyApplication extends android.app.Application {
 	public long numOfRows(String table){
 		return DatabaseUtils.queryNumEntries(localDatabase, table);
 	}
-	
+
 	//Inserts new row
 	public long insertIntoDatabase (String table, ContentValues values) {
 		return localDatabase.insert(table, null, values);
@@ -121,6 +128,26 @@ public class MyApplication extends android.app.Application {
 	}
 	*/
 
+	public boolean fetchUserData() {
+		String[] projection = {DatabaseContract.UserInfoTable.COLUMN_USER_ID, DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY_ID, DatabaseContract.UserInfoTable.COLUMN_CAMPUS_ID, DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION_ID};
+		Cursor cursor = queryDatabase(DatabaseContract.UserInfoTable.TABLE_NAME, projection,null,
+				null,null,null,null);
+		if(cursor.getCount()==0) return false;
+		cursor.moveToFirst();
+		if(cursor.getInt(0) > 0) {
+			userID = cursor.getInt(0);
+			universityID = cursor.getInt(1);
+			campusID = cursor.getInt(2);
+			specializationID = cursor.getInt(3);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean hasUserCompletedWelcome() {
+		return getCampusId()>0 && getSpecializationId()>0;
+	}
+
 	public boolean existsInCurrentCourses(int id){
 		String selection = DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID + " = ?";
         String[] selectionArgs = {((Integer)id).toString()};
@@ -142,7 +169,7 @@ public class MyApplication extends android.app.Application {
         else
             return false;
     }
-	
+
 	public static MyApplication getInstance(Activity activity) {
 	   if(instance == null) {
 		   instance = new MyApplication();
@@ -151,7 +178,7 @@ public class MyApplication extends android.app.Application {
 	   instance.initializeDatabase();
 	   return instance;
 	}
-	
+
 	public static MyApplication getInstance(Context context) {
 	   if(instance == null) {
 		   instance = new MyApplication();
@@ -159,7 +186,7 @@ public class MyApplication extends android.app.Application {
 	   instance.setContext(context);
 	   return instance;
 	}
-	
+
 	/*
 	//Loads initial data
 	public boolean loadInitialData(Context context) {
@@ -174,7 +201,7 @@ public class MyApplication extends android.app.Application {
 		}
 		return true;
 	}
-	
+
 	//Loads Json Database
 	private String loadJSONDatabase(Context context) {
 	    String json = null;
@@ -213,11 +240,11 @@ public class MyApplication extends android.app.Application {
 			}
 		}, ms);
 	}
-	
+
 	//Starts a new activity
 	public void newActivity(Class<?> newActivity) {
 		Intent intent = new Intent(currentContext, newActivity);
-		currentContext.startActivity(intent);		
+		currentContext.startActivity(intent);
 	}
 
     //Starts a new activity passing a parameter
@@ -226,7 +253,7 @@ public class MyApplication extends android.app.Application {
         intent.putExtra(paramName, param);
         currentContext.startActivity(intent);
     }
-	
+
 	/*
 	//Insert the first fragment of an activity
 	public void firstFragment(Fragment firstFragment){
@@ -234,7 +261,7 @@ public class MyApplication extends android.app.Application {
         transaction.replace(R.id.container, firstFragment);
         transaction.commit();
 	}
-	
+
 	//Inserts a new fragment
 	public void newFragment(Fragment newFragment) {
     	FragmentManager manager = currentActivity.getFragmentManager();
@@ -244,7 +271,7 @@ public class MyApplication extends android.app.Application {
     	transaction.commit();
 	}
 	*/
-	
+
 	//Create request to database
 	public void databaseCall(String url, String tag, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		new AsynchRequest().setParameters(currentActivity,url,tag,dialog).execute();
@@ -263,7 +290,7 @@ public class MyApplication extends android.app.Application {
 	    android.support.v7.app.AlertDialog dialog = builder.create();
 	    dialog.show();
 	}
-	
+
 	//Creates dialog box with a question
 	public void alertDecision(String title, String message, EditText input, CheckBox checkBox, DialogInterface.OnClickListener actionTrue, DialogInterface.OnClickListener actionFalse) {
 		android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(currentContext);
@@ -281,7 +308,7 @@ public class MyApplication extends android.app.Application {
         android.support.v7.app.AlertDialog dialog = builder.create();
 	    dialog.show();
 	}
-	
+
 	public void toastMessage(Context context, String message) {
 		if(actualToast != null) actualToast.cancel();
 		actualToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
@@ -299,15 +326,15 @@ public class MyApplication extends android.app.Application {
 
         inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
-	
+
 	public static void log(String message) {
 		System.out.println(message);
 	}
-	
+
 	public void sendNotification(Context context, String title, String message, Class<?> destinationActivity) {
 		//Sets notification ID
     	int mNotificationId = notificationCount++;
-    	
+
     	//Builds notification
     	NotificationCompat.Builder mBuilder =
     		    new NotificationCompat.Builder(context)
@@ -315,7 +342,7 @@ public class MyApplication extends android.app.Application {
     		    .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
     		    .setContentTitle(title)
     		    .setContentText(message);
-    	
+
     	//Sets target activity
     	Intent resultIntent = new Intent(context, MainActivity.class);
     	PendingIntent resultPendingIntent =
@@ -326,13 +353,22 @@ public class MyApplication extends android.app.Application {
 		    PendingIntent.FLAG_UPDATE_CURRENT
 		);
     	mBuilder.setContentIntent(resultPendingIntent);
-    	
+
     	//Gets notifications manager and sends notification
     	NotificationManager mNotifyMgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     	mNotifyMgr.notify(mNotificationId, mBuilder.build());
-    	
+
     	//Notifica con testo visibile - da implementare
     	//nm.notifyWithText(myApp.NOTIFICATION_GUID,"Prova",NotificationManager);
+	}
+
+	public void logoutUser() {
+		deleteTable(DatabaseContract.UserInfoTable.TABLE_NAME);
+		deleteTable(DatabaseContract.MyCoursesTable.TABLE_NAME);
+		deleteTable(DatabaseContract.PassedExams.TABLE_NAME);
+		FacebookSdk.sdkInitialize(currentContext);
+		LoginManager.getInstance().logOut();
+		newActivity(SplashActivity.class);
 	}
 
     public void launchNewActivityFromDrawer(Activity activity, int position){
@@ -367,8 +403,6 @@ public class MyApplication extends android.app.Application {
             case(COURSES):
                 MyApplication.getInstance(activity).newActivity(CoursesActivity.class);
                 break;
-			case(FILES):
-				MyApplication.getInstance(activity).newActivity(FilesActivity.class);
             default:
                 Log.i("MyApplication", "Errore");
                 break;
