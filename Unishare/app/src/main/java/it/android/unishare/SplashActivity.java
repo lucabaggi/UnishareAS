@@ -48,6 +48,7 @@ public class SplashActivity extends Activity {
                 nextClass = MainActivity.class;
             }
             else {
+                //First check online!!!
                 nextClass = WelcomeActivity.class;
             }
         }
