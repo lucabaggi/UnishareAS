@@ -18,6 +18,11 @@ public class SplashActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        /*
+        if (getIntent().getBooleanExtra("EXIT", true)) {
+            finish();
+        }
+        */
 		setContentView(R.layout.splash_activity);
 		application = MyApplication.getInstance(this);
         splashFragment = new SplashFragment();

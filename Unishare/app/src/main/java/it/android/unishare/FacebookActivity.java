@@ -173,8 +173,10 @@ public class FacebookActivity extends SmartActivity {
         }
     }
 
+
     @Override
     public void onBackPressed(){
+        /*
 
         String title = "Exit";
         String message ="Premi OK per uscire";
@@ -182,6 +184,10 @@ public class FacebookActivity extends SmartActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(FacebookActivity.this, SplashActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("EXIT", true);
+                startActivity(intent);
                 finish();
 
             }
@@ -196,7 +202,9 @@ public class FacebookActivity extends SmartActivity {
         };
 
         application.alertDecision(title, message, null, null, actionTrue, actionFalse);
+        */
     }
+
 
     @Override
     public void handleResult(ArrayList<Entity> result, String tag) {
