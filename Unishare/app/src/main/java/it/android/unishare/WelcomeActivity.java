@@ -2,8 +2,11 @@ package it.android.unishare;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,7 +33,7 @@ public class WelcomeActivity extends SmartActivity {
     private ArrayList<Entity> universities, campuses, specializations, courses;
     private String universityName, universityImage;
     private int universityId;
-    private String campusImage;
+    private String campusName,campusImage;
     private int campusId;
     private String specializationName;
     private int specializationId;
@@ -83,13 +86,6 @@ public class WelcomeActivity extends SmartActivity {
     	ArrayList<Entity> values = new ArrayList<Entity>();
 
         getFragmentManager().putFragment(outState, WELCOME1_FRAGMENT_INSTANCE, welcome1Fragment);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
 
@@ -201,6 +197,7 @@ public class WelcomeActivity extends SmartActivity {
     public void goToSpecializationSelection(String campusName) {
         for(Entity e : campuses) {
             if(e.get("nome").equals(campusName)) {
+                this.campusName = campusName;
                 campusImage = e.get("immagine");
                 campusId = e.getInt("id");
                 getSpecializations();
@@ -221,7 +218,8 @@ public class WelcomeActivity extends SmartActivity {
     }
 
     public void goToDashboard() {
-        //application.newActivity(MainActivity.class);
+        application.customQuery("UPDATE user_info SET university_id="+universityId+",university=\""+universityName+"\",campus_id="+campusId+",campus=\""+campusName+"\",specialization_id="+specializationId+",specialization=\""+specializationName+"\"");
+        application.fetchUserData();
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -250,6 +248,40 @@ public class WelcomeActivity extends SmartActivity {
     private void getCourses() {
         ProgressDialog dialog = new ProgressDialog(this, "Caricamento...");
         application.databaseCall("courses.php?s="+campusId, COURSES_SELECTION_TAG, dialog);
+    }
+
+    public void addToCourses(String text) {
+        for(Entity e : courses) {
+            if((e.get("nome")+" ("+e.get("professore")+")").equals(text)) {
+                //Add course to actual courses locally & on server
+                int courseId = e.getInt("id");
+                String courseName = e.get("nome");
+                String professor = e.get("professore");
+                if(!inPassedExams(courseId)){
+                    ContentValues values = new ContentValues();
+                    values.put(DatabaseContract.MyCoursesTable.COLUMN_NAME, courseName);
+                    values.put(DatabaseContract.MyCoursesTable.COLUMN_COURSE_ID, courseId);
+                    values.put(DatabaseContract.MyCoursesTable.COLUMN_PROFESSOR, professor);
+                    try{
+                        application.insertIntoDatabaseCatchingExceptions(DatabaseContract.MyCoursesTable.TABLE_NAME, values);
+                    }
+                    catch (SQLiteConstraintException exc){
+                        Log.i(TAG, "Corso gia' presente nel db");
+                    }
+                }
+                application.databaseCall("courses_current.php?u=" + application.getUserId() + "&id=" + courseId + "&m=0", "addCourse", null);
+                break;
+            }
+        }
+    }
+
+    private boolean inPassedExams(int courseId){
+        String[] selectionArgs = {((Integer) courseId).toString()};
+        Cursor cursor = application.queryDatabase(DatabaseContract.PassedExams.TABLE_NAME, null,
+                DatabaseContract.PassedExams.COLUMN_COURSE_ID + " = ?", selectionArgs, null, null, null);
+        if(cursor.getCount() > 0)
+            return true;
+        return false;
     }
 
 }

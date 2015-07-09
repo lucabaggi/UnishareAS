@@ -71,8 +71,8 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
         course = activity.getAdapter().getItem(info.position);
         String courseName = course.get("nome");
         menu.setHeaderTitle(courseName);
-        menu.add(Menu.NONE, R.id.delete_item, Menu.NONE, "Elimina corso");
-        menu.add(Menu.NONE, R.id.passed_course, Menu.NONE, "Aggiungi ai corsi superati");
+        menu.add(Menu.NONE, R.id.delete_item, Menu.NONE, "Ho abbandonato questo corso");
+        menu.add(Menu.NONE, R.id.passed_course, Menu.NONE, "Ho superato questo corso");
         menu.add(Menu.NONE, R.id.opinions, Menu.NONE, "Opinioni sul corso");
         menu.add(Menu.NONE, R.id.files, Menu.NONE, "Appunti disponibili");
         menu.add(Menu.NONE, R.id.associated_books, Menu.NONE, "Libri associati al corso");

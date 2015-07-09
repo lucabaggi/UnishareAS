@@ -171,12 +171,14 @@ public class MainActivity extends SmartActivity {
         return this.application;
     }
 
-
-    public void logout(){
-        Intent intent = new Intent(this, FacebookActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
+    public String getHints() {
+        return application.getDashHints();
     }
+
+    public String getNews() {
+        return application.getDashNews();
+    }
+
+
 
 }
