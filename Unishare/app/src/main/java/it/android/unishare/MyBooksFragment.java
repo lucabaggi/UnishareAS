@@ -45,6 +45,68 @@ public class MyBooksFragment extends Fragment implements ViewInitiator {
         return view;
     }
 
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		registerForContextMenu(listview);
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+		Entity book;
+		book = activity.getMyBooksAdapter().getItem(info.position);
+		String bookTitle = book.get("titolo");
+		menu.setHeaderTitle(bookTitle);
+		menu.add(Menu.NONE, R.id.remove_book, Menu.NONE, "Rimuovi il libro");
+		menu.add(Menu.NONE, R.id.book_sold, Menu.NONE, "Il libro è stato venduto");
+		menu.add(Menu.NONE, R.id.requests, Menu.NONE, "Vedi richieste");
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+
+		//getting book info
+		Entity book;
+		final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+		book = activity.getMyBooksAdapter().getItem(info.position);
+		final String bookId = book.get("id");
+		//final String courseName = course.get("nome");
+		String title = "Errore";
+		String message = "Verifica la tua connessione a Internet e riprova";
+
+		switch (item.getItemId()) {
+			case R.id.remove_book:
+				if (!Utilities.checkNetworkState(activity)) {
+					activity.getMyApplication().alertMessage(title, message);
+					break;
+				}
+				activity.removeBook(bookId);
+				break;
+			case R.id.book_sold:
+				if (!Utilities.checkNetworkState(activity)) {
+					activity.getMyApplication().alertMessage(title, message);
+					break;
+				}
+				activity.bookSold(bookId);
+				break;
+			case R.id.requests:
+				if (!Utilities.checkNetworkState(activity)) {
+
+					activity.getMyApplication().alertMessage(title, message);
+					break;
+				}
+				Log.i(TAG, "Clicked on book " + bookId);
+				String searching = "Searching";
+				dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), searching);
+				activity.getRequests(bookId, dialog);
+		}
+		return super.onContextItemSelected(item);
+
+	}
+
 
 
     @Override
@@ -71,6 +133,8 @@ public class MyBooksFragment extends Fragment implements ViewInitiator {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				listview.showContextMenuForChild(view);
+				/*
 				if (!Utilities.checkNetworkState(activity)) {
 					String title = "Errore";
 					String message = "Verifica la tua connessione a Internet e riprova";
@@ -83,9 +147,11 @@ public class MyBooksFragment extends Fragment implements ViewInitiator {
 				String title = "Searching";
 				dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
 				activity.getRequests(bookId, dialog);
+				*/
 			}
 
 		});
+
 		ButtonFloat sellBookButton = (ButtonFloat) view.findViewById(R.id.sellBookButtonFloat);
 		sellBookButton.setOnClickListener(new View.OnClickListener() {
 			@Override

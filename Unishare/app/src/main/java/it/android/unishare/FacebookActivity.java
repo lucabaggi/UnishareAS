@@ -287,7 +287,7 @@ public class FacebookActivity extends SmartActivity {
     }
 
     private void addRegId(int userId, String regId){
-        application.databaseCall("android_gcm_set.php?u=" + userId + "&id=" + regId, REG_ID_TAG, null);
+        application.databaseCall("android_gcm_set.php?u=" + userId + "&k=" + regId, REG_ID_TAG, null);
     }
 
 }

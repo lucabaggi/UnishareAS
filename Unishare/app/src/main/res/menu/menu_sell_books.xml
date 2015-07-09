@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="it.android.unishare.MyBooksActivity">
+
+    <item
+        android:id="@+id/remove_book"
+        android:alphabeticShortcut="a"
+        android:title="@string/remove_book"/>
+
+    <item
+        android:id="@+id/book_sold"
+        android:alphabeticShortcut="b"
+        android:title="@string/book_sold"/>
+
+    <item
+        android:id="@+id/requests"
+        android:alphabeticShortcut="b"
+        android:title="@string/see_requests"/>
+
+
+</menu>

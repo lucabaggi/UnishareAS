@@ -60,5 +60,8 @@
     <string name="search_file_hint">Nome del corso o degli appunti</string>
     <string name="associated_books_header">Libri Associati</string>
     <string name="title_activity_universi">UniversiActivity</string>
+    <string name="remove_book">Rimuovi il libro</string>
+    <string name="book_sold">Ho venduto il libro</string>
+    <string name="see_requests">Vedi richieste</string>
 
 </resources>

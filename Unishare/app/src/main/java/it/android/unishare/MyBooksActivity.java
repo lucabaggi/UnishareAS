@@ -240,6 +240,7 @@ public class MyBooksActivity extends SmartActivity {
                 String title = "";
                 String message = "Libro messo in vendita. Grazie per il contributo!";
                 application.alertMessage(title, message);
+                refreshBooks();
             }
         }
         if(tag == GET_REQUESTS_TAG){
@@ -263,7 +264,8 @@ public class MyBooksActivity extends SmartActivity {
             myBooksAdapter.notifyDataSetChanged();
             MyBooksFragment f = (MyBooksFragment)getFragmentManager()
                     .findFragmentByTag(MyBooksFragment.TAG);
-            f.getSwipeRefreshLayout().setRefreshing(false);
+            if(f.getSwipeRefreshLayout().isRefreshing())
+                f.getSwipeRefreshLayout().setRefreshing(false);
         }
     }
 
@@ -288,6 +290,14 @@ public class MyBooksActivity extends SmartActivity {
     public void refreshBooks(){
         int userId = application.getUserId();
         refreshSoldBooks(userId);
+    }
+
+    public void removeBook(String bookId){
+
+    }
+
+    public void bookSold(String bookId){
+
     }
 
     //Database calls
