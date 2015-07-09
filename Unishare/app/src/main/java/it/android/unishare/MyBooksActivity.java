@@ -35,6 +35,8 @@ public class MyBooksActivity extends SmartActivity {
     private static final String SELL_BOOK_TAG = "bookSelling";
     private static final String GET_REQUESTS_TAG = "booksRequests";
     private static final String REFRESH_BOOKS_TAG = "refreshBooks";
+    private static final String REMOVE_BOOK_TAG = "removeBook";
+    private static final String SOLD_BOOK_TAG = "soldBook";
 
     private MyApplication application;
     private Toolbar toolbar;
@@ -240,6 +242,7 @@ public class MyBooksActivity extends SmartActivity {
                 String title = "";
                 String message = "Libro messo in vendita. Grazie per il contributo!";
                 application.alertMessage(title, message);
+                refreshBooks();
             }
         }
         if(tag == GET_REQUESTS_TAG){
@@ -263,7 +266,32 @@ public class MyBooksActivity extends SmartActivity {
             myBooksAdapter.notifyDataSetChanged();
             MyBooksFragment f = (MyBooksFragment)getFragmentManager()
                     .findFragmentByTag(MyBooksFragment.TAG);
-            f.getSwipeRefreshLayout().setRefreshing(false);
+            if(f.getSwipeRefreshLayout().isRefreshing())
+                f.getSwipeRefreshLayout().setRefreshing(false);
+        }
+        if(tag == REMOVE_BOOK_TAG){
+            if(result.get(0).getFirst().equals("OK")){
+                String message = "Libro rimosso con successo";
+                application.alertMessage("",message);
+                refreshBooks();
+            }
+            else{
+                String title = "Errore";
+                String message = "Si è verificato un errore, riprova o verifica la connessione di rete";
+                application.alertMessage(title,message);
+            }
+        }
+        if(tag == SOLD_BOOK_TAG){
+            if(result.get(0).getFirst().equals("OK")){
+                String message = "Operazione conclusa con successo";
+                application.alertMessage("",message);
+                refreshBooks();
+            }
+            else{
+                String title = "Errore";
+                String message = "Si è verificato un errore, riprova o verifica la connessione di rete";
+                application.alertMessage(title,message);
+            }
         }
     }
 
@@ -290,6 +318,16 @@ public class MyBooksActivity extends SmartActivity {
         refreshSoldBooks(userId);
     }
 
+    public void removeBook(String bookId){
+        int userId = application.getUserId();
+        removeBook(userId, bookId);
+    }
+
+    public void bookSold(String bookId){
+        int userId = application.getUserId();
+        bookSold(userId, bookId);
+    }
+
     //Database calls
 
     private void getSoldBooks(int userId) {
@@ -312,5 +350,13 @@ public class MyBooksActivity extends SmartActivity {
 
     private void refreshSoldBooks(int userId){
         getMyApplication().databaseCall("books_sold.php?u=" + userId, REFRESH_BOOKS_TAG, null);
+    }
+
+    private void removeBook(int userId, String bookId){
+        getMyApplication().databaseCall("books_sold.php?u=" + userId + "&id=" + bookId + "&d=1", REMOVE_BOOK_TAG, null);
+    }
+
+    private void bookSold(int userId, String bookId){
+        getMyApplication().databaseCall("books_sold.php?u=" + userId + "&id=" + bookId + "&d=1", SOLD_BOOK_TAG, null);
     }
 }

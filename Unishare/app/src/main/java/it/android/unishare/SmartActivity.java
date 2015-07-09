@@ -25,13 +25,14 @@ import com.pkmmte.view.CircularImageView;
 public class SmartActivity extends ActionBarActivity {
 
     //public static Profile profile;
-    protected MyApplication application = MyApplication.getInstance(this);
+    protected MyApplication application;
 
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //application = MyApplication.getInstance(this);
+        application = MyApplication.getInstance(this);
+        if(!(application.getUserId()>0)) application.fetchUserData();
         //if(!Utilities.checkNetworkState(this)) Application.toastMessage(this, "Nessuna connessione internet");
 	}
 	

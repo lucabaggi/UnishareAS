@@ -375,6 +375,7 @@ public class MyApplication extends android.app.Application {
 		deleteTable(DatabaseContract.UserInfoTable.TABLE_NAME);
 		deleteTable(DatabaseContract.MyCoursesTable.TABLE_NAME);
 		deleteTable(DatabaseContract.PassedExams.TABLE_NAME);
+		databaseCall("android_gcm_set.php?u="+userID+"&d=1", "deleteGcmKey", null);
 		FacebookSdk.sdkInitialize(currentContext);
 		LoginManager.getInstance().logOut();
 		newActivity(SplashActivity.class);
@@ -385,7 +386,7 @@ public class MyApplication extends android.app.Application {
 		specializationID = 0;
 		campusID = 0;
 		universityID = 0;
-		//databaseCall("reset_user.php?u="+userID, "resetAccount", null);
+		databaseCall("reset_account.php?u="+userID, "resetAccount", null);
 		newActivity(WelcomeActivity.class);
 	}
 
