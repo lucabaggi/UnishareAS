@@ -66,7 +66,7 @@ public class PassedExamsFragment extends Fragment implements ViewInitiator {
             course = activity.getPassedCoursesAdapter().getItem(info.position);
         String courseName = course.get("nome");
         menu.setHeaderTitle(courseName);
-        menu.add(Menu.NONE, R.id.delete_item, Menu.NONE, "Elimina corso");
+        menu.add(Menu.NONE, R.id.delete_item, Menu.NONE, "Rimuovi dalla carriera didattica");
         menu.add(Menu.NONE, R.id.opinions, Menu.NONE, "Opinioni sul corso");
     }
 

@@ -57,6 +57,8 @@ public class MyApplication extends android.app.Application {
 	private String universityName, campusName, specializationName;
 	private String nickname;
 
+	private String dashNews, dashHints;
+
 	//JSON
 	private JSONObject jsonDatabase;
 
@@ -492,6 +494,14 @@ public class MyApplication extends android.app.Application {
 	public Context getContext() {
     	return currentContext;
     }
+
+	public String getDashNews() {
+		return dashNews;
+	}
+
+	public String getDashHints() {
+		return getDashHints();
+	}
 
 
 }

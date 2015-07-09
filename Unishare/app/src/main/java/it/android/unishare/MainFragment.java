@@ -41,15 +41,6 @@ public class MainFragment extends Fragment implements ViewInitiator {
 		Utilities.loadImage(campusImageView, "campus.jpg", activity.getApplicationContext());
 
 
-		Button btn4 = (Button) view.findViewById(R.id.button4);
-		btn4.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				MyApplication.getInstance(activity).newActivity(WelcomeActivity.class);
-			}
-		});
-        
 	}
     
 }
