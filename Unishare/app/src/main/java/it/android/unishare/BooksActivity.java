@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class BooksActivity extends AdapterActivity implements OnBookSelectedListener {
@@ -57,7 +58,14 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
         if(toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Unishare");
-            drawerToggle= new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+            drawerToggle= new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name){
+
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    MyApplication.hideKeyboard(BooksActivity.this);
+                }
+            };
             drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);

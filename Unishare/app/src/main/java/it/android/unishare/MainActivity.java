@@ -55,7 +55,14 @@ public class MainActivity extends SmartActivity {
         if(toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Unishare");
-            drawerToggle= new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+            drawerToggle= new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name){
+
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    MyApplication.hideKeyboard(MainActivity.this);
+                }
+            };;
             drawerLayout.setDrawerListener(drawerToggle);
         }
 

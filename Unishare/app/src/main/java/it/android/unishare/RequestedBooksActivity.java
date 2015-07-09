@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.gc.materialdesign.widgets.ProgressDialog;
 
@@ -53,7 +54,14 @@ public class RequestedBooksActivity extends SmartActivity {
         if(toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Unishare");
-            drawerToggle= new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+            drawerToggle= new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name){
+
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    MyApplication.hideKeyboard(RequestedBooksActivity.this);
+                }
+            };;
             drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);

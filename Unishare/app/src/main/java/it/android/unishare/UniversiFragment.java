@@ -24,7 +24,7 @@ public class UniversiFragment extends Fragment implements ViewInitiator {
 
 	private View view;
 	private ListView listview;
-    private ProgressDialog dialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 	private UniversiActivity activity;
     private UniversiAdapter adapter;
@@ -53,9 +53,21 @@ public class UniversiFragment extends Fragment implements ViewInitiator {
 	@Override
 	public void initializeUI(View view) {
         listview = (ListView) view.findViewById(R.id.universiListView);
+		swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.universi_swipe_refresh_layout);
+		swipeRefreshLayout.setColorSchemeResources(R.color.Green, R.color.Orange, R.color.Blue);
+		swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				activity.refresh();
+			}
+		});
         adapter = activity.getAdapter();
         listview.setAdapter(adapter);
 	}
+
+    public SwipeRefreshLayout getSwipeRefreshLayout(){
+        return this.swipeRefreshLayout;
+    }
 	
 
 }

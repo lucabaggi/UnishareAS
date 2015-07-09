@@ -138,21 +138,6 @@ public class PassedExamsFragment extends Fragment implements ViewInitiator {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 listview.showContextMenuForChild(view);
-                /*
-                if (!Utilities.checkNetworkState(activity)) {
-                    String title = "Errore";
-                    String message = "Verifica la tua connessione a Internet e riprova";
-                    activity.getMyApplication().alertMessage(title, message);
-                    return;
-                }
-                Entity course = (Entity) parent.getItemAtPosition(position);
-                String courseId = course.get("id");
-                String courseName = course.get("nome");
-                Log.i(TAG, "Clicked on course " + courseId);
-                String title = "Searching";
-                dialog = new ProgressDialog(getActivity(), title);
-                PassedExamsFragment.this.courseListener.onCourseSelected(courseId, courseName, dialog);
-                */
             }
         });
 	}

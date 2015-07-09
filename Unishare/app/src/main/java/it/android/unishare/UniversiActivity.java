@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.gc.materialdesign.widgets.ProgressDialog;
 
@@ -21,6 +22,7 @@ public class UniversiActivity extends SmartActivity {
     public static final String TAG = "UniversiActivity";
 
     private static final String UNIVERSI_TAG = "universi";
+    private static final String REFRESH_TAG = "refresh";
 
     private MyApplication application;
     private Toolbar toolbar;
@@ -44,7 +46,14 @@ public class UniversiActivity extends SmartActivity {
         if(toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Unishare");
-            drawerToggle= new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+            drawerToggle= new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name){
+
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    MyApplication.hideKeyboard(UniversiActivity.this);
+                }
+            };;
             drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);
@@ -148,6 +157,27 @@ public class UniversiActivity extends SmartActivity {
                     .add(R.id.universi_fragment_container, universiFragment, UniversiFragment.TAG).commit();
 
         }
+        if(tag == REFRESH_TAG){
+            adapter.clear();
+            adapter.addAll(result);
+            adapter.notifyDataSetChanged();
+            UniversiFragment f = (UniversiFragment) getFragmentManager()
+                    .findFragmentByTag(UniversiFragment.TAG);
+            f.getSwipeRefreshLayout().setRefreshing(false);
+        }
+    }
+
+    public void refresh(){
+        if(Utilities.checkNetworkState(this))
+            refreshUniversiNews();
+        else{
+            String title = "Errore";
+            String message = "Controlla la tua connessione a Internet e riprova";
+            UniversiFragment f = (UniversiFragment)getFragmentManager()
+                    .findFragmentByTag(UniversiFragment.TAG);
+            f.getSwipeRefreshLayout().setRefreshing(false);
+            application.alertMessage(title, message);
+        }
     }
 
 
@@ -155,6 +185,10 @@ public class UniversiActivity extends SmartActivity {
 
     private void getUniversiNews(ProgressDialog dialog){
         application.databaseCall("universi.php", UNIVERSI_TAG, dialog);
+    }
+
+    private void refreshUniversiNews(){
+        application.databaseCall("universi.php", REFRESH_TAG, null);
     }
 
 }

@@ -31,7 +31,12 @@ public class PassedCoursesAdapter extends ArrayAdapter<Entity> {
         // Populate the data into the template view using the data object
         title.setText(entity.get("nome"));
         author.setText(entity.get("professore"));
-        String courseGrade = entity.get("valutazione");
+        String courseGrade;
+        String courseGradeText = entity.get("valutazione");
+        if(courseGradeText.equals("0"))
+            courseGrade = "nd";
+        else
+            courseGrade = courseGradeText;
         if(entity.get("lode").equals("1"))
             courseGrade = courseGrade + "L";
         grade.setText(courseGrade);
