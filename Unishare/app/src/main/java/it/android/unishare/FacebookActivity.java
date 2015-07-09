@@ -152,7 +152,12 @@ public class FacebookActivity extends SmartActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.mydata) {
+            application.newActivity(MyDataActivity.class);
+            return true;
+        }
+        else if(id == R.id.logout) {
+            application.logoutUser();
             return true;
         }
 
@@ -244,7 +249,7 @@ public class FacebookActivity extends SmartActivity {
         new SyncUserCoursesTask(application).execute(user.getUserId());
 
         Intent intent;
-        if(false && user.getCampusId()>0 && user.getSpecializationId()>0) {
+        if(application.hasUserCompletedWelcome()) {
             intent = new Intent(FacebookActivity.this, MainActivity.class);
         }
         else {

@@ -27,7 +27,6 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
             "Libri in vendita", "Libri richiesti", "Tutti i Libri", "Tutti i Corsi",
             "Appunti & Dispense" };
     DrawerAdapter drawerAdapter;
-    Profile profile;
 
 
     public DrawerFragment() {
@@ -79,13 +78,8 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
 
         });
 
-        if(profile != null)
-            setName(profile);
+        //activity.setName();
 
     }
 
-    public void setName(Profile profile){
-        TextView nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-        nameTextView.setText(profile.getFirstName().toString());
-    }
 }

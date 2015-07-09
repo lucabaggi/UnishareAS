@@ -38,7 +38,7 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
 	private static final String OPINION_ADAPTER_VALUES = "key_opinion_adapter";
 
 
-    private MyApplication application;
+    //private MyApplication application;
 	private SearchFragment searchFragment;
 	private OpinionsFragment opinionsFragment;
 	private InsertOpinionFragment insertOpinionFragment;
@@ -168,7 +168,12 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.mydata) {
+			application.newActivity(FilesActivity.class);
+			return true;
+		}
+		else if(id == R.id.logout) {
+			application.logoutUser();
 			return true;
 		}
         if (drawerToggle.onOptionsItemSelected(item)) {

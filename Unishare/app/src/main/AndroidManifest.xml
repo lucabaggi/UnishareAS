@@ -135,6 +135,11 @@
             android:name=".FilesActivity"
             android:label="@string/title_activity_files" >
         </activity>
+
+        <activity
+            android:name=".MyDataActivity"
+            android:label="@string/title_activity_mydata" >
+        </activity>
     </application>
 
 </manifest>
