@@ -57,7 +57,7 @@
         android:layout_centerHorizontal="true"
         android:choiceMode="singleChoice" />
 
-    <Button
+    <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Salva corsi"

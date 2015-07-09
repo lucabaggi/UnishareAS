@@ -371,7 +371,7 @@ public class MyApplication extends android.app.Application {
 		newActivity(SplashActivity.class);
 	}
 
-	public void resetUser() {
+	public void resetAccount() {
 		customQuery("UPDATE user_info SET university_id=0,university=\"\",campus_id=0,campus=\"\",specialization_id=0,specialization=\"\"");
 		specializationID = 0;
 		campusID = 0;

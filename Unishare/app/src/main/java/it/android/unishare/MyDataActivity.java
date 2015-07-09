@@ -1,21 +1,15 @@
 package it.android.unishare;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.gc.materialdesign.widgets.ProgressDialog;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
@@ -137,7 +131,7 @@ public class MyDataActivity extends SmartActivity {
 
 
     public void resetAccount() {
-        application.logoutUser();
+        application.resetAccount();
     }
 
 }

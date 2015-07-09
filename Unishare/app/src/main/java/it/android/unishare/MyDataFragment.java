@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.widgets.ProgressDialog;
 
 public class MyDataFragment extends Fragment implements ViewInitiator {
@@ -57,7 +58,7 @@ public class MyDataFragment extends Fragment implements ViewInitiator {
 
 	@Override
 	public void initializeUI(View view) {
-        Button resetButton = (Button) view.findViewById(R.id.resetButton);
+        ButtonRectangle resetButton = (ButtonRectangle) view.findViewById(R.id.resetButton);
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

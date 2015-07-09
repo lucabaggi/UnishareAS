@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.gc.materialdesign.views.ButtonRectangle;
+
 import java.util.ArrayList;
 
 public class Welcome4Fragment extends Fragment implements ViewInitiator {
@@ -50,7 +52,7 @@ public class Welcome4Fragment extends Fragment implements ViewInitiator {
 		//ImageView campusImageView = (ImageView) view.findViewById(R.id.imageView);
 		//Utilities.loadImage(campusImageView,"campus.jpg",activity.getApplicationContext());
 
-		Button saveButton = (Button) view.findViewById(R.id.saveButton);
+		ButtonRectangle saveButton = (ButtonRectangle) view.findViewById(R.id.saveButton);
 		saveButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -69,7 +71,9 @@ public class Welcome4Fragment extends Fragment implements ViewInitiator {
 				coursesList.add(coursesSelector.getText().toString());
 				ArrayAdapter<String> coursesAdapter = new ArrayAdapter<String>(activity,android.R.layout.simple_list_item_1,coursesList);
 				courseListView.setAdapter(coursesAdapter);
+				activity.addToCourses(coursesSelector.getText().toString());
 				coursesSelector.setText("");
+				MyApplication.hideKeyboard(activity);
 			}
 		});
 		String[] crss = new String[courses.size()];
