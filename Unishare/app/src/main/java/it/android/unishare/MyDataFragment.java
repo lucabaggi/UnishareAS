@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -56,7 +57,13 @@ public class MyDataFragment extends Fragment implements ViewInitiator {
 
 	@Override
 	public void initializeUI(View view) {
-
+        Button resetButton = (Button) view.findViewById(R.id.resetButton);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.resetAccount();
+            }
+        });
 	}
 	
 

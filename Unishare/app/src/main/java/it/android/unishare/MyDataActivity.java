@@ -136,4 +136,8 @@ public class MyDataActivity extends SmartActivity {
     }
 
 
+    public void resetAccount() {
+        application.logoutUser();
+    }
+
 }
