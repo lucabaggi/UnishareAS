@@ -219,6 +219,7 @@ public class WelcomeActivity extends SmartActivity {
 
     public void goToDashboard() {
         application.customQuery("UPDATE user_info SET university_id="+universityId+",university=\""+universityName+"\",campus_id="+campusId+",campus=\""+campusName+"\",specialization_id="+specializationId+",specialization=\""+specializationName+"\"");
+        application.fetchUserData();
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

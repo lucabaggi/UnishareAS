@@ -53,8 +53,8 @@ public class MyApplication extends android.app.Application {
 	private int userID;
 	private int campusID;
 	private int universityID;
-	private int facultyID;
 	private int specializationID;
+	private String universityName, campusName, specializationName;
 	private String nickname;
 
 	//JSON
@@ -130,7 +130,9 @@ public class MyApplication extends android.app.Application {
 	*/
 
 	public boolean fetchUserData() {
-		String[] projection = {DatabaseContract.UserInfoTable.COLUMN_USER_ID, DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY_ID, DatabaseContract.UserInfoTable.COLUMN_CAMPUS_ID, DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION_ID};
+		String[] projection = {DatabaseContract.UserInfoTable.COLUMN_USER_ID, DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY_ID, DatabaseContract.UserInfoTable.COLUMN_CAMPUS_ID, DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION_ID,
+				DatabaseContract.UserInfoTable.COLUMN_UNIVERSITY, DatabaseContract.UserInfoTable.COLUMN_CAMPUS, DatabaseContract.UserInfoTable.COLUMN_SPECIALIZATION,
+				DatabaseContract.UserInfoTable.COLUMN_NICKNAME};
 		Cursor cursor = queryDatabase(DatabaseContract.UserInfoTable.TABLE_NAME, projection,null,
 				null,null,null,null);
 		if(cursor.getCount()==0) return false;
@@ -140,6 +142,10 @@ public class MyApplication extends android.app.Application {
 			universityID = cursor.getInt(1);
 			campusID = cursor.getInt(2);
 			specializationID = cursor.getInt(3);
+			universityName = cursor.getString(4);
+			campusName = cursor.getString(5);
+			specializationName = cursor.getString(6);
+			nickname = cursor.getString(7);
 			return true;
 		}
 		return false;
@@ -449,17 +455,25 @@ public class MyApplication extends android.app.Application {
 	public int getUniversityId() {
 		return universityID;
 	}
+
+	public String getUniversityName() {
+		return universityName;
+	}
 	
 	public int getCampusId() {
 		return campusID;
 	}
-	
-	public int getFacultyId() {
-		return facultyID;
+
+	public String getCampusName() {
+		return campusName;
 	}
 	
 	public int getSpecializationId() {
 		return specializationID;
+	}
+
+	public String getSpecializationName() {
+		return specializationName;
 	}
 	
 	public void setActivity(Activity activity) {

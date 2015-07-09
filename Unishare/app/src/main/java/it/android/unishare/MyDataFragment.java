@@ -58,6 +58,10 @@ public class MyDataFragment extends Fragment implements ViewInitiator {
 
 	@Override
 	public void initializeUI(View view) {
+
+        TextView textView = (TextView) view.findViewById(R.id.userInfo);
+        textView.setText(activity.getUserInfo());
+
         ButtonRectangle resetButton = (ButtonRectangle) view.findViewById(R.id.resetButton);
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override

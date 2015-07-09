@@ -51,11 +51,5 @@ public class MainFragment extends Fragment implements ViewInitiator {
 		});
         
 	}
-
-	public void displayResults(ArrayList<Entity> result, String tag) {
-		Entity user = result.get(0);
-		TextView textView = (TextView) view.findViewById(R.id.textView1);
-		textView.setText(user.get("nickname"));
-	}
     
 }

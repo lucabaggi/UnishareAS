@@ -129,6 +129,9 @@ public class MyDataActivity extends SmartActivity {
 
     }
 
+    public String getUserInfo() {
+        return application.getUniversityName()+"\nSede di "+application.getCampusName()+"\nLaurea in "+application.getSpecializationName();
+    }
 
     public void resetAccount() {
         application.resetAccount();
