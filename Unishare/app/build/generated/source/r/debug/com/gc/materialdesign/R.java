@@ -48,14 +48,14 @@ public final class R {
 		public static final int background_progress = 0x7f020041;
 		public static final int background_switch_ball_uncheck = 0x7f020042;
 		public static final int background_transparent = 0x7f020043;
-		public static final int dialog_background = 0x7f020076;
-		public static final int float_button1_shadowp = 0x7f020077;
-		public static final int float_button_shadow1 = 0x7f020078;
-		public static final int ic_launcher = 0x7f020083;
-		public static final int ic_reloj_max = 0x7f020094;
-		public static final int shadow_down = 0x7f0200b0;
-		public static final int shadow_right = 0x7f0200b1;
-		public static final int sprite_check = 0x7f0200b2;
+		public static final int dialog_background = 0x7f020079;
+		public static final int float_button1_shadowp = 0x7f02007a;
+		public static final int float_button_shadow1 = 0x7f02007b;
+		public static final int ic_launcher = 0x7f020086;
+		public static final int ic_reloj_max = 0x7f020097;
+		public static final int shadow_down = 0x7f0200b3;
+		public static final int shadow_right = 0x7f0200b4;
+		public static final int sprite_check = 0x7f0200b5;
 	}
 	public static final class id {
 		public static final int blue = 0x7f0d009f;
