@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingRight="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="it.android.unishare.MyBooksActivity$PlaceholderFragment" >
@@ -17,4 +19,38 @@
         android:id="@+id/textView6"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Modifica dati di iscrizione"
+        android:layout_marginTop="20dp"
+        android:id="@+id/textView7"
+        android:layout_below="@+id/textView6"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Hai cambiato università o hai semplicemente sbagliato ad inserire i tuoi dati? Clicca sul bottone sottostante per reimpostare università, sede e corso di studi."
+        android:id="@+id/textView8"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/textView7"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#1E88E5"
+        android:text="Reimposta account"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/textView8"
+        android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>
