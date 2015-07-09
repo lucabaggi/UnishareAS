@@ -38,7 +38,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 
 public class MyApplication extends android.app.Application {
-	
+
 	private static MyApplication instance = null;
 
 	private static final int ACTUAL_COURSES = 0;
@@ -48,6 +48,7 @@ public class MyApplication extends android.app.Application {
     private static final int BOOKS = 4;
     private static final int COURSES = 5;
 	private static final int FILES = 6;
+	private static final int UNIVERSI = 7;
 
 	private int userID;
 	private int campusID;
@@ -414,6 +415,15 @@ public class MyApplication extends android.app.Application {
                 break;
 			case(FILES):
 				MyApplication.getInstance(activity).newActivity(FilesActivity.class);
+				break;
+			case(UNIVERSI):
+				if(Utilities.checkNetworkState(getActivity()))
+					MyApplication.getInstance(activity).newActivity(UniversiActivity.class);
+				else{
+					String title = "Error";
+					String message = "Verifica la tua connessione a Internet e riprova";
+					alertMessage(title, message);
+				}
 				break;
             default:
                 Log.i("MyApplication", "Errore");

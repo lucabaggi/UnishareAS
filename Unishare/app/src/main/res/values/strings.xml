@@ -59,5 +59,6 @@
     <string name="search_files_text">Inserisci il nome del corso per trovare gli appunti associati:</string>
     <string name="search_file_hint">Nome del corso o degli appunti</string>
     <string name="associated_books_header">Libri Associati</string>
+    <string name="title_activity_universi">UniversiActivity</string>
 
 </resources>

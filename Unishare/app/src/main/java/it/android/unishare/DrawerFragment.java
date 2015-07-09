@@ -25,7 +25,7 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
     ListView listView;
     String drawerItem[] = new String[]{"I miei corsi", "Carriera didattica",
             "Libri in vendita", "Libri richiesti", "Tutti i Libri", "Tutti i Corsi",
-            "Appunti & Dispense" };
+            "Appunti & Dispense", "Universi"};
     DrawerAdapter drawerAdapter;
 
 

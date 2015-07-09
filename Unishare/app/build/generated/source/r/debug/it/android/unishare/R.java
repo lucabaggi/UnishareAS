@@ -2509,37 +2509,38 @@ containing a value of this type.
         public static final int ic_reloj_max=0x7f020097;
         public static final int ic_setting_dark=0x7f020098;
         public static final int ic_setting_light=0x7f020099;
-        public static final int libreria=0x7f02009a;
-        public static final int logo_white=0x7f02009b;
-        public static final int messenger_bubble_large_blue=0x7f02009c;
-        public static final int messenger_bubble_large_white=0x7f02009d;
-        public static final int messenger_bubble_small_blue=0x7f02009e;
-        public static final int messenger_bubble_small_white=0x7f02009f;
-        public static final int messenger_button_blue_bg_round=0x7f0200a0;
-        public static final int messenger_button_blue_bg_selector=0x7f0200a1;
-        public static final int messenger_button_send_round_shadow=0x7f0200a2;
-        public static final int messenger_button_white_bg_round=0x7f0200a3;
-        public static final int messenger_button_white_bg_selector=0x7f0200a4;
-        public static final int mr_ic_audio_vol=0x7f0200a5;
-        public static final int mr_ic_media_route_connecting_mono_dark=0x7f0200a6;
-        public static final int mr_ic_media_route_connecting_mono_light=0x7f0200a7;
-        public static final int mr_ic_media_route_mono_dark=0x7f0200a8;
-        public static final int mr_ic_media_route_mono_light=0x7f0200a9;
-        public static final int mr_ic_pause_dark=0x7f0200aa;
-        public static final int mr_ic_pause_light=0x7f0200ab;
-        public static final int mr_ic_play_dark=0x7f0200ac;
-        public static final int mr_ic_play_light=0x7f0200ad;
-        public static final int mr_ic_settings_dark=0x7f0200ae;
-        public static final int mr_ic_settings_light=0x7f0200af;
-        public static final int powered_by_google_dark=0x7f0200b0;
-        public static final int powered_by_google_light=0x7f0200b1;
-        public static final int request_circle_background=0x7f0200b2;
-        public static final int shadow_down=0x7f0200b3;
-        public static final int shadow_right=0x7f0200b4;
-        public static final int sprite_check=0x7f0200b5;
-        public static final int star_off=0x7f0200b6;
-        public static final int star_on=0x7f0200b7;
-        public static final int toolbar_dropshadow=0x7f0200b8;
+        public static final int image_placeholder=0x7f02009a;
+        public static final int libreria=0x7f02009b;
+        public static final int logo_white=0x7f02009c;
+        public static final int messenger_bubble_large_blue=0x7f02009d;
+        public static final int messenger_bubble_large_white=0x7f02009e;
+        public static final int messenger_bubble_small_blue=0x7f02009f;
+        public static final int messenger_bubble_small_white=0x7f0200a0;
+        public static final int messenger_button_blue_bg_round=0x7f0200a1;
+        public static final int messenger_button_blue_bg_selector=0x7f0200a2;
+        public static final int messenger_button_send_round_shadow=0x7f0200a3;
+        public static final int messenger_button_white_bg_round=0x7f0200a4;
+        public static final int messenger_button_white_bg_selector=0x7f0200a5;
+        public static final int mr_ic_audio_vol=0x7f0200a6;
+        public static final int mr_ic_media_route_connecting_mono_dark=0x7f0200a7;
+        public static final int mr_ic_media_route_connecting_mono_light=0x7f0200a8;
+        public static final int mr_ic_media_route_mono_dark=0x7f0200a9;
+        public static final int mr_ic_media_route_mono_light=0x7f0200aa;
+        public static final int mr_ic_pause_dark=0x7f0200ab;
+        public static final int mr_ic_pause_light=0x7f0200ac;
+        public static final int mr_ic_play_dark=0x7f0200ad;
+        public static final int mr_ic_play_light=0x7f0200ae;
+        public static final int mr_ic_settings_dark=0x7f0200af;
+        public static final int mr_ic_settings_light=0x7f0200b0;
+        public static final int powered_by_google_dark=0x7f0200b1;
+        public static final int powered_by_google_light=0x7f0200b2;
+        public static final int request_circle_background=0x7f0200b3;
+        public static final int shadow_down=0x7f0200b4;
+        public static final int shadow_right=0x7f0200b5;
+        public static final int sprite_check=0x7f0200b6;
+        public static final int star_off=0x7f0200b7;
+        public static final int star_on=0x7f0200b8;
+        public static final int toolbar_dropshadow=0x7f0200b9;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f0d00b9;
@@ -2557,10 +2558,16 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0d0062;
         public static final int action_mode_bar_stub=0x7f0d0061;
         public static final int action_mode_close_button=0x7f0d004a;
+        public static final int action_settings=0x7f0d0111;
         public static final int activity_chooser_view_content=0x7f0d004b;
         public static final int addCourseTextView=0x7f0d0082;
+<<<<<<< HEAD
+        public static final int add_to_fav_item=0x7f0d010f;
+        public static final int add_to_passed_item=0x7f0d0110;
+=======
         public static final int add_to_fav_item=0x7f0d010d;
         public static final int add_to_passed_item=0x7f0d010e;
+>>>>>>> origin/master
         public static final int adjust_height=0x7f0d0018;
         public static final int adjust_width=0x7f0d0019;
         public static final int alertTitle=0x7f0d0055;
@@ -2569,30 +2576,50 @@ containing a value of this type.
         public static final int amazonLink=0x7f0d0095;
         public static final int amazonPrice=0x7f0d0094;
         public static final int art=0x7f0d00d5;
+<<<<<<< HEAD
+        public static final int associated_books=0x7f0d0116;
+        public static final int author=0x7f0d00f1;
+=======
         public static final int associated_books=0x7f0d0113;
         public static final int author=0x7f0d00f4;
+>>>>>>> origin/master
         public static final int autoSelectCourses=0x7f0d00c9;
         public static final int autoSelectSpecialization=0x7f0d00c8;
         public static final int autoSelectUniversity=0x7f0d00c4;
         public static final int beginning=0x7f0d0015;
         public static final int blue=0x7f0d009f;
+<<<<<<< HEAD
+        public static final int bookAuthor=0x7f0d00fa;
+        public static final int bookPrice=0x7f0d00fb;
+        public static final int bookTitle=0x7f0d00f9;
+=======
         public static final int bookAuthor=0x7f0d00fd;
         public static final int bookPrice=0x7f0d00fe;
         public static final int bookTitle=0x7f0d00fc;
+>>>>>>> origin/master
         public static final int book_now=0x7f0d0033;
         public static final int books_fragment_container=0x7f0d008c;
         public static final int bottom=0x7f0d0040;
         public static final int box_count=0x7f0d003d;
         public static final int button=0x7f0d003e;
         public static final int button4=0x7f0d00c1;
+<<<<<<< HEAD
+        public static final int buttonFloat=0x7f0d00ea;
+=======
         public static final int buttonFloat=0x7f0d00ed;
+>>>>>>> origin/master
         public static final int buttonPanel=0x7f0d005b;
         public static final int button_accept=0x7f0d00b3;
         public static final int button_add_course=0x7f0d00ad;
         public static final int button_cancel=0x7f0d00b2;
         public static final int button_insert_course=0x7f0d008b;
+<<<<<<< HEAD
+        public static final int button_sell_book=0x7f0d00fc;
+        public static final int buttonflat=0x7f0d00fe;
+=======
         public static final int button_sell_book=0x7f0d00ff;
         public static final int buttonflat=0x7f0d0101;
+>>>>>>> origin/master
         public static final int buttons=0x7f0d00d9;
         public static final int buyButton=0x7f0d0030;
         public static final int buy_now=0x7f0d0034;
@@ -2619,16 +2646,28 @@ containing a value of this type.
         public static final int contentSelector=0x7f0d009b;
         public static final int courseBooksListView=0x7f0d00a9;
         public static final int courseFilesListView=0x7f0d00ab;
+<<<<<<< HEAD
+        public static final int courseName=0x7f0d00e8;
+=======
         public static final int courseName=0x7f0d00eb;
+>>>>>>> origin/master
         public static final int courseNameToAdd=0x7f0d0083;
         public static final int courses_fragment_container=0x7f0d0075;
         public static final int custom=0x7f0d005a;
         public static final int customPanel=0x7f0d0059;
+<<<<<<< HEAD
+        public static final int date=0x7f0d00eb;
+        public static final int decor_content_parent=0x7f0d0063;
+        public static final int default_activity_button=0x7f0d004e;
+        public static final int default_control_frame=0x7f0d00d4;
+        public static final int delete_item=0x7f0d0112;
+=======
         public static final int date=0x7f0d00ee;
         public static final int decor_content_parent=0x7f0d0063;
         public static final int default_activity_button=0x7f0d004e;
         public static final int default_control_frame=0x7f0d00d4;
         public static final int delete_item=0x7f0d010f;
+>>>>>>> origin/master
         public static final int dialog=0x7f0d0022;
         public static final int dialog_rootView=0x7f0d00ae;
         public static final int disableHome=0x7f0d000d;
@@ -2644,10 +2683,15 @@ containing a value of this type.
         public static final int email_login_form=0x7f0d007b;
         public static final int email_sign_in_button=0x7f0d007f;
         public static final int end=0x7f0d0016;
+        public static final int except=0x7f0d0108;
         public static final int expand_activities_button=0x7f0d004c;
         public static final int expanded_menu=0x7f0d005c;
         public static final int facebook_layout=0x7f0d0077;
+<<<<<<< HEAD
+        public static final int files=0x7f0d0115;
+=======
         public static final int files=0x7f0d0112;
+>>>>>>> origin/master
         public static final int filesListView=0x7f0d00bf;
         public static final int filesText=0x7f0d00be;
         public static final int files_fragment_container=0x7f0d00b8;
@@ -2665,13 +2709,21 @@ containing a value of this type.
         public static final int ifRoom=0x7f0d001f;
         public static final int image=0x7f0d004d;
         public static final int imageView=0x7f0d00c3;
+<<<<<<< HEAD
+        public static final int imageView2=0x7f0d0101;
+=======
         public static final int imageView2=0x7f0d0104;
+>>>>>>> origin/master
         public static final int inline=0x7f0d0041;
         public static final int insertOpinionButton=0x7f0d0092;
         public static final int insertOpinionConfirmButton=0x7f0d00cd;
         public static final int language=0x7f0d0085;
         public static final int large=0x7f0d0046;
+<<<<<<< HEAD
+        public static final int layout=0x7f0d010a;
+=======
         public static final int layout=0x7f0d0108;
+>>>>>>> origin/master
         public static final int left=0x7f0d0044;
         public static final int listCourses=0x7f0d00ca;
         public static final int listMode=0x7f0d000a;
@@ -2684,7 +2736,11 @@ containing a value of this type.
         public static final int login_button=0x7f0d0078;
         public static final int login_form=0x7f0d007a;
         public static final int login_progress=0x7f0d0079;
+<<<<<<< HEAD
+        public static final int logout=0x7f0d010e;
+=======
         public static final int logout=0x7f0d010c;
+>>>>>>> origin/master
         public static final int match_parent=0x7f0d0032;
         public static final int media_route_control_frame=0x7f0d00d3;
         public static final int media_route_list=0x7f0d00cf;
@@ -2702,11 +2758,36 @@ containing a value of this type.
         public static final int my_courses_fragment_container=0x7f0d00e2;
         public static final int my_courses_swipe_refresh_layout=0x7f0d00e3;
         public static final int my_data_fragment_container=0x7f0d00e5;
+<<<<<<< HEAD
+        public static final int mydata=0x7f0d010d;
+=======
         public static final int mydata=0x7f0d010b;
+>>>>>>> origin/master
         public static final int nameTextView=0x7f0d00b5;
         public static final int never=0x7f0d0020;
         public static final int none=0x7f0d000f;
         public static final int normal=0x7f0d000b;
+<<<<<<< HEAD
+        public static final int number_indicator_spinner_content=0x7f0d00e7;
+        public static final int open_graph=0x7f0d003a;
+        public static final int opinion=0x7f0d00ec;
+        public static final int opinionText=0x7f0d0096;
+        public static final int opinions=0x7f0d0114;
+        public static final int opinionsListView=0x7f0d00e9;
+        public static final int page=0x7f0d003b;
+        public static final int parentPanel=0x7f0d0052;
+        public static final int passedExamsListView=0x7f0d00ef;
+        public static final int passedExamsTextView=0x7f0d00a7;
+        public static final int passed_course=0x7f0d0113;
+        public static final int passed_courses_swipe_refresh_layout=0x7f0d00ee;
+        public static final int password=0x7f0d007d;
+        public static final int play_pause=0x7f0d00d6;
+        public static final int price=0x7f0d00f2;
+        public static final int production=0x7f0d002c;
+        public static final int professorName=0x7f0d0084;
+        public static final int progressBarCircularIndeterminate=0x7f0d0103;
+        public static final int progressBarCircularIndetermininate=0x7f0d00f0;
+=======
         public static final int number_indicator_spinner_content=0x7f0d00ea;
         public static final int open_graph=0x7f0d003a;
         public static final int opinion=0x7f0d00ef;
@@ -2726,6 +2807,7 @@ containing a value of this type.
         public static final int professorName=0x7f0d0084;
         public static final int progressBarCircularIndeterminate=0x7f0d0106;
         public static final int progressBarCircularIndetermininate=0x7f0d00f3;
+>>>>>>> origin/master
         public static final int progress_circular=0x7f0d0006;
         public static final int progress_horizontal=0x7f0d0007;
         public static final int radio=0x7f0d005f;
@@ -2733,6 +2815,15 @@ containing a value of this type.
         public static final int radioButtonMagistrale=0x7f0d0089;
         public static final int radioButtonTriennale=0x7f0d0088;
         public static final int radioGroup=0x7f0d0087;
+<<<<<<< HEAD
+        public static final int ratingBar=0x7f0d00ed;
+        public static final int ratingInsertedBar=0x7f0d00cc;
+        public static final int red=0x7f0d009d;
+        public static final int requestedBooksListView=0x7f0d00f5;
+        public static final int requested_books_fragment_container=0x7f0d00f3;
+        public static final int requested_books_swipe_refresh_layout=0x7f0d00f4;
+        public static final int requestsListView=0x7f0d00f6;
+=======
         public static final int ratingBar=0x7f0d00f0;
         public static final int ratingInsertedBar=0x7f0d00cc;
         public static final int red=0x7f0d009d;
@@ -2741,6 +2832,7 @@ containing a value of this type.
         public static final int requested_books_swipe_refresh_layout=0x7f0d00f7;
         public static final int requestsListView=0x7f0d00f9;
         public static final int resetButton=0x7f0d00e9;
+>>>>>>> origin/master
         public static final int right=0x7f0d0045;
         public static final int rootSelector=0x7f0d009a;
         public static final int route_name=0x7f0d00d1;
@@ -2765,16 +2857,26 @@ containing a value of this type.
         public static final int selectionDetails=0x7f0d0031;
         public static final int sellBookButtonFloat=0x7f0d00e1;
         public static final int settings=0x7f0d00d2;
+<<<<<<< HEAD
+        public static final int shape_bacground=0x7f0d010c;
+=======
         public static final int shape_bacground=0x7f0d010a;
+>>>>>>> origin/master
         public static final int shortcut=0x7f0d005e;
         public static final int showCustom=0x7f0d0010;
         public static final int showHome=0x7f0d0011;
         public static final int showTitle=0x7f0d0012;
         public static final int slide=0x7f0d0014;
         public static final int small=0x7f0d0047;
+<<<<<<< HEAD
+        public static final int snackbar=0x7f0d00fd;
+        public static final int splashImageView=0x7f0d0102;
+        public static final int splash_fragment_container=0x7f0d0100;
+=======
         public static final int snackbar=0x7f0d0100;
         public static final int splashImageView=0x7f0d0105;
         public static final int splash_fragment_container=0x7f0d0103;
+>>>>>>> origin/master
         public static final int split_action_bar=0x7f0d0008;
         public static final int src_atop=0x7f0d0027;
         public static final int src_in=0x7f0d0028;
@@ -2787,32 +2889,57 @@ containing a value of this type.
         public static final int tabMode=0x7f0d000c;
         public static final int terrain=0x7f0d001c;
         public static final int test=0x7f0d002f;
+<<<<<<< HEAD
+        public static final int text=0x7f0d00ff;
+        public static final int textSpacerNoButtons=0x7f0d0058;
+        public static final int textView=0x7f0d00f8;
+=======
         public static final int text=0x7f0d0102;
         public static final int textSpacerNoButtons=0x7f0d0058;
         public static final int textView=0x7f0d00fb;
+>>>>>>> origin/master
         public static final int textView1=0x7f0d008d;
         public static final int textView2=0x7f0d008e;
         public static final int textView3=0x7f0d008f;
         public static final int textView4=0x7f0d0091;
         public static final int textView5=0x7f0d00ac;
         public static final int textView6=0x7f0d00e6;
+<<<<<<< HEAD
+=======
         public static final int textView7=0x7f0d00e7;
         public static final int textView8=0x7f0d00e8;
+>>>>>>> origin/master
         public static final int text_wrapper=0x7f0d00d7;
         public static final int third_column=0x7f0d00bc;
         public static final int title=0x7f0d0051;
         public static final int title_bar=0x7f0d00d0;
         public static final int title_template=0x7f0d0054;
+<<<<<<< HEAD
+        public static final int toolbar=0x7f0d0104;
+        public static final int top=0x7f0d0042;
+        public static final int topPanel=0x7f0d0053;
+        public static final int universiImageView=0x7f0d0107;
+        public static final int universiLink=0x7f0d0109;
+        public static final int universiListView=0x7f0d0106;
+        public static final int universi_fragment_container=0x7f0d0105;
+=======
         public static final int toolbar=0x7f0d0107;
         public static final int top=0x7f0d0042;
         public static final int topPanel=0x7f0d0053;
+>>>>>>> origin/master
         public static final int universityImage=0x7f0d00c5;
         public static final int universityName=0x7f0d00c6;
         public static final int unknown=0x7f0d003c;
         public static final int up=0x7f0d0009;
+<<<<<<< HEAD
+        public static final int update=0x7f0d010b;
+        public static final int useLogo=0x7f0d0013;
+        public static final int user=0x7f0d00f7;
+=======
         public static final int update=0x7f0d0109;
         public static final int useLogo=0x7f0d0013;
         public static final int user=0x7f0d00fa;
+>>>>>>> origin/master
         public static final int viewColor=0x7f0d009c;
         public static final int welcomeTextView=0x7f0d00c2;
         public static final int welcome_container=0x7f0d0081;
@@ -2917,7 +3044,10 @@ containing a value of this type.
         public static final int splash_fragment=0x7f030058;
         public static final int support_simple_spinner_dropdown_item=0x7f030059;
         public static final int toolbar=0x7f03005a;
-        public static final int widget_layout=0x7f03005b;
+        public static final int universi_activity=0x7f03005b;
+        public static final int universi_fragment=0x7f03005c;
+        public static final int universi_row_layout=0x7f03005d;
+        public static final int widget_layout=0x7f03005e;
     }
     public static final class menu {
         public static final int courses=0x7f0e0000;
@@ -2927,8 +3057,9 @@ containing a value of this type.
         public static final int menu_files=0x7f0e0004;
         public static final int menu_my_books=0x7f0e0005;
         public static final int menu_profile=0x7f0e0006;
-        public static final int my_courses_menu=0x7f0e0007;
-        public static final int splash=0x7f0e0008;
+        public static final int menu_universi=0x7f0e0007;
+        public static final int my_courses_menu=0x7f0e0008;
+        public static final int splash=0x7f0e0009;
     }
     public static final class raw {
         public static final int database=0x7f060000;
@@ -3086,8 +3217,9 @@ containing a value of this type.
         public static final int title_activity_mydata=0x7f070095;
         public static final int title_activity_profile=0x7f070096;
         public static final int title_activity_splash=0x7f070097;
+        public static final int title_activity_universi=0x7f070098;
         public static final int wallet_buy_button_place_holder=0x7f070042;
-        public static final int welcome=0x7f070098;
+        public static final int welcome=0x7f070099;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f09006e;
