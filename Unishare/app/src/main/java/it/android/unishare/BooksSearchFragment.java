@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 public class BooksSearchFragment extends Fragment implements ViewInitiator {
@@ -87,7 +88,7 @@ public class BooksSearchFragment extends Fragment implements ViewInitiator {
     		});
     	}    		
     	searchForm = (EditText) view.findViewById(R.id.opinionText);
-    	Button btn = (Button) view.findViewById(R.id.insertOpinionButton);
+    	ImageButton btn = (ImageButton) view.findViewById(R.id.insertOpinionButton);
         btn.setOnClickListener(new OnClickListener() {
 	        @Override
 	        public void onClick(View view) {

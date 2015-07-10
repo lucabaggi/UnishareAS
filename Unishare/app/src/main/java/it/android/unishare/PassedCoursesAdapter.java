@@ -34,7 +34,7 @@ public class PassedCoursesAdapter extends ArrayAdapter<Entity> {
         String courseGrade;
         String courseGradeText = entity.get("valutazione");
         if(courseGradeText.equals("0"))
-            courseGrade = "nd";
+            courseGrade = "ND";
         else
             courseGrade = courseGradeText;
         if(entity.get("lode").equals("1"))

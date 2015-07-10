@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -79,7 +80,7 @@ public class FilesSearchFragment extends Fragment implements ViewInitiator {
     		listview.setAdapter(adapter);
     	}    		
     	searchForm = (EditText) view.findViewById(R.id.filesText);
-    	ButtonRectangle btn = (ButtonRectangle) view.findViewById(R.id.searchButton);
+    	ImageButton btn = (ImageButton) view.findViewById(R.id.searchButton);
         btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

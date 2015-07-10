@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context="it.android.unishare.MyBooksActivity$PlaceholderFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/libro"
+        android:id="@+id/backgroundIcon"
+        android:scaleType="fitCenter"
+        android:paddingLeft="@dimen/background_icon_padding"
+        android:paddingRight="@dimen/background_icon_padding"
+        android:alpha="0.1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,13 +22,34 @@
         android:orientation="vertical">
 
 
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/background_header_height"
+                android:src="@drawable/sfondo"
+                android:scaleType="centerCrop"/>
+            <TextView
+                android:id="@+id/myCoursesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vendi un libro"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/White"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/sell_book_header"
-            android:layout_margin="15dp"
-            android:id="@+id/textView" />
+            android:text="Compila i campi sottostantiper mettere in vendita un tuo libro. Riceverai una notifica non appena qualche utente sarà interessato ad acquistarlo."
+            android:textSize="@dimen/abc_text_size_medium_material"
+            android:layout_margin="@dimen/activity_horizontal_margin" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -32,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:hint="Autore/i"
+            android:hint="Autori"
             android:ems="15"
             android:id="@+id/bookAuthor" />
 
@@ -56,4 +87,4 @@
 
 
     </LinearLayout>
-</ScrollView>
+</RelativeLayout>

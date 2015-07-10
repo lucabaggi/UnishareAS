@@ -7,6 +7,16 @@
     android:orientation="vertical" 
     tools:context="it.android.unishare.CoursesActivity$PlaceholderFragment" >
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/commento"
+        android:id="@+id/backgroundIcon"
+        android:scaleType="fitCenter"
+        android:paddingLeft="@dimen/background_icon_padding"
+        android:paddingRight="@dimen/background_icon_padding"
+        android:alpha="0.1" />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -25,7 +35,8 @@
             android:id="@+id/opinionsListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp" >
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp">
 
         </ListView>
     </LinearLayout>

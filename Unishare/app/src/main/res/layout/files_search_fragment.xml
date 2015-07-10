@@ -7,102 +7,123 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="it.android.unishare.FilesActivity$PlaceholderFragment" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:text="@string/search_files_text" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/file"
+            android:id="@+id/backgroundIcon"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="@dimen/background_icon_margin"
+            android:paddingLeft="@dimen/background_icon_padding"
+            android:paddingRight="@dimen/background_icon_padding"
+            android:alpha="0.1" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginBottom="15dp">
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical" >
 
-            <EditText
-                android:id="@+id/filesText"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="@string/search_file_hint" >
-
-                <requestFocus />
-            </EditText>
-
-            <com.gc.materialdesign.views.ButtonRectangle
-                android:id="@+id/searchButton"
+            <TextView
+                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#1E88E5"
-                android:text="@string/search_button" />
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:text="@string/search_files_text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="15dp">
+
+                <EditText
+                    android:id="@+id/filesText"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/search_file_hint" >
+
+                    <requestFocus />
+                </EditText>
+
+                <ImageButton
+                    android:id="@+id/searchButton"
+                    android:layout_width="@dimen/search_button_dim"
+                    android:layout_height="@dimen/search_button_dim"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:background="@null"
+                    android:src="@drawable/search_button"
+                    android:text="@string/search_button" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/list_header"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:background="@color/Orange">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:text="Nome"
+                    android:textColor="@color/WhiteSmoke"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:text="Data"
+                    android:textColor="@color/WhiteSmoke"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:text="Dimensione"
+                    android:textColor="@color/WhiteSmoke"
+                    android:gravity="center_vertical"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.1"
+                    android:text=""
+                    android:textColor="@color/WhiteSmoke"
+                    android:gravity="center"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@drawable/toolbar_dropshadow" />
+
+            <ListView
+                android:id="@+id/filesListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+            </ListView>
+
+
+
+
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/list_header"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:background="@color/Orange">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                android:text="Nome"
-                android:textColor="@color/WhiteSmoke"
-                android:gravity="center"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                android:text="Data"
-                android:textColor="@color/WhiteSmoke"
-                android:gravity="center"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:text="Dimensione"
-                android:textColor="@color/WhiteSmoke"
-                android:gravity="center"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:text=""
-                android:textColor="@color/WhiteSmoke"
-                android:gravity="center"/>
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@drawable/toolbar_dropshadow" />
-
-        <ListView
-            android:id="@+id/filesListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
-        </ListView>
-
-
-
-
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

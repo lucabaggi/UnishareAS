@@ -43,13 +43,13 @@ public class MyApplication extends android.app.Application {
 	private static MyApplication instance = null;
 
 	private static final int ACTUAL_COURSES = 0;
-    private static final int PASSED_COURSES = 1;
-	private static final int SELL_BOOKS = 2;
-	private static final int REQ_BOOKS = 3;
-    private static final int BOOKS = 4;
-    private static final int COURSES = 5;
-	private static final int FILES = 6;
-	private static final int UNIVERSI = 7;
+    private static final int PASSED_COURSES = 4;
+	private static final int SELL_BOOKS = 6;
+	private static final int REQ_BOOKS = 7;
+    private static final int BOOKS = 2;
+    private static final int COURSES = 1;
+	private static final int FILES = 3;
+	private static final int UNIVERSI = 5;
 
 	private int userID;
 	private int campusID;

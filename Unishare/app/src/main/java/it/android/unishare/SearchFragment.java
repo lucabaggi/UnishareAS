@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -319,7 +320,7 @@ public class SearchFragment extends Fragment implements ViewInitiator {
     		}
     	}    		
     	searchForm = (EditText) view.findViewById(R.id.opinionText);
-    	ButtonRectangle btn = (ButtonRectangle) view.findViewById(R.id.searchButton);
+    	ImageButton btn = (ImageButton) view.findViewById(R.id.searchButton);
         btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -338,6 +339,25 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 					}
 				}
         });
+
+        //Action buttons
+        if(this.activity instanceof BooksActivity) {
+            ButtonRectangle soldBtn = (ButtonRectangle) view.findViewById(R.id.booksSold);
+            soldBtn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    activity.getMyApplication().newActivity(MyBooksActivity.class);
+                }
+            });
+
+            ButtonRectangle reqBtn = (ButtonRectangle) view.findViewById(R.id.booksRequested);
+            reqBtn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    activity.getMyApplication().newActivity(RequestedBooksActivity.class);
+                }
+            });
+        }
     	
 	}
 

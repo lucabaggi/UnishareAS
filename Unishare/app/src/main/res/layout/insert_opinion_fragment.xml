@@ -1,45 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-    <EditText
-        android:id="@+id/opinionText"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_margin="20dp"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:gravity="left|top"
-        android:hint="@string/insert_opinion_hint" >
+        android:layout_height="match_parent"
+        android:src="@drawable/commento"
+        android:id="@+id/backgroundIcon"
+        android:scaleType="fitCenter"
+        android:paddingLeft="@dimen/background_icon_padding"
+        android:paddingRight="@dimen/background_icon_padding"
+        android:alpha="0.1" />
 
-        <requestFocus />
-    </EditText>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/insert_rating_text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
 
-    <RatingBar
-        android:id="@+id/ratingInsertedBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        style="@style/CustomRatingBar"
-        android:layout_margin="20dp" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/background_header_height"
+                android:src="@drawable/sfondo"
+                android:scaleType="centerCrop"/>
+            <TextView
+                android:id="@+id/myCoursesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recensisci corso"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/White"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
 
-    <Button
-        android:id="@+id/insertOpinionConfirmButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/send_button" />
+        </RelativeLayout>
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/opinionText"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_margin="20dp"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:gravity="left|top"
+            android:hint="Inserisci un commento al corso, considerando aspetti che ritieni rilevanti (es. chiarezza delle spiegazioni, modalità d'esame, carico di lavoro richiesto, ...)" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Assegna al corso una valutazione complessiva, fino ad un massimo di 5 stelline."
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <RatingBar
+            android:id="@+id/ratingInsertedBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@style/CustomRatingBar"
+            android:layout_margin="20dp" />
+
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/insertOpinionConfirmButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Inserisci opinione" />
+
+    </LinearLayout>
+</RelativeLayout>

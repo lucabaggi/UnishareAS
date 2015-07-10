@@ -6,19 +6,45 @@
     android:orientation="vertical"
     tools:context="it.android.unishare.RequestedBooksActivity$PlaceholderFragment" >
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/libro"
+        android:id="@+id/backgroundIcon"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="@dimen/background_icon_margin"
+        android:paddingLeft="@dimen/background_icon_padding"
+        android:paddingRight="@dimen/background_icon_padding"
+        android:alpha="0.1" />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/requested_books"
-            android:layout_margin="15dp"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/background_header_height"
+                android:src="@drawable/sfondo"
+                android:scaleType="centerCrop"/>
+            <TextView
+                android:id="@+id/myCoursesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/requested_books"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/White"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
         <LinearLayout
             android:id="@+id/list_my_courses_header"
             android:layout_width="match_parent"

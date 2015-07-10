@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.gc.materialdesign.views.ButtonRectangle;
+
 public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 	
 	public static final String TAG = "InsertOpinionFragment";
@@ -59,7 +61,7 @@ public class InsertOpinionFragment extends Fragment implements ViewInitiator {
 		ratingBar = (RatingBar) view.findViewById(R.id.ratingInsertedBar);
         String title = "Inserting";
         dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
-		Button btn = (Button) view.findViewById(R.id.insertOpinionConfirmButton);
+		ButtonRectangle btn = (ButtonRectangle) view.findViewById(R.id.insertOpinionConfirmButton);
 		btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
