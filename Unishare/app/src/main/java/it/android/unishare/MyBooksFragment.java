@@ -60,7 +60,7 @@ public class MyBooksFragment extends Fragment implements ViewInitiator {
 		String bookTitle = book.get("titolo");
 		menu.setHeaderTitle(bookTitle);
 		menu.add(Menu.NONE, R.id.remove_book, Menu.NONE, "Rimuovi il libro");
-		menu.add(Menu.NONE, R.id.book_sold, Menu.NONE, "Il libro è stato venduto");
+		menu.add(Menu.NONE, R.id.book_sold, Menu.NONE, "Ho venduto questo libro");
 		menu.add(Menu.NONE, R.id.requests, Menu.NONE, "Vedi richieste");
 	}
 

@@ -1,5 +1,6 @@
 package it.android.unishare;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
@@ -7,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +20,9 @@ import java.util.ArrayList;
 
 
 public class UniversiActivity extends SmartActivity {
+
+    private static final String ADAPTER_VALUES = "adapterValuesKey";
+    private static final String UNIVERSI_FRAGMENT_INSTANCE = "FragmentKey";
 
     public static final String TAG = "UniversiActivity";
 
@@ -32,6 +37,8 @@ public class UniversiActivity extends SmartActivity {
     private UniversiFragment universiFragment;
 
     private UniversiAdapter adapter;
+
+    private ArrayList<Entity> adapterValues = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +64,43 @@ public class UniversiActivity extends SmartActivity {
             drawerLayout.setDrawerListener(drawerToggle);
         }
         application = MyApplication.getInstance(this);
+        adapter = new UniversiAdapter(this, new ArrayList<Entity>());
 
-        String title = "Searching";
-        ProgressDialog dialog = new ProgressDialog(this, title);
-        getUniversiNews(dialog);
+        if(savedInstanceState != null){
+            universiFragment = (UniversiFragment) getFragmentManager()
+                    .getFragment(savedInstanceState, UNIVERSI_FRAGMENT_INSTANCE);
+            Log.i(TAG, "Existing fragment");
+            adapterValues = savedInstanceState.getParcelableArrayList(ADAPTER_VALUES);
+            this.adapter.addAll(adapterValues);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.add(R.id.universi_fragment_container, universiFragment, UniversiFragment.TAG);
+        }
+        else{
+            String title = "Searching";
+            ProgressDialog dialog = new ProgressDialog(this, title);
+            getUniversiNews(dialog);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        ArrayList<Entity> values = new ArrayList<Entity>();
+        /**
+         * Storing nel Bundle dei valori presenti nell'adapter, in questo modo possono essere ripristinati in seguito
+         * ad un cambio di configurazione, come il cambio di orientamento del dispositivo
+         */
+        if (adapter != null) {
+            for (int i = 0; i < adapter.getCount(); i++)
+                values.add(adapter.getItem(i));
+            outState.putParcelableArrayList(ADAPTER_VALUES, values);
+        }
+        /**
+         * Storing del CoursesSearchFragment per poterne ripristinare lo stato in seguito ad un cambio di configurazione.
+         * I valori presenti nell'adapter vanno salvati a parte poich� non vengono conservati
+         */
+        getFragmentManager().putFragment(outState, UNIVERSI_FRAGMENT_INSTANCE, universiFragment);
+
     }
 
     @Override
@@ -150,7 +190,6 @@ public class UniversiActivity extends SmartActivity {
 
     public void handleResult(ArrayList<Entity> result, String tag) {
         if(tag == UNIVERSI_TAG){
-            adapter = new UniversiAdapter(this, new ArrayList<Entity>());
             adapter.addAll(result);
             universiFragment = new UniversiFragment();
             getFragmentManager().beginTransaction()

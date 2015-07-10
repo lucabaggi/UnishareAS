@@ -11,6 +11,6 @@
     <item
         android:id="@+id/logout"
         android:orderInCategory="100"
-        android:title="Effettua logout"/>
+        android:title="Esegui Logout"/>
 
 </menu>
