@@ -12,6 +12,7 @@ import android.widget.ViewFlipper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 
 public class MainFragment extends Fragment implements ViewInitiator {
 	
@@ -20,14 +21,24 @@ public class MainFragment extends Fragment implements ViewInitiator {
 	private MainActivity activity;
 	private View view;
 
+	private ArrayList<Entity> notifications;
+
 	private Integer [] viewFlipperArray = {
 			R.layout.viewflipper_opinions,
-			R.layout.viewflipper_books
+			R.layout.viewflipper_books,
+			R.layout.viewflipper_files
+	};
+	private Class[] activityArray = {
+			MyCoursesActivity.class,
+			MyBooksActivity.class,
+			FilesActivity.class
 	};
 	private ArrayList<Integer> viewFlipperElements;
+	private ArrayList<Class> activityElements;
 
 	public MainFragment() {
 		viewFlipperElements = new ArrayList<Integer>(Arrays.asList(viewFlipperArray));
+		activityElements = new ArrayList<Class>(Arrays.asList(activityArray));
 	}
 
     @Override
@@ -56,14 +67,27 @@ public class MainFragment extends Fragment implements ViewInitiator {
 		LayoutInflater factory = LayoutInflater.from(activity);
 
 		ViewFlipper viewFlipper = (ViewFlipper) view.findViewById(R.id.viewFlipper);
-		Collections.shuffle(viewFlipperElements);
-		for(Integer index : viewFlipperElements) {
-			viewFlipper.addView(factory.inflate(index, null));
+
+		Random rand = new Random();
+		Collections.shuffle(viewFlipperElements, rand);
+		Collections.shuffle(activityElements, rand);
+
+		for(final Integer index : viewFlipperElements) {
+			View newView = factory.inflate(index, null);
+			/*
+			newView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					activity.getMyApplication().newActivity(activityElements.get(viewFlipperElements.indexOf(index)));
+				}
+			});
+			*/
+			viewFlipper.addView(newView);
 		}
 
 		viewFlipper.setInAnimation(activity, R.anim.slide_in_from_left);
 		viewFlipper.setOutAnimation(activity, R.anim.slide_out_to_right);
-		viewFlipper.setFlipInterval(6000);
+		viewFlipper.setFlipInterval(8000);
 		viewFlipper.startFlipping();
 
 	}

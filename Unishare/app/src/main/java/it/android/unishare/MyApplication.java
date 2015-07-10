@@ -58,7 +58,7 @@ public class MyApplication extends android.app.Application {
 	private String universityName, campusName, specializationName;
 	private String nickname;
 
-	private String dashNews, dashHints;
+	private ArrayList<Entity> dashNotifications, dashHints;
 
 	//JSON
 	private JSONObject jsonDatabase;
@@ -448,11 +448,8 @@ public class MyApplication extends android.app.Application {
     }
 
 	public void handleRequests(ArrayList<Entity> result, String tag) {
-		if(tag == "dashNews") {
-			dashNews = "";
-			for(Entity e: result) {
-				dashNews = dashNews + e.get("testo")+"\n";
-			}
+		if(tag == "dashNotifications") {
+			dashNotifications = result;
 		}
 	}
 
@@ -510,11 +507,11 @@ public class MyApplication extends android.app.Application {
     	return currentContext;
     }
 
-	public String getDashNews() {
-		return dashNews;
+	public ArrayList<Entity> getdashNotifications() {
+		return dashNotifications;
 	}
 
-	public String getDashHints() {
+	public ArrayList<Entity> getDashHints() {
 		return getDashHints();
 	}
 

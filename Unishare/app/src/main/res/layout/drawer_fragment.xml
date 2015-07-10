@@ -6,36 +6,45 @@
     android:layout_height="match_parent"
     android:background="@color/accent_material_light">
 
-
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/Beige">
+        android:layout_height="wrap_content">
 
-        <com.pkmmte.view.CircularImageView
-            android:id="@+id/circular_image"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            app:border="true"
-            app:border_color="#EEEEEE"
-            app:border_width="4dp"
-            app:shadow="true" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@drawable/sfondo"
+            android:scaleType="centerCrop"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/nameTextView"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="40dp"
-            />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <com.pkmmte.view.CircularImageView
+                android:id="@+id/circular_image"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
+                app:border="true"
+                app:border_color="#EEEEEE"
+                app:border_width="4dp"
+                app:shadow="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/nameTextView"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="40dp"
+                android:textColor="@color/White" />
 
 
-    </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
     <ListView
         android:layout_width="match_parent"

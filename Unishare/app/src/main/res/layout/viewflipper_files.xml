@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:adjustViewBounds="true"
+        android:src="@drawable/file"
+        android:layout_weight="3" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:text="Gli esami sono vicini e sei indietro con lo studio? Nella sezione Appunti e Dispense puoi trovare files caricati dai tuoi compagni per integrare le tue conoscenze."
+        android:layout_weight="1"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+</LinearLayout>

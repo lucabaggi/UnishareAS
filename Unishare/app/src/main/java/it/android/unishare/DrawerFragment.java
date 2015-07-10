@@ -26,6 +26,16 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
     String drawerItem[] = new String[]{"I miei corsi", "Carriera didattica",
             "Libri in vendita", "Libri richiesti", "Tutti i Libri", "Tutti i Corsi",
             "Appunti & Dispense", "Universi"};
+    private Integer[] drawables = {
+            R.drawable.mela,
+            R.drawable.tocco,
+            R.drawable.file,
+            R.drawable.penna,
+            R.drawable.libro,
+            R.drawable.ampolla,
+            R.drawable.file,
+            R.drawable.megafono
+    };
     DrawerAdapter drawerAdapter;
 
 
@@ -63,7 +73,9 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
         listView = (ListView) view.findViewById(R.id.drawerListView);
         ArrayList drawerItemList = new ArrayList();
         drawerItemList.addAll(Arrays.asList(drawerItem));
-        drawerAdapter = new DrawerAdapter(activity, drawerItemList);
+        ArrayList<Integer> drawablesList = new ArrayList<Integer>();
+        drawablesList.addAll(Arrays.asList(drawables));
+        drawerAdapter = new DrawerAdapter(activity, drawerItemList, drawablesList);
         listView.setAdapter(drawerAdapter);
 
 

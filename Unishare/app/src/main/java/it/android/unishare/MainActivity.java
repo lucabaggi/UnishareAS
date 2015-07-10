@@ -171,13 +171,6 @@ public class MainActivity extends SmartActivity {
         return this.application;
     }
 
-    public String getHints() {
-        return application.getDashHints();
-    }
-
-    public String getNews() {
-        return application.getDashNews();
-    }
 
 
 
