@@ -3,6 +3,7 @@ package it.android.unishare;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -286,6 +287,10 @@ public class MyApplication extends android.app.Application {
 		new AsynchRequest().setParameters(currentActivity,url,tag,dialog).execute();
 	}
 
+	public void independentRequest(String url, String tag) {
+		new IndependentRequest().setParameters(instance,url,tag).execute();
+	}
+
 
 	public void alertMessage(String title, String message) {
 		android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(currentContext);
@@ -375,7 +380,7 @@ public class MyApplication extends android.app.Application {
 		deleteTable(DatabaseContract.UserInfoTable.TABLE_NAME);
 		deleteTable(DatabaseContract.MyCoursesTable.TABLE_NAME);
 		deleteTable(DatabaseContract.PassedExams.TABLE_NAME);
-		databaseCall("android_gcm_set.php?u="+userID+"&d=1", "deleteGcmKey", null);
+		databaseCall("android_gcm_set.php?u=" + userID + "&d=1", "deleteGcmKey", null);
 		FacebookSdk.sdkInitialize(currentContext);
 		LoginManager.getInstance().logOut();
 		newActivity(SplashActivity.class);
@@ -386,7 +391,7 @@ public class MyApplication extends android.app.Application {
 		specializationID = 0;
 		campusID = 0;
 		universityID = 0;
-		databaseCall("reset_account.php?u="+userID, "resetAccount", null);
+		databaseCall("reset_account.php?u=" + userID, "resetAccount", null);
 		newActivity(WelcomeActivity.class);
 	}
 
@@ -441,6 +446,15 @@ public class MyApplication extends android.app.Application {
 
 
     }
+
+	public void handleRequests(ArrayList<Entity> result, String tag) {
+		if(tag == "dashNews") {
+			dashNews = "";
+			for(Entity e: result) {
+				dashNews = dashNews + e.get("testo")+"\n";
+			}
+		}
+	}
 
 
 	///////////////////////////////////////////////////////////////////////

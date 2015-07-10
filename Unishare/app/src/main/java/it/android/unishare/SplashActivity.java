@@ -41,6 +41,7 @@ public class SplashActivity extends Activity {
             }
             if(application.hasUserCompletedWelcome()){
                 nextClass = MainActivity.class;
+                application.independentRequest("notifications.php?u="+application.getUserId(),"dashNews");
             }
             else {
                 //First check online!!!

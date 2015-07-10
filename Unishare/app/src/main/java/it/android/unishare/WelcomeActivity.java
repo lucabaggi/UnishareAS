@@ -218,6 +218,7 @@ public class WelcomeActivity extends SmartActivity {
     }
 
     public void goToDashboard() {
+        application.databaseCall("user_update.php?u="+application.getUserId()+"&uni="+universityId+"&camp="+campusId+"&cds="+specializationId, "updateUserInfo", null);
         application.customQuery("UPDATE user_info SET university_id="+universityId+",university=\""+universityName+"\",campus_id="+campusId+",campus=\""+campusName+"\",specialization_id="+specializationId+",specialization=\""+specializationName+"\"");
         application.fetchUserData();
         Intent intent = new Intent(this, MainActivity.class);

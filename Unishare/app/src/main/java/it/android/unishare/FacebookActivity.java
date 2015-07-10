@@ -114,15 +114,18 @@ public class FacebookActivity extends SmartActivity {
                 if(currentProfile != null) {
                     Profile.setCurrentProfile(currentProfile);
                     profile = currentProfile;
-
+                    //loginButton.setText("");
                     //Adding corresponding Unishare user to db
                     getUser(profile.getId());
                 } else {
                     application.logoutUser();
                     Log.i("FBStatus: ", "Now logged out");
+                    //loginButton.setText("");
                 }
             }
         };
+
+        //loginButton.setText("");
     }
 
     private void switchActivity() {
