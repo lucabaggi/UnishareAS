@@ -24,5 +24,13 @@
         android:layout_marginTop="20dp"
         android:text="Aprendo il menù a tendina sulla sinistra dello schermo, puoi accedere alle diverse sezioni di Unishare." />
 
+    <ViewFlipper
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewFlipper"
+        android:layout_alignParentBottom="true">
+
+    </ViewFlipper>
+
 
 </RelativeLayout>
