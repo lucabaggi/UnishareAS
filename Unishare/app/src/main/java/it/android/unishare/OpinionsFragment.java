@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonFloat;
 
+import org.w3c.dom.Text;
+
 public class OpinionsFragment extends Fragment implements ViewInitiator {
 	
 	public static final String TAG = "OpinionsFragment";
@@ -85,6 +87,8 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
             this.course = activity.getSelectedCourse();
         }
         courseNameTextView.setText(courseName);
+        TextView professorTextView = (TextView) view.findViewById(R.id.professorName);
+        professorTextView.setText(course.get("professore"));
         Log.i(TAG, "TextView value = " + courseNameTextView.getText().toString());
 
         ButtonFloat btn = (ButtonFloat) view.findViewById(R.id.buttonFloat);
@@ -120,16 +124,16 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
                                             values.put(DatabaseContract.MyCoursesTable.COLUMN_PROFESSOR, professor);
                                             try{
                                                 activity.getMyApplication().insertIntoDatabaseCatchingExceptions(DatabaseContract.MyCoursesTable.TABLE_NAME, values);
-                                                activity.getMyApplication().toastMessage(activity, courseName + " è stato aggiunto ai Preferiti");
+                                                activity.getMyApplication().toastMessage(activity, courseName + " è stato aggiunto ai tuoi Corsi");
                                                 ((CoursesActivity)activity).addToActualExams(courseId);
                                             }
                                             catch (SQLiteConstraintException e){
                                                 Log.i(TAG, "Corso già presente nel db");
-                                                activity.getMyApplication().alertMessage("", "Corso già presente fra i Preferiti");
+                                                activity.getMyApplication().alertMessage("", "Corso già presente fra i tuoi Corsi");
                                             }
                                         }
                                         else
-                                            activity.getMyApplication().toastMessage(activity, "Corso già presente tra gli esami sostenuti");
+                                            activity.getMyApplication().toastMessage(activity, "Corso già presente in Carriera Didattica");
                                         break;
                                     case 1:
                                         Log.i("ContextMenu", "Item addPassed was chosen");
@@ -161,12 +165,12 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
                                                         values.put(DatabaseContract.PassedExams.COLUMN_LAUDE, 0);
                                                     try{
                                                         activity.getMyApplication().insertIntoDatabaseCatchingExceptions(DatabaseContract.PassedExams.TABLE_NAME, values);
-                                                        activity.getMyApplication().toastMessage(activity, courseName + " è stato aggiunto ai Corsi superati");
+                                                        activity.getMyApplication().toastMessage(activity, courseName + " è stato aggiunto alla Carriera Didattica");
                                                         ((CoursesActivity)activity).addToPassedExams(courseId, grade, lode);
                                                     }
                                                     catch (SQLiteConstraintException e){
                                                         Log.i(TAG, "Corso già presente nel db");
-                                                        activity.getMyApplication().alertMessage("", "Corso già presente fra gli esami superati");
+                                                        activity.getMyApplication().alertMessage("", "Corso già presente in Carriera Didattica");
                                                     }
                                                 }
                                                 else

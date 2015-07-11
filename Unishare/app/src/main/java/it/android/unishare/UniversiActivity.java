@@ -28,6 +28,7 @@ public class UniversiActivity extends SmartActivity {
 
     private static final String UNIVERSI_TAG = "universi";
     private static final String REFRESH_TAG = "refresh";
+    private static final String ERROR = "error";
 
     private MyApplication application;
     private Toolbar toolbar;
@@ -185,6 +186,16 @@ public class UniversiActivity extends SmartActivity {
 
     public UniversiAdapter getAdapter(){
         return this.adapter;
+    }
+
+    @Override
+    public void handleError(String tag){
+        if(tag == ERROR){
+            String title = "Nessun risultato";
+            String message = "Controlla la tua connessione o modifica la tua ricerca";
+            getMyApplication().alertMessage(title, message);
+        }
+
     }
 
 

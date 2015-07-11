@@ -29,6 +29,7 @@ public class RequestedBooksActivity extends SmartActivity {
 
     private static final String REQUESTED_BOOKS_TAG = "requestedBooks";
     private static final String REFRESH_REQUESTS_TAG = "refreshRequests";
+    private static final String ERROR = "error";
 
     private RequestedBooksFragment requestedBooksFragment;
 
@@ -175,6 +176,16 @@ public class RequestedBooksActivity extends SmartActivity {
 
     public RequestedBooksAdapter getRequestedBooksAdapter(){
         return this.requestedBooksAdapter;
+    }
+
+    @Override
+    public void handleError(String tag){
+        if(tag == ERROR){
+            String title = "Nessun risultato";
+            String message = "Controlla la tua connessione o modifica la tua ricerca";
+            getMyApplication().alertMessage(title, message);
+        }
+
     }
 
 

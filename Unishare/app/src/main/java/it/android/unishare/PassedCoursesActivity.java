@@ -214,6 +214,16 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
     }
 
     @Override
+    public void handleError(String tag){
+        if(tag == ERROR){
+            String title = "Nessun risultato";
+            String message = "Controlla la tua connessione o modifica la tua ricerca";
+            getMyApplication().alertMessage(title, message);
+        }
+
+    }
+
+    @Override
     public void handleResult(ArrayList<Entity> result, String tag){
         if(tag == OPINION_TAG){
             opinionsAdapter = new OpinionsAdapter(this, new ArrayList<Entity>());
