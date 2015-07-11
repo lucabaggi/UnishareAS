@@ -51,7 +51,7 @@ public class SearchFragment extends Fragment implements ViewInitiator {
     }
 	
 	public interface OnCourseSelectedListener {
-		public void onCourseSelected(String courseId, String courseName, com.gc.materialdesign.widgets.ProgressDialog dialog);
+		public void onCourseSelected(String courseId, String courseName, Entity course, com.gc.materialdesign.widgets.ProgressDialog dialog);
 	}
 
     public SearchFragment() {
@@ -301,7 +301,7 @@ public class SearchFragment extends Fragment implements ViewInitiator {
                         Log.i(TAG, "Clicked on course " + courseId);
                         String title = "Searching";
                         dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
-                        SearchFragment.this.courseListener.onCourseSelected(courseId, courseName, dialog);
+                        SearchFragment.this.courseListener.onCourseSelected(courseId, courseName, course, dialog);
                     }
                 });
 
@@ -411,7 +411,7 @@ public class SearchFragment extends Fragment implements ViewInitiator {
 					Log.i(TAG, "Clicked on course " + courseId);
                     String title = "Searching";
                     dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), title);
-		            SearchFragment.this.courseListener.onCourseSelected(courseId, courseName, dialog);
+		            SearchFragment.this.courseListener.onCourseSelected(courseId, courseName, course ,dialog);
 				}
 			});
 		}

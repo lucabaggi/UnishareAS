@@ -3,7 +3,9 @@ package it.android.unishare;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonFloat;
 
@@ -20,6 +23,8 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
 	public static final String TAG = "OpinionsFragment";
 	
 	private String courseName;
+    private Entity course;
+
 	private View view;
 	private ListView listview;
 	
@@ -32,9 +37,10 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
 		
 	}
 	
-	public OpinionsFragment (String courseName){
+	public OpinionsFragment (String courseName, Entity course){
 		this.counter = 0;
         this.courseName = courseName;
+        this.course = course;
 	}
 	
 	@Override
@@ -80,6 +86,31 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
             @Override
             public void onClick(View v) {
                 activity.createInsertOpinionFragment();
+            }
+        });
+
+        ButtonFloat btn2 = (ButtonFloat) view.findViewById(R.id.buttonFloat2);
+        btn2.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CharSequence[] items = {"Aggiungi ai tuoi corsi", "Aggiungi ai corsi superati"};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setTitle(course.get("nome"))
+                        .setItems(items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case 0:
+                                        activity.getMyApplication().toastMessage(activity, "Miei corsi");
+                                        break;
+                                    case 1:
+                                        activity.getMyApplication().toastMessage(activity, "corsi superati");
+                                }
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
         listview = (ListView) view.findViewById(R.id.opinionsListView);

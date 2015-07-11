@@ -49,6 +49,7 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
 	
 	private String courseName;
 	private int courseId;
+	private Entity courseSelected;
 
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
@@ -319,9 +320,10 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
 	}
 	
 	@Override
-	public void onCourseSelected(String courseId, String courseName, com.gc.materialdesign.widgets.ProgressDialog dialog) {
+	public void onCourseSelected(String courseId, String courseName, Entity course, com.gc.materialdesign.widgets.ProgressDialog dialog) {
 		this.courseName = courseName;
 		this.courseId = Integer.parseInt(courseId);
+		this.courseSelected = course;
         getOpinion(this.courseId, dialog);
 		
 	}
@@ -362,7 +364,7 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
     }
 
     private void createOpinionFragment(){
-        opinionsFragment = new OpinionsFragment(courseName);
+        opinionsFragment = new OpinionsFragment(courseName, courseSelected);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.courses_fragment_container, opinionsFragment, OpinionsFragment.TAG);
         transaction.addToBackStack(null);
