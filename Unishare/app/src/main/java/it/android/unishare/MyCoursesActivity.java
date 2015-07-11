@@ -479,19 +479,19 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
             String title = "";
             String message = "Nessun corso presente, vai nella sezione Corsi e aggiungi i corsi che stai frequentando";
             application.alertMessage(title, message);
-            return;
         }
-        while(cursor.moveToNext()){
-            Integer courseId = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String professor = cursor.getString(2);
-            Entity course = new Entity();
-            course.addElement("id", courseId.toString());
-            course.addElement("nome", name);
-            course.addElement("professore", professor);
-            courses.add(course);
+        else{
+            while(cursor.moveToNext()){
+                Integer courseId = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String professor = cursor.getString(2);
+                Entity course = new Entity();
+                course.addElement("id", courseId.toString());
+                course.addElement("nome", name);
+                course.addElement("professore", professor);
+                courses.add(course);
+            }
         }
-
         coursesAdapter = new CoursesAdapter(this, new ArrayList<Entity>());
         coursesAdapter.addAll(courses);
 
