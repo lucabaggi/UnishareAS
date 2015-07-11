@@ -348,21 +348,22 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
             String title = "";
             String message = "Nessun corso presente, vai nella sezione Corsi e aggiungi i corsi che hai superato";
             application.alertMessage(title, message);
-            return;
         }
-        while(cursor.moveToNext()){
-            Integer courseId = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String professor = cursor.getString(2);
-            Integer grade = cursor.getInt(3);
-            Integer lode = cursor.getInt(4);
-            Entity course = new Entity();
-            course.addElement("id", courseId.toString());
-            course.addElement("nome", name);
-            course.addElement("professore", professor);
-            course.addElement("valutazione", grade.toString());
-            course.addElement("lode", lode.toString());
-            courses.add(course);
+        else{
+            while(cursor.moveToNext()){
+                Integer courseId = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String professor = cursor.getString(2);
+                Integer grade = cursor.getInt(3);
+                Integer lode = cursor.getInt(4);
+                Entity course = new Entity();
+                course.addElement("id", courseId.toString());
+                course.addElement("nome", name);
+                course.addElement("professore", professor);
+                course.addElement("valutazione", grade.toString());
+                course.addElement("lode", lode.toString());
+                courses.add(course);
+            }
         }
 
         passedCoursesAdapter = new PassedCoursesAdapter(this, new ArrayList<Entity>());
