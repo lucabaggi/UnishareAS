@@ -37,27 +37,35 @@ public class NotificationReceiver extends BroadcastReceiver {
 
             if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 
-                Intent myIntent = new Intent(context, MyBooksActivity.class);
+                String notificationType = intent.getExtras().getString("type");
+                if(!notificationType.equals("")){
+                    if(notificationType.equals("book")){
+                        Intent myIntent = new Intent(context, MyBooksActivity.class);
 
-                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                // Adds the back stack
-                stackBuilder.addParentStack(MyBooksActivity.class);
-                // Adds the Intent to the top of the stack
-                stackBuilder.addNextIntent(myIntent);
-                // Gets a PendingIntent containing the entire back stack
-                pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                        // Adds the back stack
+                        stackBuilder.addParentStack(MyBooksActivity.class);
+                        // Adds the Intent to the top of the stack
+                        stackBuilder.addNextIntent(myIntent);
+                        // Gets a PendingIntent containing the entire back stack
+                        pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                    }
+                    if(notificationType.equals("opinion")){
+                        Intent myIntent = new Intent(context, MyCoursesActivity.class);
 
-                /*
-                pendingIntent = PendingIntent.getActivity(
-                        context,
-                        0,
-                        myIntent,
-                        PendingIntent.FLAG_CANCEL_CURRENT);
-                        */
+                        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                        // Adds the back stack
+                        stackBuilder.addParentStack(MyCoursesActivity.class);
+                        // Adds the Intent to the top of the stack
+                        stackBuilder.addNextIntent(myIntent);
+                        // Gets a PendingIntent containing the entire back stack
+                        pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                    }
+                }
 
                 // retrieve del campo message della notifica
                 String json_info = intent.getExtras().getString("message");
-                Log.i("", "Info: " + json_info);
+                Log.i("NotificationReceiver", "Info: " + json_info);
 
                 // emette una notifica sul dispositivo
                 sendNotification(context, json_info);

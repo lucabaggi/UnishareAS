@@ -196,6 +196,7 @@ public class FacebookActivity extends SmartActivity {
             Log.i("FacebookActivity", "URL profile image: " + imageUrl);
             new DownloadProfileImageTask(this).execute(imageUrl);
             insertUserIntoLocalDatabase();
+
         }
     }
 
