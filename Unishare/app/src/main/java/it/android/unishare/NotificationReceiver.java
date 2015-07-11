@@ -37,6 +37,10 @@ public class NotificationReceiver extends BroadcastReceiver {
 
             if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 
+                String notificationType = extras.getString("type");
+                if(!notificationType.equals(""))
+                    Log.i("NotificationReceiver", notificationType);
+
                 Intent myIntent = new Intent(context, MyBooksActivity.class);
 
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);

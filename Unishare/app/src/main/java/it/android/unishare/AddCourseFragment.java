@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 
@@ -23,7 +24,7 @@ public class AddCourseFragment extends Fragment implements ViewInitiator {
     private View view;
     private EditText courseName;
     private EditText profName;
-    private EditText language;
+    private Spinner language;
     private EditText cfu;
     private RadioGroup radioGroup;
     private com.gc.materialdesign.widgets.ProgressDialog dialog;
@@ -55,7 +56,7 @@ public class AddCourseFragment extends Fragment implements ViewInitiator {
     public void initializeUI(View view) {
         courseName = (EditText) view.findViewById(R.id.courseNameToAdd);
         profName = (EditText) view.findViewById(R.id.professorName);
-        language = (EditText) view.findViewById(R.id.language);
+        language = (Spinner) view.findViewById(R.id.language);
         cfu = (EditText) view.findViewById(R.id.cfu);
         radioGroup = (RadioGroup) view.findViewById(R.id.radioGroup);
 
@@ -65,7 +66,7 @@ public class AddCourseFragment extends Fragment implements ViewInitiator {
             public void onClick(View v) {
                 String courseName = AddCourseFragment.this.courseName.getText().toString().trim();
                 String prof = profName.getText().toString().trim();
-                String language = AddCourseFragment.this.language.getText().toString().trim();
+                String language = AddCourseFragment.this.language.getSelectedItem().toString();
                 String cfuString = AddCourseFragment.this.cfu.getText().toString().trim();
 
                 String title = "Inserting";
@@ -80,6 +81,7 @@ public class AddCourseFragment extends Fragment implements ViewInitiator {
                         activity.getMyApplication().alertMessage(dialogTitle, message);
                         return;
                     }
+                    Log.i(TAG, "Lingua scelta: " + language);
                     float cfu = Float.valueOf(cfuString);
                     int index = radioGroup.getCheckedRadioButtonId();
                     Log.i(AddCourseFragment.TAG, "indice selezionato: " + index);
