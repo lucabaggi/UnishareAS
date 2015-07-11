@@ -81,19 +81,25 @@
             android:hint="CFU"
             android:ems="15"
             android:id="@+id/cfu" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="Lingua:"/>
+            android:orientation="horizontal"
+            android:layout_margin="15dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lingua:"/>
 
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:id="@+id/language"
-            android:entries="@array/course_language"/>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textAlignment="center"
+                android:id="@+id/language"
+                android:entries="@array/course_language"/>
+        </LinearLayout>
+
 
 
         <RadioGroup
