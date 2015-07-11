@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.facebook.*;
 import com.facebook.login.LoginManager;
@@ -40,12 +41,10 @@ public class FacebookActivity extends SmartActivity {
 
     private MyApplication application;
 
-    private LoginButton loginButton;
+    //private LoginButton loginButton;
     private CallbackManager callbackManager;
     private ProfileTracker profileTracker;
-    private Profile profile;
 
-    private boolean atStart;
     private Entity userEntity;
 
     private Context context;
@@ -61,20 +60,11 @@ public class FacebookActivity extends SmartActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
-        //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends"));
-
         setContentView(R.layout.activity_facebook);
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-        atStart = false;
-
-        Intent intent = getIntent();
-        int show = intent.getIntExtra("showActivity", 1);
-        if(show == 0){
-            Log.i("FacebookActivity", "Intent ha valore true");
-            atStart = true;
-        }
+        //loginButton = (LoginButton) findViewById(R.id.login_button);
 
 
+        /*
         profile = Profile.getCurrentProfile();
         if(profile != null) {
             Log.e("FBStatus: ", "Already logged as " + profile.getName());
@@ -87,14 +77,16 @@ public class FacebookActivity extends SmartActivity {
         } else {
             Log.e("FBStatus: ", "Not yet logged");
         }
+        */
 
-        loginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_friends"));
+        //loginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_friends"));
 
         // Callback registration
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.i("FBStatus: ", "Success");
+                application.databaseCall("log_user.php?t=" + loginResult.getAccessToken().getToken(), "unishareUserInfo", null);
             }
 
             @Override
@@ -108,6 +100,15 @@ public class FacebookActivity extends SmartActivity {
             }
         });
 
+        ImageButton btn = (ImageButton) findViewById(R.id.login_button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logInWithReadPermissions(FacebookActivity.this, Arrays.asList("public_profile", "user_friends", "email"));
+            }
+        });
+
+        /*
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
@@ -125,15 +126,10 @@ public class FacebookActivity extends SmartActivity {
                 }
             }
         };
-
+        */
         //loginButton.setText("");
     }
 
-    private void switchActivity() {
-        application.newActivity(MainActivity.class);
-        atStart = false;
-        finish();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -141,26 +137,6 @@ public class FacebookActivity extends SmartActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.mydata) {
-            application.newActivity(MyDataActivity.class);
-            return true;
-        }
-        else if(id == R.id.logout) {
-            application.logoutUser();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     private void printKeyHash() {
         try {
@@ -215,16 +191,14 @@ public class FacebookActivity extends SmartActivity {
         Log.i("FacebookActivity", "handling results");
         if (tag == USER_INFO) {
             userEntity = result.get(0);
-            String imageUrl = profile.getProfilePictureUri(500,500).toString();
+            //String imageUrl = profile.getProfilePictureUri(500,500).toString();
+            String imageUrl = "http://www.unishare.it/users/" + userEntity.get("user_id") + ".jpg";
             Log.i("FacebookActivity", "URL profile image: " + imageUrl);
             new DownloadProfileImageTask(this).execute(imageUrl);
             insertUserIntoLocalDatabase();
         }
     }
 
-    private void getUser(String id){
-        application.databaseCall("log_user.php?id=" + id, "unishareUserInfo", null);
-    }
 
     protected void insertUserIntoLocalDatabase() {
 
@@ -265,7 +239,7 @@ public class FacebookActivity extends SmartActivity {
         startActivity(intent);
 
         FacebookActivity.this.finish();
-        Log.i("FBStatus: ", "Now logged as " + profile.getName());
+        Log.i("FBStatus: ", "Now logged as " + user.getNickname());
     }
 
     private void registerInBackground() {

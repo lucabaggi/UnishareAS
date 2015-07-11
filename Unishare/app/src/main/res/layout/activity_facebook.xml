@@ -7,15 +7,7 @@
     android:background="@color/com_facebook_button_login_silver_background_color_pressed"
     tools:context="it.android.unishare.FacebookActivity">
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerInside"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/textView9"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true" />
+
 
     <ImageView
         android:layout_width="match_parent"
@@ -41,5 +33,16 @@
         android:id="@+id/textView9"
         android:layout_below="@+id/facebookLogo"
         android:layout_marginTop="50dp" />
+
+    <ImageButton
+        android:layout_marginTop="20dp"
+        android:layout_width="280dp"
+        android:layout_height="70dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/facebook_login"
+        android:text="Esegui login con Facebook"
+        android:id="@+id/login_button"
+        android:layout_below="@+id/textView9"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

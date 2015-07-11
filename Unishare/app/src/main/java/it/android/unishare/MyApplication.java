@@ -35,6 +35,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 
@@ -383,6 +384,7 @@ public class MyApplication extends android.app.Application {
 		databaseCall("android_gcm_set.php?u=" + userID + "&d=1", "deleteGcmKey", null);
 		FacebookSdk.sdkInitialize(currentContext);
 		LoginManager.getInstance().logOut();
+
 		newActivity(SplashActivity.class);
 	}
 

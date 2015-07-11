@@ -122,7 +122,6 @@ public class PassedExamsFragment extends Fragment implements ViewInitiator {
 	@Override
 	public void initializeUI(View view) {
         listview = (ListView) view.findViewById(R.id.passedExamsListView);
-        header = (TextView) view.findViewById(R.id.passedExamsTextView);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.passed_courses_swipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.Green, R.color.Orange, R.color.Blue);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

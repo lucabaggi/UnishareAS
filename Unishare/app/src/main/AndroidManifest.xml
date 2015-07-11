@@ -112,6 +112,7 @@
         </activity>
         <activity
             android:name=".FacebookActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_facebook" >
         </activity>
         <activity
