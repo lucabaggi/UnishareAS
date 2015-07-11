@@ -264,7 +264,7 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
     }
 
     private void createOpinionFragment() {
-        opinionsFragment = new OpinionsFragment(courseName);
+        opinionsFragment = new OpinionsFragment(courseName, null);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.my_courses_fragment_container, opinionsFragment, OpinionsFragment.TAG);
         transaction.addToBackStack(null);
