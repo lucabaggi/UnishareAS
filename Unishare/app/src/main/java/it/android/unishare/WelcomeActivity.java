@@ -46,6 +46,7 @@ public class WelcomeActivity extends SmartActivity {
     private static final String COURSES_SELECTION_TAG = "coursesSelection";
 
 	ArrayList<Entity> adapterValues = new ArrayList<Entity>();
+    private String universityLogoImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +129,8 @@ public class WelcomeActivity extends SmartActivity {
             Fragment welcome2 = new Welcome2Fragment();
             Bundle args = new Bundle();
             args.putString("universityName", universityName);
-            args.putString("universityImage",universityImage);
+            args.putString("universityImage", universityImage);
+            args.putString("universityLogoImage",universityLogoImage);
             args.putStringArrayList("campuses", Entity.entityListToStringList(result,"nome"));
             welcome2.setArguments(args);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -187,6 +189,7 @@ public class WelcomeActivity extends SmartActivity {
             if(e.get("nome").equals(universityName)) {
                 this.universityName = e.get("nome");
                 universityImage = e.get("immagine");
+                universityLogoImage = e.get("logo");
                 universityId = e.getInt("id");
                 getCampuses();
                 break;

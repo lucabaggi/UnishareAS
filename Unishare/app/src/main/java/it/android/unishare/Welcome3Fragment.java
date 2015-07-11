@@ -52,6 +52,9 @@ public class Welcome3Fragment extends Fragment implements ViewInitiator {
 		campusImageView.setTag(campusImage);
 		new DownloadImagesTask("campus.jpg",activity.getApplicationContext()).execute(campusImageView);
 
+		ImageView universityLogoImageView = (ImageView) view.findViewById(R.id.universityLogoImage);
+		Utilities.loadImage(universityLogoImageView, "universityLogo.jpg", activity.getApplicationContext());
+
 		specializationSelector = (AutoCompleteTextView) view.findViewById(R.id.autoSelectSpecialization);
 		specializationSelector.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override

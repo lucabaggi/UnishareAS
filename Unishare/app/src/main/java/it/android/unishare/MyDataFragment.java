@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -61,7 +62,10 @@ public class MyDataFragment extends Fragment implements ViewInitiator {
 
         TextView textView = (TextView) view.findViewById(R.id.userInfo);
         textView.setText(activity.getUserInfo());
-
+        /*
+        ImageView universityLogoImageView = (ImageView) view.findViewById(R.id.universityLogoImage);
+        Utilities.loadImage(universityLogoImageView, "universityLogo.jpg", activity.getApplicationContext());
+        */
         ButtonRectangle resetButton = (ButtonRectangle) view.findViewById(R.id.resetButton);
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
