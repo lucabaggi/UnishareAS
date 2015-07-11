@@ -172,6 +172,10 @@ public class MainActivity extends SmartActivity {
     }
 
 
-
+    public Cursor getNotifications() {
+        String[] columns = {DatabaseContract.NotificationsTable.COLUMN_TYPE,
+                DatabaseContract.NotificationsTable.COLUMN_TEXT };
+        return application.queryDatabase(DatabaseContract.NotificationsTable.TABLE_NAME, columns, null, null, null, null, null);
+    }
 
 }

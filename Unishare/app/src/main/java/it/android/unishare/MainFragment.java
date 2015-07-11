@@ -1,6 +1,7 @@
 package it.android.unishare;
 import android.app.Activity;
 import android.app.Fragment;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,8 +68,16 @@ public class MainFragment extends Fragment implements ViewInitiator {
 		TextView dashNews = (TextView) view.findViewById(R.id.dashNews);
 		//if(activity.getNews()!=null )dashNews.setText(activity.getNews());
 
-		LayoutInflater factory = LayoutInflater.from(activity);
 
+		setHintsFlipper();
+		setNotificationsFlipper();
+
+
+
+	}
+
+	private void setHintsFlipper() {
+		LayoutInflater factory = LayoutInflater.from(activity);
 		ViewFlipper viewFlipper = (ViewFlipper) view.findViewById(R.id.viewFlipper);
 
 		Random rand = new Random();
@@ -92,7 +101,33 @@ public class MainFragment extends Fragment implements ViewInitiator {
 		viewFlipper.setOutAnimation(activity, R.anim.slide_out_to_right);
 		viewFlipper.setFlipInterval(8000);
 		viewFlipper.startFlipping();
+	}
 
+	private void setNotificationsFlipper() {
+		LayoutInflater factory = LayoutInflater.from(activity);
+		ViewFlipper notificationsFlipper = (ViewFlipper) view.findViewById(R.id.notificationsFlipper);
+
+		Cursor cursor = activity.getNotifications();
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			View newView = factory.inflate(R.layout.viewflipper_notifications, null);
+			TextView textView = (TextView) newView.findViewById(R.id.textView);
+			textView.setText(cursor.getString(1));
+			ImageView imageView = (ImageView) newView.findViewById(R.id.imageView);
+			switch(cursor.getInt(0)){
+				case 0: imageView.setImageResource(R.drawable.libro_green); break;
+				case 1: imageView.setImageResource(R.drawable.commento_green); break;
+				case 2: imageView.setImageResource(R.drawable.commento_green); break;
+				case 3: imageView.setImageResource(R.drawable.file_green); break;
+			}
+			notificationsFlipper.addView(newView);
+			cursor.moveToNext();
+		}
+
+		notificationsFlipper.setInAnimation(activity, R.anim.slide_in_from_above);
+		notificationsFlipper.setOutAnimation(activity, R.anim.slide_out_to_bottom);
+		notificationsFlipper.setFlipInterval(4000);
+		notificationsFlipper.startFlipping();
 	}
     
 }

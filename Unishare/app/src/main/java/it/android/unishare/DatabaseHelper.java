@@ -17,6 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DatabaseContract.SQL_CREATE_COURSES_TABLE);
+        db.execSQL(DatabaseContract.SQL_CREATE_NOTIFICATIONS_TABLE);
         db.execSQL(DatabaseContract.SQL_CREATE_USER_TABLE);
         db.execSQL(DatabaseContract.SQL_CREATE_PASSED_EXAMS_TABLE);
         Log.i("Database", "creazione");
@@ -25,6 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
         db.execSQL(DatabaseContract.SQL_DELETE_COURSES_TABLE);
+        db.execSQL(DatabaseContract.SQL_DELETE_NOTIFICATIONS_TABLE);
         db.execSQL(DatabaseContract.SQL_DELETE_USER_TABLE);
         db.execSQL(DatabaseContract.SQL_DELETE_PASSED_EXAMS_TABLE);
         onCreate(db);
@@ -36,8 +38,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static void regenerateDatabase(SQLiteDatabase db) {
         db.execSQL(DatabaseContract.SQL_DELETE_COURSES_TABLE);
         db.execSQL(DatabaseContract.SQL_DELETE_USER_TABLE);
+        db.execSQL(DatabaseContract.SQL_DELETE_NOTIFICATIONS_TABLE);
         db.execSQL(DatabaseContract.SQL_DELETE_PASSED_EXAMS_TABLE);
         db.execSQL(DatabaseContract.SQL_CREATE_COURSES_TABLE);
+        db.execSQL(DatabaseContract.SQL_CREATE_NOTIFICATIONS_TABLE);
         db.execSQL(DatabaseContract.SQL_CREATE_USER_TABLE);
         db.execSQL(DatabaseContract.SQL_CREATE_PASSED_EXAMS_TABLE);
     }

@@ -36,9 +36,20 @@
         android:id="@+id/dashNews"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_below="@+id/campusImageView"
+        android:layout_below="@+id/notificationsFlipper"
         android:layout_marginTop="20dp"
         android:text="Aprendo il menù a tendina sulla sinistra dello schermo, puoi accedere alle diverse sezioni di Unishare." />
+
+
+    <ViewFlipper
+        android:layout_below="@+id/campusImageView"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/notificationsFlipper"
+        >
+
+    </ViewFlipper>
 
     <ViewFlipper
         android:layout_width="match_parent"

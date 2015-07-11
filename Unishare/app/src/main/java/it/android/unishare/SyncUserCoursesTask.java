@@ -19,16 +19,20 @@ public class SyncUserCoursesTask extends AsyncTask<Integer, Void, Void> {
 
     @Override
     protected Void doInBackground(Integer... params) {
-
+        //application.regenerateDb();
         int userId = params[0];
         application.deleteTable(DatabaseContract.MyCoursesTable.TABLE_NAME);
         application.deleteTable(DatabaseContract.PassedExams.TABLE_NAME);
+        application.deleteTable(DatabaseContract.NotificationsTable.TABLE_NAME);
         ArrayList<Entity> actualCourses = Utilities.queryDatabase(application.getActivity(),
                 "http://www.unishare.it/api/courses_current.php?u=" + userId);
         ArrayList<Entity> pastCourses = Utilities.queryDatabase(application.getActivity(),
                 "http://www.unishare.it/api/courses_past.php?u=" + userId);
+        ArrayList<Entity> notifications = Utilities.queryDatabase(application.getActivity(),
+                "http://www.unishare.it/api/notifications.php?u=" + userId);
         fillMyCoursesTable(actualCourses);
         fillPassedCoursesTable(pastCourses);
+        fillNotificationsTable(notifications);
         return null;
     }
 
@@ -73,6 +77,20 @@ public class SyncUserCoursesTask extends AsyncTask<Integer, Void, Void> {
             application.insertIntoDatabase(DatabaseContract.PassedExams.TABLE_NAME,
                     values);
         }
+    }
+
+    private void fillNotificationsTable(ArrayList<Entity> notifications){
+        for(Entity notification : notifications){
+            ContentValues values = new ContentValues();
+            values.put(DatabaseContract.NotificationsTable.COLUMN_NOTIFICATION_ID, notification.getInt("id"));
+            values.put(DatabaseContract.NotificationsTable.COLUMN_TYPE, notification.getInt("tipo"));
+            values.put(DatabaseContract.NotificationsTable.COLUMN_TEXT, notification.get("testo"));
+            values.put(DatabaseContract.NotificationsTable.COLUMN_READ, notification.getInt("letto"));
+            values.put(DatabaseContract.NotificationsTable.COLUMN_DATE, notification.get("data"));
+            application.insertIntoDatabase(DatabaseContract.NotificationsTable.TABLE_NAME,
+                    values);
+        }
+
     }
 
 }

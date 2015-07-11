@@ -15,6 +15,15 @@ public class DatabaseContract {
         public static final String COLUMN_PROFESSOR = "professor";
     }
 
+    public static abstract class NotificationsTable implements BaseColumns {
+        public static final String TABLE_NAME = "notifications";
+        public static final String COLUMN_NOTIFICATION_ID = "notification_id";
+        public static final String COLUMN_TYPE = "type";
+        public static final String COLUMN_TEXT = "text";
+        public static final String COLUMN_READ = "read";
+        public static final String COLUMN_DATE = "date";
+    }
+
     public static abstract class PassedExams implements BaseColumns{
         public static final String TABLE_NAME = "passed_exams";
         public static final String COLUMN_COURSE_ID = "course_id";
@@ -52,6 +61,15 @@ public class DatabaseContract {
             MyCoursesTable.COLUMN_PROFESSOR + " VARCHAR(100), " +
             "UNIQUE(" + MyCoursesTable.COLUMN_COURSE_ID + ")" + ")";
 
+    public static final String SQL_CREATE_NOTIFICATIONS_TABLE = "CREATE TABLE " + NotificationsTable.TABLE_NAME + " (" +
+            NotificationsTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            NotificationsTable.COLUMN_NOTIFICATION_ID + " INTEGER, " +
+            NotificationsTable.COLUMN_TYPE + " INTEGER, " +
+            NotificationsTable.COLUMN_TEXT + " VARCHAR(300), " +
+            NotificationsTable.COLUMN_READ + " INTEGER, " +
+            NotificationsTable.COLUMN_DATE + " INTEGER, " +
+            "UNIQUE(" + NotificationsTable.COLUMN_NOTIFICATION_ID + ")" + ")";
+
     public static final String SQL_CREATE_PASSED_EXAMS_TABLE = "CREATE TABLE " + PassedExams.TABLE_NAME + " (" +
             PassedExams._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             PassedExams.COLUMN_COURSE_ID + " INTEGER, " +
@@ -76,6 +94,7 @@ public class DatabaseContract {
             UserInfoTable.COLUMN_LAST_ACCESS + " INTEGER)";
 
     public static final String SQL_DELETE_COURSES_TABLE = "DROP TABLE IF EXISTS " + MyCoursesTable.TABLE_NAME;
+    public static final String SQL_DELETE_NOTIFICATIONS_TABLE = "DROP TABLE IF EXISTS " + NotificationsTable.TABLE_NAME;
     public static final String SQL_DELETE_USER_TABLE = "DROP TABLE IF EXISTS " + UserInfoTable.TABLE_NAME;
     public static final String SQL_DELETE_PASSED_EXAMS_TABLE = "DROP TABLE IF EXISTS " + PassedExams.TABLE_NAME;
 
