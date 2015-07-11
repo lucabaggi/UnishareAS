@@ -61,6 +61,9 @@ public class MainFragment extends Fragment implements ViewInitiator {
 		ImageView campusImageView = (ImageView) view.findViewById(R.id.campusImageView);
 		Utilities.loadImage(campusImageView, "campus.jpg", activity.getApplicationContext());
 
+		ImageView universityLogoImageView = (ImageView) view.findViewById(R.id.universityLogoImage);
+		Utilities.loadImage(universityLogoImageView, "universityLogo.jpg", activity.getApplicationContext());
+
 		TextView dashNews = (TextView) view.findViewById(R.id.dashNews);
 		//if(activity.getNews()!=null )dashNews.setText(activity.getNews());
 

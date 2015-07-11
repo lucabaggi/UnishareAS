@@ -60,6 +60,9 @@ public class Welcome4Fragment extends Fragment implements ViewInitiator {
 			}
 		});
 
+		ImageView universityLogoImageView = (ImageView) view.findViewById(R.id.universityLogoImage);
+		Utilities.loadImage(universityLogoImageView, "universityLogo.jpg", activity.getApplicationContext());
+
 		courseListView = (ListView) view.findViewById(R.id.listCourses);
 		ArrayAdapter<String> coursesAdapter = new ArrayAdapter<String>(activity,android.R.layout.simple_list_item_1,coursesList);
 		courseListView.setAdapter(coursesAdapter);

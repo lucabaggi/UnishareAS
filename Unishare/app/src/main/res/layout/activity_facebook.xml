@@ -14,7 +14,7 @@
         android:scaleType="centerInside"
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/textView9"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:layout_centerHorizontal="true" />
 
     <ImageView
@@ -25,13 +25,19 @@
         android:adjustViewBounds="true"
         android:src="@drawable/header_big" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@+id/facebookLogo"
+        android:background="@drawable/toolbar_dropshadow" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Unishare si affida al Login tramite Facebook per garantire l'affidabilità dei propri contenuti.\nAd eccezione dei dati necessari all'autenticazione, Unishare non richiede alcun permesso aggiuntivo a Facebook."
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Unishare si affida al Login tramite Facebook per garantire l'affidabilità dei propri contenuti. Ad eccezione dei dati necessari all'autenticazione, Unishare non richiede alcun permesso aggiuntivo a Facebook.\nLa pubblicazione di contenuti su Unishare da parte degli utenti risulta completamente anonima, in modo tale che ciascuno possa esprimere liberamente la propria opinione."
         android:id="@+id/textView9"
         android:layout_below="@+id/facebookLogo"
         android:layout_marginTop="50dp" />
