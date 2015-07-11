@@ -3,17 +3,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="it.android.unishare.UniversiActivity$PlaceholderFragment" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/megafono"
+        android:id="@+id/backgroundIcon"
+        android:layout_marginTop="@dimen/background_icon_margin"
+        android:scaleType="fitCenter"
+        android:paddingLeft="@dimen/background_icon_padding"
+        android:paddingRight="@dimen/background_icon_padding"
+        android:alpha="0.1" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/background_header_height"
+                android:src="@drawable/sfondo"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/myCoursesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Universi: il Magazine di Unishare"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/White"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/universi_swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ListView
                 android:id="@+id/universiListView"
                 android:layout_width="match_parent"
