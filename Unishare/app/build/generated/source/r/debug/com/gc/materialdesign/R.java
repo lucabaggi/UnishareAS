@@ -13,8 +13,8 @@ public final class R {
 		public static final int dialog_root_hide_amin = 0x7f04000c;
 		public static final int dialog_root_show_amin = 0x7f04000d;
 		public static final int progress_indeterminate_animation = 0x7f04000e;
-		public static final int snackbar_hide_animation = 0x7f04000f;
-		public static final int snackbar_show_animation = 0x7f040010;
+		public static final int snackbar_hide_animation = 0x7f040011;
+		public static final int snackbar_show_animation = 0x7f040012;
 	}
 	public static final class attr {
 		public static final int animate = 0x7f010044;
@@ -39,58 +39,44 @@ public final class R {
 		public static final int thumbColor = 0x7f0c00d9;
 	}
 	public static final class drawable {
-		public static final int background_button = 0x7f02003b;
-		public static final int background_button_float = 0x7f02003c;
-		public static final int background_button_rectangle = 0x7f02003d;
-		public static final int background_checkbox = 0x7f02003e;
-		public static final int background_checkbox_check = 0x7f02003f;
-		public static final int background_checkbox_uncheck = 0x7f020040;
-		public static final int background_progress = 0x7f020041;
-		public static final int background_switch_ball_uncheck = 0x7f020042;
-		public static final int background_transparent = 0x7f020043;
-		public static final int dialog_background = 0x7f020079;
-		public static final int float_button1_shadowp = 0x7f02007a;
-		public static final int float_button_shadow1 = 0x7f02007b;
-		public static final int ic_launcher = 0x7f020086;
-		public static final int ic_reloj_max = 0x7f020097;
-		public static final int shadow_down = 0x7f0200b4;
-		public static final int shadow_right = 0x7f0200b5;
-		public static final int sprite_check = 0x7f0200b6;
+		public static final int background_button = 0x7f02003c;
+		public static final int background_button_float = 0x7f02003d;
+		public static final int background_button_rectangle = 0x7f02003e;
+		public static final int background_checkbox = 0x7f02003f;
+		public static final int background_checkbox_check = 0x7f020040;
+		public static final int background_checkbox_uncheck = 0x7f020041;
+		public static final int background_progress = 0x7f020042;
+		public static final int background_switch_ball_uncheck = 0x7f020043;
+		public static final int background_transparent = 0x7f020044;
+		public static final int dialog_background = 0x7f02007d;
+		public static final int float_button1_shadowp = 0x7f020081;
+		public static final int float_button_shadow1 = 0x7f020082;
+		public static final int ic_launcher = 0x7f02008e;
+		public static final int ic_reloj_max = 0x7f02009f;
+		public static final int shadow_down = 0x7f0200c3;
+		public static final int shadow_right = 0x7f0200c4;
+		public static final int sprite_check = 0x7f0200c5;
 	}
 	public static final class id {
-		public static final int blue = 0x7f0d009f;
-		public static final int button_accept = 0x7f0d00b3;
-		public static final int button_cancel = 0x7f0d00b2;
-<<<<<<< HEAD
-		public static final int buttonflat = 0x7f0d00fe;
-=======
-		public static final int buttonflat = 0x7f0d0101;
->>>>>>> origin/master
-		public static final int contentDialog = 0x7f0d00af;
-		public static final int contentSelector = 0x7f0d009b;
-		public static final int dialog_rootView = 0x7f0d00ae;
-		public static final int green = 0x7f0d009e;
-		public static final int message = 0x7f0d00b1;
-		public static final int message_scrollView = 0x7f0d00b0;
-<<<<<<< HEAD
-		public static final int number_indicator_spinner_content = 0x7f0d00e7;
-		public static final int progressBarCircularIndetermininate = 0x7f0d00f0;
-		public static final int red = 0x7f0d009d;
-		public static final int rootSelector = 0x7f0d009a;
-		public static final int shape_bacground = 0x7f0d010c;
-		public static final int snackbar = 0x7f0d00fd;
-		public static final int text = 0x7f0d00ff;
-=======
-		public static final int number_indicator_spinner_content = 0x7f0d00ea;
-		public static final int progressBarCircularIndetermininate = 0x7f0d00f3;
-		public static final int red = 0x7f0d009d;
-		public static final int rootSelector = 0x7f0d009a;
-		public static final int shape_bacground = 0x7f0d010a;
-		public static final int snackbar = 0x7f0d0100;
-		public static final int text = 0x7f0d0102;
->>>>>>> origin/master
+		public static final int blue = 0x7f0d00a5;
+		public static final int button_accept = 0x7f0d00b8;
+		public static final int button_cancel = 0x7f0d00b7;
+		public static final int buttonflat = 0x7f0d0107;
+		public static final int contentDialog = 0x7f0d00b4;
+		public static final int contentSelector = 0x7f0d00a1;
+		public static final int dialog_rootView = 0x7f0d00b3;
+		public static final int green = 0x7f0d00a4;
+		public static final int message = 0x7f0d00b6;
+		public static final int message_scrollView = 0x7f0d00b5;
+		public static final int number_indicator_spinner_content = 0x7f0d00f0;
+		public static final int progressBarCircularIndetermininate = 0x7f0d00f9;
+		public static final int red = 0x7f0d00a3;
+		public static final int rootSelector = 0x7f0d00a0;
+		public static final int shape_bacground = 0x7f0d0116;
+		public static final int snackbar = 0x7f0d0106;
+		public static final int text = 0x7f0d0108;
 		public static final int title = 0x7f0d0051;
-		public static final int viewColor = 0x7f0d009c;
+		public static final int viewColor = 0x7f0d00a2;
 	}
 	public static final class layout {
 		public static final int color_selector = 0x7f030022;
