@@ -52,6 +52,10 @@ public class CourseSupportActivity extends AdapterActivity {
         return null;
     }
 
+    public Entity getSelectedCourse(){
+        return null;
+    }
+
     public void createInsertOpinionFragment(){}
 
     public void insertOpinion(String opinion, float rating, ProgressDialog dialog) {}

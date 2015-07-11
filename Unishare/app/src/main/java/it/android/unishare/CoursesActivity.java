@@ -35,6 +35,7 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
 	private static final String INSERT_OPINION_FRAGMENT_INSTANCE = "insert_opinion_fragment_key";
     private static final String ADD_COURSE_FRAGMENT_INSTANCE = "add_course_fragment_key";
 	private static final String COURSE_NAME = "course_name_key";
+	private static final String COURSE = "course_key";
 	private static final String ADAPTER_VALUES = "key_adapter";
 	private static final String OPINION_ADAPTER_VALUES = "key_opinion_adapter";
 
@@ -95,6 +96,7 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
         	
         	if(savedInstanceState.getString(COURSE_NAME) != null){
         		this.courseName = savedInstanceState.getString(COURSE_NAME);
+				this.courseSelected = savedInstanceState.getParcelable(COURSE);
         		opinionAdapterValues = savedInstanceState.getParcelableArrayList(OPINION_ADAPTER_VALUES);
         		opinionsAdapter = new OpinionsAdapter(this, new ArrayList<Entity>());
         		opinionsAdapter.addAll(opinionAdapterValues);
@@ -146,6 +148,7 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
         getFragmentManager().putFragment(outState, COURSES_SEARCH_FRAGMENT_INSTANCE, searchFragment);
         if(this.courseName != null){
         	outState.putString(COURSE_NAME, this.courseName);
+			outState.putParcelable(COURSE, courseSelected);
         	ArrayList<Entity> opinions = new ArrayList<Entity>();
         	if(opinionsAdapter != null){
         		for(int i = 0; i < opinionsAdapter.getCount(); i++)
@@ -336,6 +339,11 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
     @Override
 	public String getCourseName(){
 		return this.courseName;
+	}
+
+	@Override
+	public Entity getSelectedCourse(){
+		return this.courseSelected;
 	}
 
     @Override

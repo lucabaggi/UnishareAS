@@ -82,6 +82,7 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
         TextView courseNameTextView = (TextView) view.findViewById(R.id.courseName);
         if (this.courseName == null) {
             this.courseName = activity.getCourseName();
+            this.course = activity.getSelectedCourse();
         }
         courseNameTextView.setText(courseName);
         Log.i(TAG, "TextView value = " + courseNameTextView.getText().toString());
