@@ -38,7 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Nome del professore"
             android:layout_margin="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 

@@ -37,6 +37,7 @@ public class MyBooksActivity extends SmartActivity {
     private static final String REFRESH_BOOKS_TAG = "refreshBooks";
     private static final String REMOVE_BOOK_TAG = "removeBook";
     private static final String SOLD_BOOK_TAG = "soldBook";
+    private static final String ERROR = "error";
 
     private MyApplication application;
     private Toolbar toolbar;
@@ -215,6 +216,16 @@ public class MyBooksActivity extends SmartActivity {
     public MyBooksAdapter getMyBooksAdapter(){ return this.myBooksAdapter; }
 
     public RequestsAdapter getRequestAdapter(){ return this.requestsAdapter; }
+
+    @Override
+    public void handleError(String tag){
+        if(tag == ERROR){
+            String title = "Nessun risultato";
+            String message = "Controlla la tua connessione o modifica la tua ricerca";
+            getMyApplication().alertMessage(title, message);
+        }
+
+    }
 
     @Override
     public void handleResult(ArrayList<Entity> result, String tag) {

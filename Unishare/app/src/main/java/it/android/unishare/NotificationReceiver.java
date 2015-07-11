@@ -38,7 +38,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 
                 String notificationType = intent.getExtras().getString("type");
-                if(!notificationType.equals("")){
+                if(notificationType != null && !notificationType.equals("")){
                     if(notificationType.equals("book")){
                         Intent myIntent = new Intent(context, MyBooksActivity.class);
 

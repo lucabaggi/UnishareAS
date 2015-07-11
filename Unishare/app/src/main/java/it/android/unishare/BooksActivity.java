@@ -274,11 +274,6 @@ public class BooksActivity extends AdapterActivity implements OnBookSelectedList
         application.databaseCall("books_request.php?id=" + bookId + "&u=" + userId, REQUEST_BOOK_TAG, null);
     }
 
-	//USELESS FOR MOBILE?
-	private void getBookList(int campusId, com.gc.materialdesign.widgets.ProgressDialog dialog) {
-		application.databaseCall("books.php?s=" + campusId, "bookList", dialog);
-	}
-
 
 
 }

@@ -40,6 +40,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     private static final String FILE_ADAPTER_VALUES = "key_file_adapter";
     private static final String BOOKS_ADAPTER_VALUES = "key_books_adapter";
     private static final String COURSE_NAME = "course_name_key";
+    private static final String COURSE = "course_key";
     private static final String BOOKS_FRAGMENT_INSTANCE = "books_fragment_key";
 
 
@@ -60,6 +61,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     private FilesAdapter filesAdapter;
     private BooksAdapter booksAdapter;
     private int numOfCourses;
+    private Entity course;
     private Entity book;
 
     private ArrayList<Entity> courses;
@@ -108,6 +110,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
 
             if(savedInstanceState.getString(COURSE_NAME) != null){
                 this.courseName = savedInstanceState.getString(COURSE_NAME);
+                this.course = savedInstanceState.getParcelable(COURSE);
                 opinionAdapterValues = savedInstanceState.getParcelableArrayList(OPINION_ADAPTER_VALUES);
                 opinionsAdapter = new OpinionsAdapter(this, new ArrayList<Entity>());
                 opinionsAdapter.addAll(opinionAdapterValues);
@@ -161,6 +164,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         getFragmentManager().putFragment(outState, MY_COURSES_FRAGMENT_INSTANCE, myCoursesFragment);
         if(this.courseName != null){
             outState.putString(COURSE_NAME, this.courseName);
+            outState.putParcelable(COURSE, course);
             ArrayList<Entity> opinions = new ArrayList<Entity>();
             if(opinionsAdapter != null){
                 for(int i = 0; i < opinionsAdapter.getCount(); i++)
@@ -275,6 +279,16 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     }
 
     @Override
+    public void handleError(String tag){
+        if(tag == ERROR){
+            String title = "Nessun risultato";
+            String message = "Controlla la tua connessione o modifica la tua ricerca";
+            getMyApplication().alertMessage(title, message);
+        }
+
+    }
+
+    @Override
     public void handleResult(ArrayList<Entity> result, String tag){
         if(tag == OPINION_TAG){
             opinionsAdapter = new OpinionsAdapter(this, new ArrayList<Entity>());
@@ -376,7 +390,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     }
 
     private void createOpinionFragment() {
-        opinionsFragment = new OpinionsFragment(courseName, null);
+        opinionsFragment = new OpinionsFragment(courseName, course);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.my_courses_fragment_container, opinionsFragment, OpinionsFragment.TAG);
         transaction.addToBackStack(null);
@@ -433,9 +447,10 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     }
 
     @Override
-    public void onCourseSelected(String courseId, String courseName, ProgressDialog dialog) {
+    public void onCourseSelected(String courseId, String courseName, Entity course, ProgressDialog dialog) {
         this.courseName = courseName;
         this.courseId = Integer.parseInt(courseId);
+        this.course = course;
         getOpinion(this.courseId, dialog);
     }
 
@@ -479,19 +494,19 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
             String title = "";
             String message = "Nessun corso presente, vai nella sezione Corsi e aggiungi i corsi che stai frequentando";
             application.alertMessage(title, message);
-            return;
         }
-        while(cursor.moveToNext()){
-            Integer courseId = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String professor = cursor.getString(2);
-            Entity course = new Entity();
-            course.addElement("id", courseId.toString());
-            course.addElement("nome", name);
-            course.addElement("professore", professor);
-            courses.add(course);
+        else{
+            while(cursor.moveToNext()){
+                Integer courseId = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String professor = cursor.getString(2);
+                Entity course = new Entity();
+                course.addElement("id", courseId.toString());
+                course.addElement("nome", name);
+                course.addElement("professore", professor);
+                courses.add(course);
+            }
         }
-
         coursesAdapter = new CoursesAdapter(this, new ArrayList<Entity>());
         coursesAdapter.addAll(courses);
 
@@ -506,6 +521,10 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
 
     public void getAssociatedBooks(int courseId, ProgressDialog dialog){
         getBooks(courseId, dialog);
+    }
+
+    public Entity getSelectedCourse(){
+        return this.course;
     }
 
     private void updateLocalDb(ArrayList<Entity> result){
