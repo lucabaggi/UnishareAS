@@ -1,23 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context="it.android.unishare.CoursesActivity$PlaceholderFragment">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ampolla"
+        android:id="@+id/backgroundIcon"
+        android:scaleType="fitCenter"
+        android:paddingLeft="@dimen/background_icon_padding"
+        android:paddingRight="@dimen/background_icon_padding"
+        android:alpha="0.1" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/add_course_header"
-            android:layout_margin="15dp"
-            android:id="@+id/addCourseTextView" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/background_header_height"
+                android:src="@drawable/sfondo"
+                android:scaleType="centerCrop"/>
+            <TextView
+                android:id="@+id/myCoursesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aggiungi corso non elencato"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/White"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
 
 
         <EditText
@@ -83,15 +107,15 @@
                 android:id="@+id/radioButtonBoth" />
         </RadioGroup>
 
-        <Button
+        <com.gc.materialdesign.views.ButtonRectangle
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/add"
+            android:text="Aggiungi corso"
             android:id="@+id/button_insert_course"
             android:layout_gravity="center_horizontal" />
 
 
     </LinearLayout>
-</ScrollView>
+</RelativeLayout>
 

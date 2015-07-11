@@ -252,17 +252,6 @@ public class SearchFragment extends Fragment implements ViewInitiator {
     @Override
 	public void initializeUI(View view) {
 
-        if(this.activity instanceof CoursesActivity){
-            Button btn = (Button) view.findViewById(R.id.button_add_course);
-            btn.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((CoursesActivity)activity).launchAddCourseFragment();
-                }
-            });
-        }
-
-
         searchHeader = (LinearLayout) view.findViewById(R.id.list_header);
         searchHeader.setVisibility(View.INVISIBLE);
 
@@ -355,6 +344,15 @@ public class SearchFragment extends Fragment implements ViewInitiator {
                 @Override
                 public void onClick(View view) {
                     activity.getMyApplication().newActivity(RequestedBooksActivity.class);
+                }
+            });
+        }
+        else if(this.activity instanceof CoursesActivity){
+            ButtonRectangle addBtn = (ButtonRectangle) view.findViewById(R.id.button_add_course);
+            addBtn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((CoursesActivity)activity).launchAddCourseFragment();
                 }
             });
         }

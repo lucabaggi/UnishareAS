@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.gc.materialdesign.views.ButtonRectangle;
+
 
 public class AddCourseFragment extends Fragment implements ViewInitiator {
 
@@ -57,7 +59,7 @@ public class AddCourseFragment extends Fragment implements ViewInitiator {
         cfu = (EditText) view.findViewById(R.id.cfu);
         radioGroup = (RadioGroup) view.findViewById(R.id.radioGroup);
 
-        Button btn = (Button) view.findViewById(R.id.button_insert_course);
+        ButtonRectangle btn = (ButtonRectangle) view.findViewById(R.id.button_insert_course);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

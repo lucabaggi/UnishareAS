@@ -36,18 +36,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="0dp">
 
         </ListView>
     </LinearLayout>
 
     <com.gc.materialdesign.views.ButtonFloat
-        android:id="@+id/buttonFloat"
+        android:id="@+id/buttonFloat2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="24dp"
+        materialdesign:animate="false"
+        materialdesign:iconDrawable="@drawable/ic_content_create"
+        android:layout_marginBottom="20dp"
+        android:background="#FF12E511" />
+
+    <com.gc.materialdesign.views.ButtonFloat
+        android:id="@+id/buttonFloat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="24dp"
         android:background="#1E88E5"
         materialdesign:animate="false"
         materialdesign:iconDrawable="@drawable/ic_action_new"
