@@ -86,7 +86,7 @@ public class FacebookActivity extends SmartActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.i("FBStatus: ", "Success");
-                application.databaseCall("log_user.php?t=" + loginResult.getAccessToken().getToken(), "unishareUserInfo", null);
+                application.databaseCall("log_user.php?t=" + loginResult.getAccessToken().getToken(), USER_INFO, null);
             }
 
             @Override
