@@ -19,7 +19,7 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
 	
 	public static final String TAG = "OpinionsFragment";
 	
-	private String courseName;
+	private String courseName, professorName;
 	private View view;
 	private ListView listview;
 	
@@ -32,9 +32,10 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
 		
 	}
 	
-	public OpinionsFragment (String courseName){
+	public OpinionsFragment (String courseName/*, String professorName*/){
 		this.counter = 0;
         this.courseName = courseName;
+        this.professorName = professorName;
 	}
 	
 	@Override
@@ -74,6 +75,11 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
         courseNameTextView.setText(courseName);
         Log.i(TAG, "TextView value = " + courseNameTextView.getText().toString());
 
+        /* TO BE ADDED
+        TextView professorNameTextView = (TextView) view.findViewById(R.id.professorName);
+        professorNameTextView.setText(professorName);
+        */
+
         ButtonFloat btn = (ButtonFloat) view.findViewById(R.id.buttonFloat);
         btn.setOnClickListener(new OnClickListener() {
 
@@ -92,7 +98,7 @@ public class OpinionsFragment extends Fragment implements ViewInitiator {
             activity.getMyApplication().alertMessage(title, message);
         }
     }
-	
-	
+
+
 
 }
