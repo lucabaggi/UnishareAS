@@ -31,6 +31,7 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
     private static final String ADAPTER_VALUES = "key_adapter";
     private static final String OPINION_ADAPTER_VALUES = "key_opinion_adapter";
     private static final String COURSE_NAME = "course_name_key";
+    private static final String COURSE = "course_key";
 
     private OpinionsFragment opinionsFragment;
     private InsertOpinionFragment insertOpinionFragment;
@@ -43,6 +44,7 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
     private String courseName;
     private int courseId;
     private int numOfPassedExams;
+    private Entity course;
 
     private PassedCoursesAdapter passedCoursesAdapter;
     private OpinionsAdapter opinionsAdapter;
@@ -89,6 +91,7 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
 
             if(savedInstanceState.getString(COURSE_NAME) != null){
                 this.courseName = savedInstanceState.getString(COURSE_NAME);
+                this.course = savedInstanceState.getParcelable(COURSE);
                 opinionAdapterValues = savedInstanceState.getParcelableArrayList(OPINION_ADAPTER_VALUES);
                 opinionsAdapter = new OpinionsAdapter(this, new ArrayList<Entity>());
                 opinionsAdapter.addAll(opinionAdapterValues);
@@ -123,6 +126,7 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
         getFragmentManager().putFragment(outState, PASSED_COURSES_FRAGMENT_INSTANCE, passedExamsFragment);
         if(this.courseName != null){
             outState.putString(COURSE_NAME, this.courseName);
+            outState.putParcelable(COURSE, course);
             ArrayList<Entity> opinions = new ArrayList<Entity>();
             if(opinionsAdapter != null){
                 for(int i = 0; i < opinionsAdapter.getCount(); i++)
@@ -274,7 +278,7 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
     }
 
     private void createOpinionFragment() {
-        opinionsFragment = new OpinionsFragment(courseName, null);
+        opinionsFragment = new OpinionsFragment(courseName, course);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.my_courses_fragment_container, opinionsFragment, OpinionsFragment.TAG);
         transaction.addToBackStack(null);
@@ -321,9 +325,10 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
     }
 
     @Override
-    public void onCourseSelected(String courseId, String courseName, ProgressDialog dialog) {
+    public void onCourseSelected(String courseId, String courseName, Entity course, ProgressDialog dialog) {
         this.courseName = courseName;
         this.courseId = Integer.parseInt(courseId);
+        this.course = course;
         getOpinion(this.courseId, dialog);
     }
 
@@ -388,9 +393,9 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                for(Entity course : courses){
+                for (Entity course : courses) {
                     int id = Integer.parseInt(course.get("id"));
-                    if(!application.existsInPastCourses(id)) {
+                    if (!application.existsInPastCourses(id)) {
                         String courseName = course.get("nome");
                         String professor = course.get("professore");
                         int grade = Integer.parseInt(course.get("valutazione"));
@@ -408,5 +413,8 @@ public class PassedCoursesActivity extends CourseSupportActivity implements MyCo
         });
     }
 
+    public Entity getSelectedCourse(){
+        return this.course;
+    }
 
 }

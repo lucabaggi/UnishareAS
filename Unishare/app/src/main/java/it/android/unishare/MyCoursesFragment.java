@@ -46,7 +46,7 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
 	}
 
 	public interface OnCourseSelectedListener {
-		public void onCourseSelected(String courseId, String courseName, com.gc.materialdesign.widgets.ProgressDialog dialog);
+		public void onCourseSelected(String courseId, String courseName, Entity course, com.gc.materialdesign.widgets.ProgressDialog dialog);
 	}
 	
 	@Override
@@ -158,7 +158,7 @@ public class MyCoursesFragment extends Fragment implements ViewInitiator {
                 Log.i(TAG, "Clicked on course " + courseId);
                 String titleSearch = "Searching";
                 dialog = new com.gc.materialdesign.widgets.ProgressDialog(getActivity(), titleSearch);
-                MyCoursesFragment.this.courseListener.onCourseSelected(courseId, courseName, dialog);
+                MyCoursesFragment.this.courseListener.onCourseSelected(courseId, courseName, course, dialog);
                 break;
             case R.id.files:
                 if (!Utilities.checkNetworkState(activity)) {

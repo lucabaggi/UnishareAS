@@ -43,7 +43,6 @@ public class AsynchRequest extends AsyncTask<Void,ArrayList<Entity>,ArrayList<En
 		float finishedIn = System.currentTimeMillis() - startedAt;
 		MyApplication.log("Finished in " + finishedIn + "ms : " + tag);
 		if(result == null) {
-			//MyApplication.getInstance(activity).toastMessage(activity.getApplicationContext(), "Errore");
 			String tag = "error";
             if(dialog != null)
 			    dialog.dismiss();

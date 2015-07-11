@@ -38,7 +38,7 @@ public class PassedExamsFragment extends Fragment implements ViewInitiator {
 	}
 
 	public interface OnCourseSelectedListener {
-		public void onCourseSelected(String courseId, String courseName, ProgressDialog dialog);
+		public void onCourseSelected(String courseId, String courseName, Entity course, ProgressDialog dialog);
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class PassedExamsFragment extends Fragment implements ViewInitiator {
                 Log.i(TAG, "Clicked on course " + courseId);
                 String title = "Searching";
                 dialog = new ProgressDialog(getActivity(), title);
-                PassedExamsFragment.this.courseListener.onCourseSelected(courseId, courseName, dialog);
+                PassedExamsFragment.this.courseListener.onCourseSelected(courseId, courseName, course, dialog);
                 break;
         }
         return super.onContextItemSelected(item);
