@@ -2,6 +2,8 @@ package it.android.unishare;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -61,6 +63,9 @@ public class Welcome1Fragment extends Fragment implements ViewInitiator {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_dropdown_item_1line, univs);
 		universitySelector.setAdapter(adapter);
 
+		TextView errorLink = (TextView) view.findViewById(R.id.errorLink);
+		errorLink.setText(Html.fromHtml("<a href=\"http://www.unishare.it/benvenuto/errore/universita\">"+ errorLink.getText() +"</a>"));
+		errorLink.setMovementMethod(LinkMovementMethod.getInstance());
 	}
 
     

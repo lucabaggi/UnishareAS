@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.Profile;
@@ -29,7 +30,7 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
             "Compravendita libri",
             "Appunti & Dispense",
             "Carriera didattica",
-            "Universi"/*,
+            "Magazine Universi"/*,
             "Libri in vendita",
             "Libri richiesti"*/
     };
@@ -87,18 +88,24 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
         listView.setAdapter(drawerAdapter);
 
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
-                String item = (String)parent.getItemAtPosition(position);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String item = (String) parent.getItemAtPosition(position);
                 Log.i(TAG, "Clicked on " + item);
                 activity.launchNewActivity(position);
             }
 
         });
 
-        //activity.setName();
+        RelativeLayout profileHeader = (RelativeLayout) view.findViewById(R.id.profileHeader);
+        profileHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.getMyApplication().newActivity(MainActivity.class);
+            }
+        });
 
     }
 

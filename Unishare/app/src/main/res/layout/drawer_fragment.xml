@@ -8,6 +8,7 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
+        android:id="@+id/profileHeader"
         android:layout_height="wrap_content">
 
         <ImageView
