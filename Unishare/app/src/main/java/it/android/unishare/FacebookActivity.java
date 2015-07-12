@@ -23,6 +23,7 @@ import com.facebook.*;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.gc.materialdesign.widgets.ProgressDialog;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.File;
@@ -38,6 +39,7 @@ public class FacebookActivity extends SmartActivity {
 
     private static final String USER_INFO = "unishareUserInfo";
     private static final String REG_ID_TAG = "addingRegistrationId";
+    private static final String ERROR = "error";
 
     private MyApplication application;
 
@@ -46,6 +48,8 @@ public class FacebookActivity extends SmartActivity {
     private ProfileTracker profileTracker;
 
     private Entity userEntity;
+
+    ProgressDialog dialog;
 
     private Context context;
     private GoogleCloudMessaging gcm;
@@ -86,7 +90,8 @@ public class FacebookActivity extends SmartActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.i("FBStatus: ", "Success");
-                application.databaseCall("log_user.php?t=" + loginResult.getAccessToken().getToken(), USER_INFO, null);
+                dialog = new ProgressDialog(FacebookActivity.this, "Loading");
+                application.databaseCall("log_user.php?t=" + loginResult.getAccessToken().getToken(), USER_INFO, dialog);
             }
 
             @Override
@@ -156,7 +161,6 @@ public class FacebookActivity extends SmartActivity {
 
     @Override
     public void onBackPressed(){
-        /*
 
         String title = "Exit";
         String message ="Premi OK per uscire";
@@ -164,10 +168,6 @@ public class FacebookActivity extends SmartActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(FacebookActivity.this, SplashActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("EXIT", true);
-                startActivity(intent);
                 finish();
 
             }
@@ -182,21 +182,33 @@ public class FacebookActivity extends SmartActivity {
         };
 
         application.alertDecision(title, message, null, null, actionTrue, actionFalse);
-        */
     }
 
+    @Override
+    public void handleError(String tag){
+        String title = "Error";
+        String message = "Errore durante il Login";
+        application.alertMessage(title, message);
+    }
 
     @Override
     public void handleResult(ArrayList<Entity> result, String tag) {
         Log.i("FacebookActivity", "handling results");
         if (tag == USER_INFO) {
-            userEntity = result.get(0);
-            //String imageUrl = profile.getProfilePictureUri(500,500).toString();
-            String imageUrl = "http://www.unishare.it/users/" + userEntity.get("user_id") + ".jpg";
-            Log.i("FacebookActivity", "URL profile image: " + imageUrl);
-            new DownloadProfileImageTask(this).execute(imageUrl);
-            insertUserIntoLocalDatabase();
-
+            if(result.isEmpty())
+            {
+                String title = "Error";
+                String message = "Errore durante il Login";
+                application.alertMessage(title, message);
+            }
+            else{
+                userEntity = result.get(0);
+                //String imageUrl = profile.getProfilePictureUri(500,500).toString();
+                String imageUrl = "http://www.unishare.it/users/" + userEntity.get("user_id") + ".jpg";
+                Log.i("FacebookActivity", "URL profile image: " + imageUrl);
+                new DownloadProfileImageTask(this).execute(imageUrl);
+                insertUserIntoLocalDatabase();
+            }
         }
     }
 
@@ -237,6 +249,7 @@ public class FacebookActivity extends SmartActivity {
             intent = new Intent(FacebookActivity.this, WelcomeActivity.class);
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //dialog.dismiss();
         startActivity(intent);
 
         FacebookActivity.this.finish();

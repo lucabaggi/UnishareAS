@@ -8,7 +8,9 @@ public class StartAtBoot extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        /*
         Intent service = new Intent(context, BackgroundService.class);
         context.startService(service);
+        */
     }
 }
