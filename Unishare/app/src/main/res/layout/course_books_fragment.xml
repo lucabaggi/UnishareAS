@@ -72,16 +72,16 @@
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:background="@drawable/toolbar_dropshadow" />
-        <!-- <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/passed_courses_swipe_refresh_layout"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/course_books_swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"> -->
+            android:layout_height="wrap_content">
             <ListView
                 android:id="@+id/courseBooksListView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
             </ListView>
-        <!-- </android.support.v4.widget.SwipeRefreshLayout> -->
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
 

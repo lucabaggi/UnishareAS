@@ -1,7 +1,5 @@
 package it.android.unishare;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -31,6 +29,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     private static final String REQUEST_BOOK_TAG = "request_book";
     private static final String BOOK_DETAILS_TAG = "book_details";
     private static final String ASSOCIATED_BOOKS_TAG = "associated_books";
+    private static final String REFRESH_BOOKS_TAG = "refresh_books";
 
     private static final String MY_COURSES_FRAGMENT_INSTANCE = "my_courses_fragment_key";
     private static final String INSERT_OPINION_FRAGMENT_INSTANCE = "insert_opinion_fragment_key";
@@ -41,6 +40,8 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     private static final String BOOKS_ADAPTER_VALUES = "key_books_adapter";
     private static final String COURSE_NAME = "course_name_key";
     private static final String COURSE = "course_key";
+    private static final String COURSE_ID_BOOKS = "course_id_books_key";
+    private static final String COURSE_ID_FILES = "course_id_files_key";
     private static final String BOOKS_FRAGMENT_INSTANCE = "books_fragment_key";
 
 
@@ -63,6 +64,8 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     private int numOfCourses;
     private Entity course;
     private Entity book;
+    private int courseIdForBooks;
+    private int courseIdForFiles;
 
     private ArrayList<Entity> courses;
 
@@ -119,6 +122,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
                 insertOpinionFragment = (InsertOpinionFragment)getFragmentManager()
                         .getFragment(savedInstanceState, INSERT_OPINION_FRAGMENT_INSTANCE);
             if(getFragmentManager().getFragment(savedInstanceState, FILES_FRAGMENT_INSTANCE) != null){
+                this.courseIdForFiles = savedInstanceState.getInt(COURSE_ID_FILES);
                 fileAdapterValues = savedInstanceState.getParcelableArrayList(FILE_ADAPTER_VALUES);
                 filesAdapter = new FilesAdapter(this, new ArrayList<Entity>());
                 filesAdapter.addAll(fileAdapterValues);
@@ -126,6 +130,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
                         .getFragment(savedInstanceState, FILES_FRAGMENT_INSTANCE);
             }
             if(savedInstanceState.getParcelableArrayList(BOOKS_ADAPTER_VALUES) != null){
+                this.courseIdForBooks = savedInstanceState.getInt(COURSE_ID_BOOKS);
                 booksAdapterValues = savedInstanceState.getParcelableArrayList(BOOKS_ADAPTER_VALUES);
                 booksAdapter = new BooksAdapter(this, new ArrayList<Entity>());
                 Log.i(TAG, "Adapter values size: " + booksAdapterValues.size());
@@ -174,6 +179,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         }
 
         if(filesAdapter != null){
+            outState.putInt(COURSE_ID_FILES, courseIdForFiles);
             ArrayList<Entity> files = new ArrayList<>();
             for(int i = 0; i < filesAdapter.getCount(); i++)
                 files.add(filesAdapter.getItem(i));
@@ -181,6 +187,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         }
 
         if(booksAdapter != null){
+            outState.putInt(COURSE_ID_BOOKS, courseIdForBooks);
             ArrayList<Entity> books = new ArrayList<>();
             for(int i = 0; i < booksAdapter.getCount(); i++)
                 books.add(booksAdapter.getItem(i));
@@ -387,6 +394,22 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
             transaction.addToBackStack(null);
             transaction.commit();
         }
+        if(tag == REFRESH_BOOKS_TAG){
+            booksAdapter.clear();
+            booksAdapter.addAll(result);
+            booksAdapter.notifyDataSetChanged();
+            CourseBooksFragment f = (CourseBooksFragment) getFragmentManager()
+                    .findFragmentByTag(CourseBooksFragment.TAG);
+            f.getSwipeRefreshLayout().setRefreshing(false);
+        }
+        if(tag == REFRESH_FILES_TAG){
+            filesAdapter.clear();
+            filesAdapter.addAll(result);
+            filesAdapter.notifyDataSetChanged();
+            CourseFilesFragment f = (CourseFilesFragment) getFragmentManager()
+                    .findFragmentByTag(CourseFilesFragment.TAG);
+            f.getSwipeRefreshLayout().setRefreshing(false);
+        }
     }
 
     private void createOpinionFragment() {
@@ -516,10 +539,12 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
     }
 
     public void getFiles(int courseId, ProgressDialog dialog){
+        this.courseIdForFiles = courseId;
         getCourseFiles(courseId, dialog);
     }
 
     public void getAssociatedBooks(int courseId, ProgressDialog dialog){
+        this.courseIdForBooks = courseId;
         getBooks(courseId, dialog);
     }
 
@@ -554,6 +579,32 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         callRequestBook(userId, bookId);
     }
 
+    public void refreshBooks(){
+        if(Utilities.checkNetworkState(this))
+            refreshBooks(courseIdForBooks);
+        else{
+            String title = "Errore";
+            String message = "Controlla la tua connessione a Internet e riprova";
+            CourseBooksFragment f = (CourseBooksFragment)getFragmentManager()
+                    .findFragmentByTag(CourseBooksFragment.TAG);
+            f.getSwipeRefreshLayout().setRefreshing(false);
+            application.alertMessage(title, message);
+        }
+    }
+
+    public void refreshFiles(){
+        if(Utilities.checkNetworkState(this))
+            refreshFiles(courseIdForFiles);
+        else{
+            String title = "Errore";
+            String message = "Controlla la tua connessione a Internet e riprova";
+            CourseFilesFragment f = (CourseFilesFragment)getFragmentManager()
+                    .findFragmentByTag(CourseFilesFragment.TAG);
+            f.getSwipeRefreshLayout().setRefreshing(false);
+            application.alertMessage(title, message);
+        }
+    }
+
     //Calls to DB
 
     private void getBooks(int courseId, ProgressDialog dialog){
@@ -568,5 +619,7 @@ public class MyCoursesActivity extends CourseSupportActivity implements MyCourse
         application.databaseCall("books_detail.php?id=" + bookId, BOOK_DETAILS_TAG, dialog);
     }
 
-
+    private void refreshBooks(int courseId){
+        application.databaseCall("books.php?c=" + courseId, REFRESH_BOOKS_TAG, null);
+    }
 }

@@ -26,7 +26,7 @@ public class CourseFilesFragment extends Fragment implements ViewInitiator {
 
 	private View view;
 	private ListView listview;
-
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private FilesAdapter filesAdapter;
 
@@ -54,11 +54,20 @@ public class CourseFilesFragment extends Fragment implements ViewInitiator {
 	@Override
 	public void initializeUI(View view) {
         listview = (ListView) view.findViewById(R.id.courseFilesListView);
+		swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.course_files_swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.Green, R.color.Orange, R.color.Blue);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                activity.refreshFiles();
+            }
+        });
         filesAdapter = activity.getFilesAdapter();
         listview.setAdapter(filesAdapter);
 	}
 
-	
-	
+    public SwipeRefreshLayout getSwipeRefreshLayout(){
+        return this.swipeRefreshLayout;
+    }
 
 }

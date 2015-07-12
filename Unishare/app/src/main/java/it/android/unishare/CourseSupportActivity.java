@@ -28,6 +28,7 @@ public class CourseSupportActivity extends AdapterActivity {
     public static final String ACTUAL_COURSES_TAG = "actualCourses";
     public static final String PAST_COURSES_TAG = "passedExams";
     public static final String COURSE_FILES_TAG = "courseFiles";
+    public static final String REFRESH_FILES_TAG = "refresh_files";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,5 +128,10 @@ public class CourseSupportActivity extends AdapterActivity {
 
     public void getCourseFiles(int courseId, ProgressDialog dialog){
         getMyApplication().databaseCall("files.php?c=" + courseId, COURSE_FILES_TAG, dialog);
+    }
+
+    public void refreshFiles(int courseId){
+        getMyApplication().databaseCall("files.php?c=" + courseId, REFRESH_FILES_TAG, null);
+
     }
 }

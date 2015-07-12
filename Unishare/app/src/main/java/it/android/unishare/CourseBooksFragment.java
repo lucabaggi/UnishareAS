@@ -31,6 +31,7 @@ public class CourseBooksFragment extends Fragment implements ViewInitiator {
 
 	private MyCoursesActivity activity;
     private BooksAdapter booksAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 	public CourseBooksFragment(){
 
@@ -65,7 +66,14 @@ public class CourseBooksFragment extends Fragment implements ViewInitiator {
 	@Override
 	public void initializeUI(View view) {
         listview = (ListView) view.findViewById(R.id.courseBooksListView);
-
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.course_books_swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.Green, R.color.Orange, R.color.Blue);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                activity.refreshBooks();
+            }
+        });
         booksAdapter = activity.getBooksAdapter();
         listview.setAdapter(booksAdapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -88,6 +96,8 @@ public class CourseBooksFragment extends Fragment implements ViewInitiator {
         });
 	}
 
-	
+    public SwipeRefreshLayout getSwipeRefreshLayout(){
+        return this.swipeRefreshLayout;
+    }
 
 }
