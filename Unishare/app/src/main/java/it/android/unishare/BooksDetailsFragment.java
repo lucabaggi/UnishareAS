@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gc.materialdesign.views.ButtonRectangle;
+
 import java.net.URI;
 
 public class BooksDetailsFragment extends Fragment implements ViewInitiator {
@@ -67,11 +69,10 @@ public class BooksDetailsFragment extends Fragment implements ViewInitiator {
 		TextView text3 = (TextView) view.findViewById(R.id.textView3);
         TextView editore = (TextView) view.findViewById(R.id.editoreTextView);
 		TextView amazonLinkTextView = (TextView) view.findViewById(R.id.amazonLink);
-        TextView amazonPriceTextView = (TextView) view.findViewById(R.id.amazonPrice);
         ImageView amazonImage = (ImageView) view.findViewById(R.id.amazonImage);
-        Button button = (Button) view.findViewById(R.id.insertOpinionButton);
+        ButtonRectangle button = (ButtonRectangle) view.findViewById(R.id.insertOpinionButton);
 		
-		text1.setText("Titolo: " + book.get("titolo"));
+		text1.setText(book.get("titolo"));
 		text2.setText("Autore: " + book.get("autore"));
 		text3.setText("Prezzo: " + book.get("prezzo") + " euro");
         editore.setText("Editore: " + book.get("editore"));
@@ -89,25 +90,18 @@ public class BooksDetailsFragment extends Fragment implements ViewInitiator {
 
 
 		String url = book.get("url");
-        if(url.length() > 0)
-        {
-            String amazonLink = "<a href=\"" + url + "\">Amazon Link</a>";
+        if(url.length() > 0) {
+            String amazonLink;
+            if(book.get("prezzo_amazon").length() > 0) {
+                amazonLink = "<a href=\"" + url + "\">Questo libro e' disponibile anche su Amazon a partire da "+ book.get("prezzo_amazon") +"</a>";
+            }
+            else {
+                amazonLink = "<a href=\"" + url + "\">Questo libro e' disponibile anche su Amazon</a>";
+            }
             amazonLinkTextView.setText(Html.fromHtml(amazonLink));
             amazonLinkTextView.setMovementMethod(LinkMovementMethod.getInstance());
         }
-        else
-        {
-            amazonLinkTextView.setText("No Amazon Link Available");
-        }
 
-        if(book.get("prezzo_amazon").length() > 0)
-        {
-            amazonPriceTextView.setText("Prezzo Amazon: " + book.get("prezzo_amazon"));
-        }
-        else
-        {
-            amazonPriceTextView.setText("Prezzo Amazon: -");
-        }
 
 
 		button.setOnClickListener(new View.OnClickListener() {
