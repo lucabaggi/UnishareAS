@@ -33,8 +33,8 @@ public class RequestsAdapter extends ArrayAdapter<Entity> {
 		TextView email = (TextView) convertView.findViewById(R.id.email);
 		// Populate the data into the template view using the data object
 		date.setText(entity.get("data"));
-		if(entity.getInt("fbid")>0) {
-			user.setText(Html.fromHtml("<a href=\"https://www.facebook.com/"+ (entity.get("fbid").length()>11?"app_scoped_user_id/":"") + entity.getInt("fbid") +"\">" + entity.get("name") + "</a>"));
+		if(Long.parseLong(entity.get("fbid"))>0) {
+			user.setText(Html.fromHtml("<a href=\"https://www.facebook.com/"+ (entity.get("fbid").length()>11?"app_scoped_user_id/":"") + Long.parseLong(entity.get("fbid")) +"\">" + entity.get("name") + "</a>"));
 			user.setMovementMethod(LinkMovementMethod.getInstance());
 		}
 		else {

@@ -39,8 +39,8 @@ public class RequestedBooksAdapter extends ArrayAdapter<Entity> {
 		title.setText(entity.get("titolo"));
 		author.setText(entity.get("autore"));
 		price.setText(entity.get("prezzo") + " €");
-		if(entity.getInt("fbid")>0) {
-			email.setText(Html.fromHtml("Email: " + entity.get("email") + " - <a href=\"https://www.facebook.com/" + (entity.get("fbid").length() > 11 ? "app_scoped_user_id/" : "") + entity.getInt("fbid") + "\">Vai al profilo Facebook</a>"));
+		if(Long.parseLong(entity.get("fbid"))>0) {
+			email.setText(Html.fromHtml("Email: " + entity.get("email") + " - <a href=\"https://www.facebook.com/" + (entity.get("fbid").length() > 11 ? "app_scoped_user_id/" : "") + Long.parseLong(entity.get("fbid")) + "\">Vai al profilo Facebook</a>"));
 			email.setMovementMethod(LinkMovementMethod.getInstance());
 		}
 		else {
