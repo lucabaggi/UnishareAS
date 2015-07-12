@@ -170,7 +170,7 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.courses, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
@@ -181,7 +181,7 @@ public class CoursesActivity extends CourseSupportActivity implements OnCourseSe
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.mydata) {
-			application.newActivity(FilesActivity.class);
+			application.newActivity(MyDataActivity.class);
 			return true;
 		}
 		else if(id == R.id.logout) {
