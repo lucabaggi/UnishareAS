@@ -35,16 +35,17 @@ public class RequestedBooksAdapter extends ArrayAdapter<Entity> {
 		TextView price = (TextView) convertView.findViewById(R.id.price);
 		TextView email = (TextView) convertView.findViewById(R.id.email);
 		// Populate the data into the template view using the data object
-		date.setText(entity.get("data"));
+		date.setText("Richiesta ricevuta in data " + entity.get("data"));
 		title.setText(entity.get("titolo"));
 		author.setText(entity.get("autore"));
 		price.setText(entity.get("prezzo") + " €");
-		String userInfo = "Email: " + entity.get("email");
 		if(entity.getInt("fbid")>0) {
-			userInfo = userInfo + " - " +(Html.fromHtml("<a href=\"https://www.facebook.com/" + (entity.get("fbid").length() > 11 ? "app_scoped_user_id/" : "") + entity.getInt("fbid") + "\">Vai al profilo Facebook</a>"));
+			email.setText(Html.fromHtml("Email: " + entity.get("email") + " - <a href=\"https://www.facebook.com/" + (entity.get("fbid").length() > 11 ? "app_scoped_user_id/" : "") + entity.getInt("fbid") + "\">Vai al profilo Facebook</a>"));
 			email.setMovementMethod(LinkMovementMethod.getInstance());
 		}
-		email.setText(userInfo);
+		else {
+			email.setText("Email: " + entity.get("email"));
+		}
 
 		// Return the completed view to render on screen
 		return convertView;

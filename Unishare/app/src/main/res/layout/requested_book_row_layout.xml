@@ -2,8 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-    android:layout_marginRight="@dimen/activity_horizontal_margin"
     android:orientation="vertical" >
 
 
@@ -12,6 +10,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_weight="1">
 
         <TextView
@@ -19,6 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:layout_marginTop="15dp"
             android:layout_weight="0.5" />
 
         <TextView
@@ -44,7 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/SlateGray"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
 
     <TextView
         android:id="@+id/date"
@@ -52,7 +53,9 @@
         android:layout_height="wrap_content"
         android:textColor="@color/SlateGray"
         android:layout_marginLeft="10dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="15dp"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
 
