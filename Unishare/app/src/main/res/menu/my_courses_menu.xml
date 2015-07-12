@@ -3,28 +3,28 @@
     tools:context="it.android.unishare.Courses" >
 
     <item
-        android:id="@+id/delete_item"
-        android:alphabeticShortcut="a"
-        android:title="@string/delete_item"/>
-
-    <item
-        android:id="@+id/passed_course"
-        android:alphabeticShortcut="b"
-        android:title="@string/passed_course"/>
-
-    <item
         android:id="@+id/opinions"
-        android:alphabeticShortcut="c"
+        android:alphabeticShortcut="a"
         android:title="@string/opinions"/>
 
     <item
+        android:id="@+id/associated_books"
+        android:alphabeticShortcut="b"
+        android:title="@string/associated_books"/>
+
+    <item
         android:id="@+id/files"
-        android:alphabeticShortcut="d"
+        android:alphabeticShortcut="c"
         android:title="@string/files"/>
 
     <item
-        android:id="@+id/associated_books"
+        android:id="@+id/passed_course"
         android:alphabeticShortcut="d"
-        android:title="@string/associated_books"/>
+        android:title="@string/passed_course"/>
+
+    <item
+        android:id="@+id/delete_item"
+        android:alphabeticShortcut="e"
+        android:title="@string/delete_item"/>
 
 </menu>

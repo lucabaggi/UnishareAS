@@ -2,6 +2,7 @@ package it.android.unishare;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -103,7 +104,11 @@ public class DrawerFragment extends Fragment implements ViewInitiator{
         profileHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.getMyApplication().newActivity(MainActivity.class);
+                //activity.getMyApplication().newActivity(MainActivity.class);
+                Intent intent = new Intent(activity, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                activity.startActivity(intent);
+                activity.finish();
             }
         });
 
