@@ -115,10 +115,11 @@ public class MainFragment extends Fragment implements ViewInitiator {
 			textView.setText(cursor.getString(1));
 			ImageView imageView = (ImageView) newView.findViewById(R.id.imageView);
 			switch(cursor.getInt(0)){
-				case 0: imageView.setImageResource(R.drawable.libro_green); break;
-				case 1: imageView.setImageResource(R.drawable.commento_green); break;
-				case 2: imageView.setImageResource(R.drawable.commento_green); break;
+				case 0: imageView.setImageResource(R.drawable.commento_green); break;
+				case 1: imageView.setImageResource(R.drawable.dialogo_green); break;
+				case 2: imageView.setImageResource(R.drawable.libro_green); break;
 				case 3: imageView.setImageResource(R.drawable.file_green); break;
+				case 4: imageView.setImageResource(R.drawable.calendario_green); break;
 			}
 			notificationsFlipper.addView(newView);
 			cursor.moveToNext();
