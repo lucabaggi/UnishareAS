@@ -194,6 +194,9 @@ public class UniversiActivity extends SmartActivity {
             String title = "Nessun risultato";
             String message = "Controlla la tua connessione o modifica la tua ricerca";
             getMyApplication().alertMessage(title, message);
+            universiFragment = new UniversiFragment();
+            getFragmentManager().beginTransaction()
+                    .add(R.id.universi_fragment_container, universiFragment, UniversiFragment.TAG).commit();
         }
 
     }
