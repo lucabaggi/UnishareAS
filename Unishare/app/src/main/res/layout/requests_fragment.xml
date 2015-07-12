@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/mela"
+        android:src="@drawable/libro"
         android:id="@+id/backgroundIcon"
         android:scaleType="fitCenter"
         android:layout_marginTop="@dimen/background_icon_margin"
@@ -35,7 +35,7 @@
                 android:id="@+id/myCoursesTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Libri richiesti"
+                android:text="Richieste di acquisto ricevute"
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/White"

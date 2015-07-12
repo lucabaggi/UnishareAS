@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:id="@+id/scrollView2" >
 
-    <RelativeLayout
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -45,10 +42,15 @@
 
         </RelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/toolbar_dropshadow" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Compila i campi sottostantiper mettere in vendita un tuo libro. Riceverai una notifica non appena qualche utente sarà interessato ad acquistarlo."
+            android:text="Compila i campi sottostanti per mettere in vendita un tuo libro. Riceverai una notifica non appena qualche utente sarà interessato ad acquistarlo."
             android:textSize="@dimen/abc_text_size_medium_material"
             android:layout_margin="@dimen/activity_horizontal_margin" />
 
@@ -89,4 +91,3 @@
 
     </LinearLayout>
 </RelativeLayout>
-</ScrollView>
