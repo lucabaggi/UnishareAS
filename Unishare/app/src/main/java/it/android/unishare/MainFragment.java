@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -70,7 +71,13 @@ public class MainFragment extends Fragment implements ViewInitiator {
 		setHintsFlipper();
 		setNotificationsFlipper();
 
-
+		LinearLayout newsArea = (LinearLayout) view.findViewById(R.id.newsArea);
+		newsArea.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				activity.getMyApplication().newActivity(UniversiActivity.class);
+			}
+		});
 
 	}
 
