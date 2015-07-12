@@ -385,7 +385,10 @@ public class MyApplication extends android.app.Application {
 		FacebookSdk.sdkInitialize(currentContext);
 		LoginManager.getInstance().logOut();
 
-		newActivity(SplashActivity.class);
+		Intent intent = new Intent(currentActivity, SplashActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+		currentActivity.startActivity(intent);
+		currentActivity.finish();
 	}
 
 	public void resetAccount() {

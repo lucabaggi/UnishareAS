@@ -18,11 +18,6 @@ public class SplashActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        /*
-        if (getIntent().getBooleanExtra("EXIT", true)) {
-            finish();
-        }
-        */
 		setContentView(R.layout.splash_activity);
 		application = MyApplication.getInstance(this);
         splashFragment = new SplashFragment();
@@ -46,7 +41,6 @@ public class SplashActivity extends Activity {
             }
             if(application.hasUserCompletedWelcome()){
                 nextClass = MainActivity.class;
-                application.independentRequest("notifications.php?u="+application.getUserId(),"dashNews");
             }
             else {
                 //First check online!!!
