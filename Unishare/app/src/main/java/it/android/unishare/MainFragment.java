@@ -129,6 +129,15 @@ public class MainFragment extends Fragment implements ViewInitiator {
 				ImageView imageView = (ImageView) newView.findViewById(R.id.imageView);
 				switch (cursor.getInt(0)) {
 					case 0:
+						imageView.setImageResource(R.drawable.libro_green);
+						newView.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								activity.getMyApplication().newActivity(MyBooksActivity.class);
+							}
+						});
+						break;
+					case 1:
 						imageView.setImageResource(R.drawable.commento_green);
 						newView.setOnClickListener(new View.OnClickListener() {
 							@Override
@@ -137,17 +146,8 @@ public class MainFragment extends Fragment implements ViewInitiator {
 							}
 						});
 						break;
-					case 1:
-						imageView.setImageResource(R.drawable.dialogo_green);
-						newView.setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View view) {
-								activity.getMyApplication().newActivity(MyCoursesActivity.class);
-							}
-						});
-						break;
 					case 2:
-						imageView.setImageResource(R.drawable.libro_green);
+						imageView.setImageResource(R.drawable.dialogo_green);
 						newView.setOnClickListener(new View.OnClickListener() {
 							@Override
 							public void onClick(View view) {
