@@ -33,12 +33,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dashNews"
+        android:id="@+id/hintText"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_below="@+id/notificationsFlipper"
-        android:layout_marginTop="20dp"
-        android:text="Aprendo il menù a tendina sulla sinistra dello schermo, puoi accedere alle diverse sezioni di Unishare." />
+        android:layout_below="@+id/campusImageView"
+        android:layout_marginTop="20dp" />
 
 
     <ViewFlipper

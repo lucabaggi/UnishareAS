@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -65,10 +67,6 @@ public class MainFragment extends Fragment implements ViewInitiator {
 		ImageView universityLogoImageView = (ImageView) view.findViewById(R.id.universityLogoImage);
 		Utilities.loadImage(universityLogoImageView, "universityLogo.jpg", activity.getApplicationContext());
 
-		TextView dashNews = (TextView) view.findViewById(R.id.dashNews);
-		//if(activity.getNews()!=null )dashNews.setText(activity.getNews());
-
-
 		setHintsFlipper();
 		setNotificationsFlipper();
 
@@ -109,20 +107,60 @@ public class MainFragment extends Fragment implements ViewInitiator {
 
 		Cursor cursor = activity.getNotifications();
 		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			View newView = factory.inflate(R.layout.viewflipper_notifications, null);
-			TextView textView = (TextView) newView.findViewById(R.id.textView);
-			textView.setText(cursor.getString(1));
-			ImageView imageView = (ImageView) newView.findViewById(R.id.imageView);
-			switch(cursor.getInt(0)){
-				case 0: imageView.setImageResource(R.drawable.commento_green); break;
-				case 1: imageView.setImageResource(R.drawable.dialogo_green); break;
-				case 2: imageView.setImageResource(R.drawable.libro_green); break;
-				case 3: imageView.setImageResource(R.drawable.file_green); break;
-				case 4: imageView.setImageResource(R.drawable.calendario_green); break;
+		if(cursor.isAfterLast()) {
+			TextView hintText = (TextView) view.findViewById(R.id.hintText);
+			hintText.setText("Aprendo il menu' a tendina sulla sinistra dello schermo, puoi accedere alle diverse sezioni di Unishare.");
+		}
+		else{
+			while (!cursor.isAfterLast()) {
+				View newView = factory.inflate(R.layout.viewflipper_notifications, null);
+				TextView textView = (TextView) newView.findViewById(R.id.textView);
+				textView.setText(cursor.getString(1));
+				ImageView imageView = (ImageView) newView.findViewById(R.id.imageView);
+				switch (cursor.getInt(0)) {
+					case 0:
+						imageView.setImageResource(R.drawable.commento_green);
+						newView.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								activity.getMyApplication().newActivity(MyCoursesActivity.class);
+							}
+						});
+						break;
+					case 1:
+						imageView.setImageResource(R.drawable.dialogo_green);
+						newView.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								activity.getMyApplication().newActivity(MyCoursesActivity.class);
+							}
+						});
+						break;
+					case 2:
+						imageView.setImageResource(R.drawable.libro_green);
+						newView.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								activity.getMyApplication().newActivity(BooksActivity.class);
+							}
+						});
+						break;
+					case 3:
+						imageView.setImageResource(R.drawable.file_green);
+						newView.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								activity.getMyApplication().newActivity(MyCoursesActivity.class);
+							}
+						});
+						break;
+					case 4:
+						imageView.setImageResource(R.drawable.calendario_green);
+						break;
+				}
+				notificationsFlipper.addView(newView);
+				cursor.moveToNext();
 			}
-			notificationsFlipper.addView(newView);
-			cursor.moveToNext();
 		}
 
 		notificationsFlipper.setInAnimation(activity, R.anim.slide_in_from_above);

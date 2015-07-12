@@ -1,6 +1,8 @@
 package it.android.unishare;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +39,13 @@ public class RequestedBooksAdapter extends ArrayAdapter<Entity> {
 		title.setText(entity.get("titolo"));
 		author.setText(entity.get("autore"));
 		price.setText(entity.get("prezzo") + " €");
-		email.setText("Contatto e-mail venditore: " + entity.get("email"));
+		String userInfo = "Email: " + entity.get("email");
+		if(entity.getInt("fbid")>0) {
+			userInfo = userInfo + " - " +(Html.fromHtml("<a href=\"https://www.facebook.com/" + (entity.get("fbid").length() > 11 ? "app_scoped_user_id/" : "") + entity.getInt("fbid") + "\">Vai al profilo Facebook</a>"));
+			email.setMovementMethod(LinkMovementMethod.getInstance());
+		}
+		email.setText(userInfo);
+
 		// Return the completed view to render on screen
 		return convertView;
 
